@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.deezus.wordy.databinding.FragmentSettingsBinding
+import com.deezus.wordy.databinding.FragmentWordyBinding
 
 
-class SettingsFragment : BaseFragment() {
+class WordyFragment : BaseFragment() {
 
-  private var _binding: FragmentSettingsBinding? = null
+  private var _binding: FragmentWordyBinding? = null
   private val binding get() = _binding!!
 
   override fun onCreateView(
@@ -17,7 +17,7 @@ class SettingsFragment : BaseFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+    _binding = FragmentWordyBinding.inflate(inflater, container, false)
     val root: View = binding.root
 
     return root

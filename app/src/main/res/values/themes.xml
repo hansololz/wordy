@@ -7,6 +7,7 @@
     <item name="colorOnPrimary">#FFE5B4</item>
 
     <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+    <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
 
     <item name="colorBackground">#FFE5B4</item>
     <item name="colorLetterMatch">#FFE5B4</item>
