@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <attr name="colorBackground" format="color" />
+
+  <attr name="colorLetterMatch" format="color" />
+  <attr name="colorLetterPresent" format="color" />
+  <attr name="colorLetterNoMatch" format="color" />
+
+</resources>
