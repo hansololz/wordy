@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <style name="keyboard_row">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:orientation">horizontal</item>
+  </style>
+
+  <style name="keyboard_button">
+    <item name="android:layout_width">32dp</item>
+    <item name="android:layout_height">52dp</item>
+    <item name="android:gravity">center</item>
+    <item name="android:background">?colorButtonSubmitBackground</item>
+    <item name="android:paddingStart">0dp</item>
+    <item name="android:paddingEnd">0dp</item>
+    <item name="android:paddingTop">0dp</item>
+    <item name="android:paddingBottom">0dp</item>
+    <item name="android:layout_marginStart">2dp</item>
+    <item name="android:layout_marginEnd">2dp</item>
+    <item name="android:layout_marginTop">2dp</item>
+    <item name="android:layout_marginBottom">2dp</item>
+    <item name="android:textColor">?colorButtonSubmitForeground</item>
+    <item name="android:textSize">@dimen/text_size</item>
+  </style>
+
+  <style name="letters_row">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:orientation">horizontal</item>
+  </style>
+
+  <style name="letters_slot">
+    <item name="android:layout_width">48dp</item>
+    <item name="android:layout_height">48dp</item>
+    <item name="android:background">?colorButtonSubmitBackground</item>
+    <item name="android:gravity">center</item>
+    <item name="android:layout_margin">2dp</item>
+  </style>
+
+</resources>

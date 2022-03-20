@@ -1,6 +1,411 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
+
+  <TextView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:text="TESTING" />
+
+  <LinearLayout
+    android:id="@+id/letter_row_1"
+    style="@style/letters_row"
+    app:layout_constraintBottom_toTopOf="@id/letter_row_2"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
+
+    <TextView
+      android:id="@+id/letter_1_1"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_1_2"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_1_3"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_1_4"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_1_5"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_1_6"
+      style="@style/letters_slot" />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/letter_row_2"
+    style="@style/letters_row"
+    app:layout_constraintBottom_toTopOf="@id/letter_row_3"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
+
+    <TextView
+      android:id="@+id/letter_2_1"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_2_2"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_2_3"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_2_4"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_2_5"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_2_6"
+      style="@style/letters_slot" />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/letter_row_3"
+    style="@style/letters_row"
+    app:layout_constraintBottom_toTopOf="@id/letter_row_4"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
+
+    <TextView
+      android:id="@+id/letter_3_1"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_3_2"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_3_3"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_3_4"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_3_5"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_3_6"
+      style="@style/letters_slot" />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/letter_row_4"
+    style="@style/letters_row"
+    app:layout_constraintBottom_toTopOf="@id/letter_row_5"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
+
+    <TextView
+      android:id="@+id/letter_4_1"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_4_2"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_4_3"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_4_4"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_4_5"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_4_6"
+      style="@style/letters_slot" />
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/letter_row_5"
+    style="@style/letters_row"
+    app:layout_constraintBottom_toTopOf="@id/letter_row_6"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
+
+    <TextView
+      android:id="@+id/letter_5_1"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_5_2"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_5_3"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_5_4"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_5_5"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_5_6"
+      style="@style/letters_slot" />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/letter_row_6"
+    style="@style/letters_row"
+    app:layout_constraintBottom_toTopOf="@id/top_keyboard_row"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
+
+    <TextView
+      android:id="@+id/letter_6_1"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_6_2"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_6_3"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_6_4"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_6_5"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_6_6"
+      style="@style/letters_slot" />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/top_keyboard_row"
+    style="@style/keyboard_row"
+    app:layout_constraintBottom_toTopOf="@id/middle_keyboard_row"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_q"
+      android:text="Q" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_w"
+      android:text="W" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_e"
+      android:text="E" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_r"
+      android:text="R" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_t"
+      android:text="T" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_y"
+      android:text="Y" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_u"
+      android:text="U" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_i"
+      android:text="I" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_o"
+      android:text="O" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_p"
+      android:text="P" />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/middle_keyboard_row"
+    style="@style/keyboard_row"
+    app:layout_constraintBottom_toTopOf="@id/bottom_keyboard_row"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_a"
+      android:text="A" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_s"
+      android:text="S" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_d"
+      android:text="D" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_f"
+      android:text="F" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_g"
+      android:text="G" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_h"
+      android:text="H" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_j"
+      android:text="J" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_k"
+      android:text="K" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_l"
+      android:text="L" />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/bottom_keyboard_row"
+    style="@style/keyboard_row"
+    app:layout_constraintBottom_toTopOf="@id/show_hint"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_z"
+      android:text="Z" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_x"
+      android:text="X" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_c"
+      android:text="C" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_v"
+      android:text="V" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_b"
+      android:text="B" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_n"
+      android:text="N" />
+
+    <TextView
+      style="@style/keyboard_button"
+      android:id="@+id/key_m"
+      android:text="M" />
+
+  </LinearLayout>
+
+  <ImageView
+    android:id="@+id/show_hint"
+    android:layout_width="wrap_content"
+    android:layout_height="0dp"
+    android:layout_marginStart="@dimen/spacing"
+    android:layout_marginBottom="@dimen/spacing"
+    android:background="?colorButtonSubmitBackground"
+    android:padding="@dimen/spacing"
+    android:src="@drawable/ic_round_search_36"
+    android:text="Get Hint"
+    android:textColor="?colorButtonSubmitForeground"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent" />
+
+  <TextView
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_marginStart="@dimen/spacing"
+    android:layout_marginEnd="@dimen/spacing"
+    android:background="?colorButtonSubmitBackground"
+    android:elevation="0dp"
+    android:gravity="center"
+    android:text="Submit"
+    android:textColor="?colorButtonSubmitForeground"
+    android:textSize="@dimen/text_size"
+    app:layout_constraintBottom_toBottomOf="@id/show_hint"
+    app:layout_constraintEnd_toStartOf="@id/skip_next"
+    app:layout_constraintStart_toEndOf="@id/show_hint"
+    app:layout_constraintTop_toTopOf="@id/show_hint" />
+
+  <ImageView
+    android:id="@+id/skip_next"
+    android:layout_width="wrap_content"
+    android:layout_height="0dp"
+    android:layout_marginEnd="@dimen/spacing"
+    android:layout_marginBottom="@dimen/spacing"
+    android:background="?colorButtonSubmitBackground"
+    android:drawableLeft="@drawable/ic_round_skip_next_36"
+    android:gravity="center"
+    android:padding="@dimen/spacing"
+    android:src="@drawable/ic_round_skip_next_36"
+    android:textColor="?colorButtonSubmitForeground"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
