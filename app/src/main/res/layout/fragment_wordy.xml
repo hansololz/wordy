@@ -214,7 +214,8 @@
     style="@style/keyboard_row"
     app:layout_constraintBottom_toTopOf="@id/middle_keyboard_row"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent">
+    app:layout_constraintStart_toStartOf="parent"
+    android:paddingTop="@dimen/spacing">
 
     <TextView
       style="@style/keyboard_button"
@@ -325,7 +326,7 @@
   <LinearLayout
     android:id="@+id/bottom_keyboard_row"
     style="@style/keyboard_row"
-    app:layout_constraintBottom_toTopOf="@id/show_hint"
+    app:layout_constraintBottom_toTopOf="@id/action_buttons"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent">
 
@@ -366,49 +367,69 @@
 
   </LinearLayout>
 
-  <ImageView
-    android:id="@+id/show_hint"
-    android:layout_width="wrap_content"
-    android:layout_height="0dp"
-    android:layout_marginStart="@dimen/spacing"
-    android:layout_marginBottom="@dimen/spacing"
-    android:background="?colorButtonSubmitBackground"
-    android:padding="@dimen/spacing"
-    android:src="@drawable/ic_round_search_36"
-    android:text="Get Hint"
-    android:textColor="?colorButtonSubmitForeground"
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/action_buttons"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintStart_toStartOf="parent" />
+    android:padding="@dimen/spacing">
 
-  <TextView
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    android:layout_marginStart="@dimen/spacing"
-    android:layout_marginEnd="@dimen/spacing"
-    android:background="?colorButtonSubmitBackground"
-    android:elevation="0dp"
-    android:gravity="center"
-    android:text="Submit"
-    android:textColor="?colorButtonSubmitForeground"
-    android:textSize="@dimen/text_size"
-    app:layout_constraintBottom_toBottomOf="@id/show_hint"
-    app:layout_constraintEnd_toStartOf="@id/skip_next"
-    app:layout_constraintStart_toEndOf="@id/show_hint"
-    app:layout_constraintTop_toTopOf="@id/show_hint" />
+    <ImageView
+      android:id="@+id/skip_next"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:layout_margin="2dp"
+      android:background="?colorButtonSubmitBackground"
+      android:drawableLeft="@drawable/ic_round_skip_next_36"
+      android:gravity="center"
+      android:padding="@dimen/spacing"
+      android:src="@drawable/ic_round_skip_next_36"
+      android:textColor="?colorButtonSubmitForeground"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent" />
 
-  <ImageView
-    android:id="@+id/skip_next"
-    android:layout_width="wrap_content"
-    android:layout_height="0dp"
-    android:layout_marginEnd="@dimen/spacing"
-    android:layout_marginBottom="@dimen/spacing"
-    android:background="?colorButtonSubmitBackground"
-    android:drawableLeft="@drawable/ic_round_skip_next_36"
-    android:gravity="center"
-    android:padding="@dimen/spacing"
-    android:src="@drawable/ic_round_skip_next_36"
-    android:textColor="?colorButtonSubmitForeground"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent" />
+    <ImageView
+      android:id="@+id/show_hint"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:layout_margin="2dp"
+      android:background="?colorButtonSubmitBackground"
+      android:padding="@dimen/spacing"
+      android:src="@drawable/ic_round_search_36"
+      android:text="Get Hint"
+      android:textColor="?colorButtonSubmitForeground"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toEndOf="@id/skip_next"/>
+
+    <TextView
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_marginStart="2dp"
+      android:layout_marginEnd="2dp"
+      android:background="?colorButtonSubmitBackground"
+      android:elevation="0dp"
+      android:gravity="center"
+      android:text="Submit"
+      android:textColor="?colorButtonSubmitForeground"
+      android:textSize="@dimen/text_size"
+      app:layout_constraintBottom_toBottomOf="@id/show_hint"
+      app:layout_constraintEnd_toStartOf="@id/delete_letter"
+      app:layout_constraintStart_toEndOf="@id/show_hint"
+      app:layout_constraintTop_toTopOf="@id/show_hint" />
+
+    <ImageView
+      android:id="@+id/delete_letter"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:layout_margin="2dp"
+      android:background="?colorButtonSubmitBackground"
+      android:padding="@dimen/spacing"
+      android:src="@drawable/ic_round_backspace_36"
+      android:text="Get Hint"
+      android:textColor="?colorButtonSubmitForeground"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"/>
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
