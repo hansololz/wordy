@@ -2,8 +2,10 @@ package com.deezus.wordy
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.annotation.RestrictTo
 import androidx.lifecycle.ViewModelProvider
 import com.deezus.wordy.databinding.ActivityMainBinding
+import kotlinx.coroutines.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -21,7 +23,11 @@ class MainActivity : AppCompatActivity() {
     mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
     binding = ActivityMainBinding.inflate(layoutInflater)
 
+    val thisActivity = this
+
+    scope.launch {
+      initWordDatabase(thisActivity)
+    }
 
   }
-
 }
