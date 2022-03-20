@@ -10,11 +10,49 @@
     android:text="TESTING" />
 
   <LinearLayout
+    android:id="@+id/letter_row_0"
+    style="@style/letters_row"
+    app:layout_constraintBottom_toTopOf="@id/letter_row_1"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
+
+    <TextView
+      android:id="@+id/letter_0_0"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_0_1"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_0_2"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_0_3"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_0_4"
+      style="@style/letters_slot" />
+
+    <TextView
+      android:id="@+id/letter_0_5"
+      style="@style/letters_slot" />
+
+  </LinearLayout>
+
+  <LinearLayout
     android:id="@+id/letter_row_1"
     style="@style/letters_row"
     app:layout_constraintBottom_toTopOf="@id/letter_row_2"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent">
+
+    <TextView
+      android:id="@+id/letter_1_0"
+      style="@style/letters_slot" />
+
 
     <TextView
       android:id="@+id/letter_1_1"
@@ -36,10 +74,6 @@
       android:id="@+id/letter_1_5"
       style="@style/letters_slot" />
 
-    <TextView
-      android:id="@+id/letter_1_6"
-      style="@style/letters_slot" />
-
   </LinearLayout>
 
   <LinearLayout
@@ -48,6 +82,10 @@
     app:layout_constraintBottom_toTopOf="@id/letter_row_3"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent">
+
+    <TextView
+      android:id="@+id/letter_2_0"
+      style="@style/letters_slot" />
 
     <TextView
       android:id="@+id/letter_2_1"
@@ -69,10 +107,6 @@
       android:id="@+id/letter_2_5"
       style="@style/letters_slot" />
 
-    <TextView
-      android:id="@+id/letter_2_6"
-      style="@style/letters_slot" />
-
   </LinearLayout>
 
   <LinearLayout
@@ -81,6 +115,10 @@
     app:layout_constraintBottom_toTopOf="@id/letter_row_4"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent">
+
+    <TextView
+      android:id="@+id/letter_3_0"
+      style="@style/letters_slot" />
 
     <TextView
       android:id="@+id/letter_3_1"
@@ -102,10 +140,6 @@
       android:id="@+id/letter_3_5"
       style="@style/letters_slot" />
 
-    <TextView
-      android:id="@+id/letter_3_6"
-      style="@style/letters_slot" />
-
   </LinearLayout>
 
   <LinearLayout
@@ -114,6 +148,10 @@
     app:layout_constraintBottom_toTopOf="@id/letter_row_5"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent">
+
+    <TextView
+      android:id="@+id/letter_4_0"
+      style="@style/letters_slot" />
 
     <TextView
       android:id="@+id/letter_4_1"
@@ -135,17 +173,19 @@
       android:id="@+id/letter_4_5"
       style="@style/letters_slot" />
 
-    <TextView
-      android:id="@+id/letter_4_6"
-      style="@style/letters_slot" />
   </LinearLayout>
 
   <LinearLayout
     android:id="@+id/letter_row_5"
     style="@style/letters_row"
-    app:layout_constraintBottom_toTopOf="@id/letter_row_6"
+    app:layout_constraintBottom_toTopOf="@id/top_keyboard_row"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent">
+
+    <TextView
+      android:id="@+id/letter_5_0"
+      style="@style/letters_slot" />
+
 
     <TextView
       android:id="@+id/letter_5_1"
@@ -165,43 +205,6 @@
 
     <TextView
       android:id="@+id/letter_5_5"
-      style="@style/letters_slot" />
-
-    <TextView
-      android:id="@+id/letter_5_6"
-      style="@style/letters_slot" />
-
-  </LinearLayout>
-
-  <LinearLayout
-    android:id="@+id/letter_row_6"
-    style="@style/letters_row"
-    app:layout_constraintBottom_toTopOf="@id/top_keyboard_row"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent">
-
-    <TextView
-      android:id="@+id/letter_6_1"
-      style="@style/letters_slot" />
-
-    <TextView
-      android:id="@+id/letter_6_2"
-      style="@style/letters_slot" />
-
-    <TextView
-      android:id="@+id/letter_6_3"
-      style="@style/letters_slot" />
-
-    <TextView
-      android:id="@+id/letter_6_4"
-      style="@style/letters_slot" />
-
-    <TextView
-      android:id="@+id/letter_6_5"
-      style="@style/letters_slot" />
-
-    <TextView
-      android:id="@+id/letter_6_6"
       style="@style/letters_slot" />
 
   </LinearLayout>
