@@ -5,9 +5,17 @@
   android:layout_height="match_parent">
 
   <TextView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:text="TESTING" />
+    android:id="@+id/score_message"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/score_text_size"
+    android:text="Score\n0"
+    android:gravity="center_horizontal"
+    android:paddingBottom="@dimen/spacing"
+    android:textStyle="bold"
+    app:layout_constraintBottom_toTopOf="@id/letter_row_0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"/>
 
   <LinearLayout
     android:id="@+id/letter_row_0"
@@ -411,7 +419,8 @@
       android:gravity="center"
       android:text="Submit"
       android:textColor="?colorButtonSubmitForeground"
-      android:textSize="@dimen/text_size"
+      android:textSize="@dimen/submit_text_size"
+      android:textStyle="bold"
       app:layout_constraintBottom_toBottomOf="@id/show_hint"
       app:layout_constraintEnd_toStartOf="@id/delete_letter"
       app:layout_constraintStart_toEndOf="@id/show_hint"
