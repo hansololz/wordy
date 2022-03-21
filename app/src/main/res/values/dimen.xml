@@ -14,4 +14,7 @@
   <dimen name="letter_boarder_radius">8dp</dimen>
   <dimen name="letter_boarder_size">3dp</dimen>
 
+  <dimen name="button_boarder_radius">8dp</dimen>
+  <dimen name="button_padding">6dp</dimen>
+
 </resources>
