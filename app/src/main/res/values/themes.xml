@@ -21,7 +21,7 @@
     <item name="colorLetterTextGuessed">#FFFFFFFF</item>
     <item name="colorLetterText">#FF202020</item>
 
-    <item name="colorKeyNoGuess">#FFD0D0D0</item>
+    <item name="colorKeyNoGuess">#FFC0C0C0</item>
     <item name="colorKeyMatch">#FF00FF00</item>
     <item name="colorKeyPresent">#FFEEEE00</item>
     <item name="colorKeyNoMatch">#FF808080</item>

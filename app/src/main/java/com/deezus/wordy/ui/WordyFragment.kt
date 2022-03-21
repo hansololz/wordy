@@ -12,6 +12,8 @@ import com.deezus.wordy.databinding.FragmentWordyBinding
 import com.deezus.wordy.helpers.DialogMessage
 import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.launch
+import kotlin.math.max
+import kotlin.math.min
 
 
 class WordyFragment : BaseFragment() {
@@ -140,6 +142,10 @@ class WordyFragment : BaseFragment() {
         val guessedWord = getGuessedWord()
 
         if (currentWord == guessedWord) {
+          scope.launch {
+            addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.SUCCEEDED, min(maxGuessCount, max(maxGuessCount - currentX, 0)).toLong())
+          }
+
           DialogMessage(getMainActivity(), "Congrats, you guessed the word.")
             .setOnDismissCallback {
               setupGame()
@@ -187,6 +193,10 @@ class WordyFragment : BaseFragment() {
           currentX++
 
           if (currentX == maxGuessCount) {
+            scope.launch {
+              addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.FAILED, 0)
+            }
+
             DialogMessage(getMainActivity(), "Sorry, the word was \"$currentWord\"")
               .setOnDismissCallback {
                 setupGame()
