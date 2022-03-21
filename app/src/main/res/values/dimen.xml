@@ -10,7 +10,7 @@
   <dimen name="score_text_size">28sp</dimen>
 
   <dimen name="letter_padding">2dp</dimen>
-  <dimen name="letter_text_size">16sp</dimen>
+  <dimen name="letter_text_size">24sp</dimen>
   <dimen name="letter_boarder_radius">8dp</dimen>
   <dimen name="letter_boarder_size">3dp</dimen>
 
