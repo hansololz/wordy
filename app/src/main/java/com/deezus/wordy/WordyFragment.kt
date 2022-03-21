@@ -159,6 +159,7 @@ class WordyFragment : BaseFragment() {
       getRandomWord()?.let { randomWord ->
         Log.d("WORDYYY", randomWord)
         deleteWord(randomWord)
+        addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.PENDING, 0)
         currentWord = randomWord
       }
     }
