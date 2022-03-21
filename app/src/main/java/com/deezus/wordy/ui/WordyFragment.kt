@@ -1,5 +1,6 @@
 package com.deezus.wordy.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.core.content.ContextCompat
 import com.deezus.wordy.*
 import com.deezus.wordy.databinding.FragmentWordyBinding
 import com.deezus.wordy.helpers.DialogMessage
+import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.launch
 import java.lang.StringBuilder
 
@@ -150,6 +152,7 @@ class WordyFragment : BaseFragment() {
             }
 
             letterViews[currentX][index].setBackgroundResource(letterBackgroundId)
+            letterViews[currentX][index].setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorLetterTextGuessed, Color.WHITE))
           }
 
           currentX++

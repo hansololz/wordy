@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  <item
+    android:left="@dimen/letter_padding"
+    android:right="@dimen/letter_padding"
+    android:top="@dimen/letter_padding"
+    android:bottom="@dimen/letter_padding">
+    <shape>
+      <solid android:color="?colorLetterNoMatch"/>
+      <stroke android:width="@dimen/letter_boarder_size"
+        android:color="?colorLetterNoMatch" />
+      <corners android:radius="@dimen/letter_boarder_radius" />
+    </shape>
+  </item>
+</layer-list>

@@ -8,18 +8,10 @@
   </style>
 
   <style name="keyboard_button">
-    <item name="android:layout_width">32dp</item>
+    <item name="android:layout_width">36dp</item>
     <item name="android:layout_height">52dp</item>
     <item name="android:gravity">center</item>
-    <item name="android:background">?colorButtonSubmitBackground</item>
-    <item name="android:paddingStart">0dp</item>
-    <item name="android:paddingEnd">0dp</item>
-    <item name="android:paddingTop">0dp</item>
-    <item name="android:paddingBottom">0dp</item>
-    <item name="android:layout_marginStart">2dp</item>
-    <item name="android:layout_marginEnd">2dp</item>
-    <item name="android:layout_marginTop">2dp</item>
-    <item name="android:layout_marginBottom">2dp</item>
+    <item name="android:background">@drawable/key_background_no_guess</item>
     <item name="android:textAllCaps">true</item>
     <item name="android:textStyle">bold</item>
     <item name="android:textColor">?colorButtonSubmitForeground</item>

@@ -11,13 +11,22 @@
     <item name="android:navigationBarColor">#FFE5B4</item>
 
     <item name="colorBackground">#FFE5B4</item>
+
     <item name="colorLetterNoGuess">#FFE5B4</item>
     <item name="colorLetterMatch">#FF00FF00</item>
     <item name="colorLetterNoMatch">#FFD0D0D0</item>
     <item name="colorLetterPresent">#FFEEEE00</item>
     <item name="colorLetterBoarder">#FF202020</item>
     <item name="colorLetterBoarderFocus">#FFDD0000</item>
+    <item name="colorLetterTextGuessed">#FFFFFFFF</item>
     <item name="colorLetterText">#FF202020</item>
+
+    <item name="colorKeyNoGuess">#FFD0D0D0</item>
+    <item name="colorKeyMatch">#FF00FF00</item>
+    <item name="colorKeyPresent">#FFEEEE00</item>
+    <item name="colorKeyNoMatch">#FFB0B0B0</item>
+    <item name="colorKeyTextGuessed">#FF202020</item>
+    <item name="colorKeyText">#FFFFFFFF</item>
 
     <item name="colorButtonSubmitForeground">#F0F0F0</item>
     <item name="colorButtonSubmitBackground">#C0C0C0</item>

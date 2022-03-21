@@ -3,12 +3,20 @@
 
   <attr name="colorBackground" format="color" />
 
+  <attr name="colorKeyNoGuess" format="color" />
+  <attr name="colorKeyMatch" format="color" />
+  <attr name="colorKeyPresent" format="color" />
+  <attr name="colorKeyNoMatch" format="color" />
+  <attr name="colorKeyTextGuessed" format="color" />
+  <attr name="colorKeyText" format="color" />
+
   <attr name="colorLetterNoGuess" format="color" />
   <attr name="colorLetterMatch" format="color" />
   <attr name="colorLetterPresent" format="color" />
   <attr name="colorLetterNoMatch" format="color" />
   <attr name="colorLetterBoarder" format="color" />
   <attr name="colorLetterBoarderFocus" format="color" />
+  <attr name="colorLetterTextGuessed" format="color" />
   <attr name="colorLetterText" format="color" />
 
   <attr name="colorButtonSubmitForeground" format="color" />
