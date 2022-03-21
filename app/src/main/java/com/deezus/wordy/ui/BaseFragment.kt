@@ -1,4 +1,4 @@
-package com.deezus.wordy
+package com.deezus.wordy.ui
 
 import androidx.fragment.app.Fragment
 

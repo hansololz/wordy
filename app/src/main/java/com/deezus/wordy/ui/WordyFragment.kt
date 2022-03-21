@@ -1,4 +1,4 @@
-package com.deezus.wordy
+package com.deezus.wordy.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.deezus.wordy.*
 import com.deezus.wordy.databinding.FragmentWordyBinding
 import kotlinx.coroutines.launch
 import java.lang.StringBuilder
@@ -123,6 +124,12 @@ class WordyFragment : BaseFragment() {
       updateButton()
     }
 
+    binding.submitButton.setOnClickListener {
+      if (currentY == currentWord.length) {
+
+      }
+    }
+
   }
 
   private fun setupKey(keyView: TextView, key: Char) {
@@ -168,13 +175,7 @@ class WordyFragment : BaseFragment() {
   private fun updateButton() {
     if (currentY >= currentWord.length) {
       scope.launch {
-        val wordBuilder = StringBuilder()
-
-        letterViews[currentX].forEach {
-          wordBuilder.append(it.text)
-        }
-
-        binding.submitButton.text = if (!hasWord(wordBuilder.toString().lowercase())) {
+        binding.submitButton.text = if (!hasWord(getGuessedWord())) {
           "Not A\nWord"
         } else {
           "Submit"
@@ -183,6 +184,16 @@ class WordyFragment : BaseFragment() {
     } else {
       binding.submitButton.text = "Submit"
     }
+  }
+
+  private fun getGuessedWord(): String {
+    val wordBuilder = StringBuilder()
+
+    letterViews[currentX].forEach {
+      wordBuilder.append(it.text)
+    }
+
+    return wordBuilder.toString().lowercase()
   }
 
 }

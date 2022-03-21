@@ -1,4 +1,4 @@
-package com.deezus.wordy
+package com.deezus.wordy.ui
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

@@ -6,12 +6,12 @@
 
   <fragment
     android:id="@+id/navigation_settings"
-    android:name="com.deezus.wordy.SettingsFragment"
+    android:name="com.deezus.wordy.ui.SettingsFragment"
     android:label="SettingsFragment" />
 
   <fragment
     android:id="@+id/navigation_wordy"
-    android:name="com.deezus.wordy.WordyFragment"
+    android:name="com.deezus.wordy.ui.WordyFragment"
     android:label="WordyFragment" />
 
 </navigation>

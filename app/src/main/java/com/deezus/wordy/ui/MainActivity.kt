@@ -1,11 +1,10 @@
-package com.deezus.wordy
+package com.deezus.wordy.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.annotation.RestrictTo
 import androidx.lifecycle.ViewModelProvider
+import com.deezus.wordy.R
 import com.deezus.wordy.databinding.ActivityMainBinding
-import kotlinx.coroutines.*
 
 
 class MainActivity : AppCompatActivity() {
