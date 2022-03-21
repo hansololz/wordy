@@ -7,13 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import com.deezus.wordy.*
 import com.deezus.wordy.databinding.FragmentWordyBinding
 import com.deezus.wordy.helpers.DialogMessage
 import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.launch
-import java.lang.StringBuilder
 
 
 class WordyFragment : BaseFragment() {
@@ -155,12 +153,12 @@ class WordyFragment : BaseFragment() {
             letterViews[currentX][index].setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorLetterTextGuessed, Color.WHITE))
 
             val keyBackgroundId = when {
-              currentWord[index] == letter -> R.drawable.key_background_match
+              letterViews.any { it[index].text?.firstOrNull()?.lowercaseChar() == currentWord[index] } -> R.drawable.key_background_match
               currentWord.contains(letter) -> R.drawable.key_background_present
               else -> R.drawable.key_background_no_match
             }
 
-            letterViews[currentX][index].setBackgroundResource(keyBackgroundId)
+            keyViews[letter]?.setBackgroundResource(keyBackgroundId)
             keyViews[letter]?.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.BLACK))
           }
 
@@ -251,20 +249,4 @@ class WordyFragment : BaseFragment() {
 
     return wordBuilder.toString().lowercase()
   }
-
-//  private fun updateKeyboardColor() {
-//    val guessedWord = getGuessedWord()
-//
-//    guessedLetters.forEach {
-//      when {
-//        guessedWord[].contains(it) -> {
-//
-//        }
-//        currentWord.contains(it) -> {
-//
-//        }
-//      }
-//    }
-//  }
-
 }
