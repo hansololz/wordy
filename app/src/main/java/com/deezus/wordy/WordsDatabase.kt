@@ -11,6 +11,14 @@ data class WordEntry(
   @ColumnInfo(name = "word") var word: String
 )
 
+@Entity(primaryKeys = ["word"])
+data class GuessedWordEntry(
+  @ColumnInfo(name = "word") var word: String,
+  @ColumnInfo(name = "time") var time: Int,
+  @ColumnInfo(name = "outCome") var outCome: Int,
+  @ColumnInfo(name = "scoreEarned") var scoreEarned: Int,
+)
+
 @Dao
 private interface WordEntryDao {
 
@@ -19,6 +27,9 @@ private interface WordEntryDao {
 
   @Query("SELECT * FROM WordEntry")
   fun getAll(): List<WordEntry>
+
+  @Query("SELECT * FROM WordEntry WHERE word = :word LIMIT 1")
+  fun getWord(word: String): List<WordEntry>
 
   @Query("SELECT * FROM WordEntry ORDER BY RANDOM() LIMIT 1")
   fun getRandom(): List<WordEntry>
@@ -38,12 +49,14 @@ private abstract class WordDatabase : RoomDatabase() {
 
 private var word5Database: WordDatabase? = null
 
-suspend fun initWordDatabase(activity: MainActivity) = withContext(Dispatchers.IO) {
+suspend fun initWordDatabase(activity: MainActivity) = withContext(Dispatchers.Default) {
   word5Database = Room
     .databaseBuilder(activity, WordDatabase::class.java, "database-word-5")
     .build()
 
   val availableWordsCount = word5Database?.userDao()?.getSize()
+
+  Log.d("WORDYYYY", "WORD COUNT $availableWordsCount")
 
   if (availableWordsCount != null && availableWordsCount == 0) {
     getWords(activity)?.map {
@@ -52,16 +65,20 @@ suspend fun initWordDatabase(activity: MainActivity) = withContext(Dispatchers.I
       word5Database?.userDao()?.insertAll(it)
     }
 
-    Log.d("WORDY", "WORD INIT")
+    Log.d("WORDYYYY", "WORD INIT")
   } else {
-    Log.d("WORDY", "SKIPPED INIT")
+    Log.d("WORDYYYY", "SKIPPED INIT")
   }
 }
 
-suspend fun getRandomWord(activity: MainActivity): String? = withContext(Dispatchers.IO) {
+suspend fun getRandomWord(): String? = withContext(Dispatchers.Default) {
   word5Database?.userDao()?.getRandom()?.firstOrNull()?.word
 }
 
-suspend fun deleteWord(activity: MainActivity, word: String) = withContext(Dispatchers.IO) {
+suspend fun deleteWord(word: String) = withContext(Dispatchers.Default) {
   word5Database?.userDao()?.delete(word)
+}
+
+suspend fun hasWord(word: String): Boolean = withContext(Dispatchers.Default) {
+  word5Database?.userDao()?.getWord(word)?.firstOrNull() != null
 }

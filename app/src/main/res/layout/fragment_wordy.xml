@@ -410,6 +410,7 @@
       app:layout_constraintStart_toEndOf="@id/skip_next"/>
 
     <TextView
+      android:id="@+id/submit_button"
       android:layout_width="0dp"
       android:layout_height="0dp"
       android:layout_marginStart="2dp"

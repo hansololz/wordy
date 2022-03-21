@@ -22,12 +22,5 @@ class MainActivity : AppCompatActivity() {
 
     mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
     binding = ActivityMainBinding.inflate(layoutInflater)
-
-    val thisActivity = this
-
-    scope.launch {
-      initWordDatabase(thisActivity)
-    }
-
   }
 }
