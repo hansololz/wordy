@@ -8,6 +8,7 @@
   <attr name="colorLetterPresent" format="color" />
   <attr name="colorLetterNoMatch" format="color" />
   <attr name="colorLetterBoarder" format="color" />
+  <attr name="colorLetterBoarderFocus" format="color" />
   <attr name="colorLetterText" format="color" />
 
   <attr name="colorButtonSubmitForeground" format="color" />

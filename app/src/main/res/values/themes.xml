@@ -14,8 +14,9 @@
     <item name="colorLetterNoGuess">#FFE5B4</item>
     <item name="colorLetterMatch">#FF00FF00</item>
     <item name="colorLetterNoMatch">#FFD0D0D0</item>
-    <item name="colorLetterPresent">#FFFFFF00</item>
+    <item name="colorLetterPresent">#FFEEEE00</item>
     <item name="colorLetterBoarder">#FF202020</item>
+    <item name="colorLetterBoarderFocus">#FFDD0000</item>
     <item name="colorLetterText">#FF202020</item>
 
     <item name="colorButtonSubmitForeground">#F0F0F0</item>

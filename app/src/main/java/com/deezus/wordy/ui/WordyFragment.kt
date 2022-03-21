@@ -122,6 +122,11 @@ class WordyFragment : BaseFragment() {
       if (currentY > 0) {
         currentY--
         letterViews[currentX][currentY].text = ""
+        letterViews[currentX][currentY].setBackgroundResource(R.drawable.letter_background_no_guess_and_focus)
+
+        if (currentY + 1 < currentWord.length) {
+          letterViews[currentX][currentY + 1].setBackgroundResource(R.drawable.letter_background_no_guess)
+        }
       }
 
       updateButton()
@@ -152,9 +157,10 @@ class WordyFragment : BaseFragment() {
           if (currentX == maxGuessCount) {
             DialogMessage(getMainActivity(), "Sorry, the word was \"$currentWord\"")
               .show()
+          } else {
+            currentY = 0
+            letterViews[currentX][currentY].setBackgroundResource(R.drawable.letter_background_no_guess_and_focus)
           }
-
-          currentY = 0
         }
       }
     }
@@ -165,9 +171,15 @@ class WordyFragment : BaseFragment() {
     keyViews[key] = keyView
 
     keyView.setOnClickListener {
-      if (currentY < currentWord.length && letterViews[currentX][currentY].text.isEmpty()) {
+      if (currentY < currentWord.length && currentX < maxGuessCount && letterViews[currentX][currentY].text.isEmpty()) {
         letterViews[currentX][currentY].text = key.toString()
         currentY++
+      }
+
+      letterViews[currentX][currentY - 1].setBackgroundResource(R.drawable.letter_background_no_guess)
+
+      if (currentY < currentWord.length) {
+        letterViews[currentX][currentY].setBackgroundResource(R.drawable.letter_background_no_guess_and_focus)
       }
 
       updateButton()
@@ -189,6 +201,8 @@ class WordyFragment : BaseFragment() {
   }
 
   private fun setupGame() {
+    letterViews[currentX][currentY].setBackgroundResource(R.drawable.letter_background_no_guess_and_focus)
+
     scope.launch {
       initWordDatabase(getMainActivity())
 
