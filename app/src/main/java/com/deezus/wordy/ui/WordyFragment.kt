@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.deezus.wordy.*
 import com.deezus.wordy.databinding.FragmentWordyBinding
+import com.deezus.wordy.helpers.DialogMessage
 import kotlinx.coroutines.launch
 import java.lang.StringBuilder
 
@@ -23,6 +25,7 @@ class WordyFragment : BaseFragment() {
   private val keyViews = hashMapOf<Char, TextView>()
   private var currentWord = "nomad"
   private val guessedLetters = hashSetOf<Char>()
+  private val maxGuessCount = 6
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -126,7 +129,33 @@ class WordyFragment : BaseFragment() {
 
     binding.submitButton.setOnClickListener {
       if (currentY == currentWord.length) {
+        val guessedWord = getGuessedWord()
 
+        if (currentWord == guessedWord) {
+          DialogMessage(getMainActivity(), "Success")
+            .show()
+        } else {
+          guessedWord.forEachIndexed { index, letter ->
+            guessedLetters.add(letter)
+
+            val letterBackgroundId = when {
+              currentWord[index] == letter -> R.drawable.letter_background_match
+              currentWord.contains(letter) -> R.drawable.letter_background_present
+              else -> R.drawable.letter_background_no_match
+            }
+
+            letterViews[currentX][index].setBackgroundResource(letterBackgroundId)
+          }
+
+          currentX++
+
+          if (currentX == maxGuessCount) {
+            DialogMessage(getMainActivity(), "Sorry, the word was \"$currentWord\"")
+              .show()
+          }
+
+          currentY = 0
+        }
       }
     }
 
@@ -146,7 +175,7 @@ class WordyFragment : BaseFragment() {
   }
 
   private fun setupLetter(letterView: TextView, x: Int, y: Int) {
-    if (y >= currentWord.length) {
+    if (y >= currentWord.length || x >= maxGuessCount) {
       letterView.visibility = View.GONE
     } else {
       letterView.visibility = View.VISIBLE
@@ -165,6 +194,7 @@ class WordyFragment : BaseFragment() {
 
       getRandomWord()?.let { randomWord ->
         Log.d("WORDYYY", randomWord)
+        currentWord = randomWord
         deleteWord(randomWord)
         addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.PENDING, 0)
         currentWord = randomWord

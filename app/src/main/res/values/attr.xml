@@ -3,9 +3,12 @@
 
   <attr name="colorBackground" format="color" />
 
+  <attr name="colorLetterNoGuess" format="color" />
   <attr name="colorLetterMatch" format="color" />
   <attr name="colorLetterPresent" format="color" />
   <attr name="colorLetterNoMatch" format="color" />
+  <attr name="colorLetterBoarder" format="color" />
+  <attr name="colorLetterText" format="color" />
 
   <attr name="colorButtonSubmitForeground" format="color" />
   <attr name="colorButtonSubmitBackground" format="color" />

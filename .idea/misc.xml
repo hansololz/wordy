@@ -5,6 +5,10 @@
       <map>
         <entry key="app/src/main/res/drawable/ic_round_search_36.xml" value="0.2315" />
         <entry key="app/src/main/res/drawable/ic_round_skip_next_36.xml" value="0.294" />
+        <entry key="app/src/main/res/drawable/letter_background_match.xml" value="0.225" />
+        <entry key="app/src/main/res/drawable/letter_background_no_guess.xml" value="0.225" />
+        <entry key="app/src/main/res/drawable/letter_background_no_match.xml" value="0.225" />
+        <entry key="app/src/main/res/drawable/letter_background_no_present.xml" value="0.225" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3591485507246377" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.225" />
         <entry key="app/src/main/res/layout/fragment_wordy.xml" value="0.225" />

@@ -1,4 +1,121 @@
 package com.deezus.wordy.helpers
 
-class DialogHelpers {
+import android.app.AlertDialog
+import com.deezus.wordy.R
+import com.deezus.wordy.ui.MainActivity
+
+
+class DialogMessage {
+  private val activity: MainActivity
+  private val messageText: String?
+  private val messageId: Int?
+
+  private var title: String? = null
+  private var positiveMessage: String? = null
+  private var positiveCallback: (() -> Unit)? = null
+  private var negativeMessage: String? = null
+  private var negativeCallback: (() -> Unit)? = null
+  private var neutralMessage: String? = null
+  private var neutralCallback: (() -> Unit)? = null
+  private var onDismissCallback: (() -> Unit)? = null
+  private var isDismissable = true
+
+  constructor(activity: MainActivity, messageText: String) {
+    this.activity = activity
+    this.messageText = messageText
+    this.messageId = null
+  }
+
+  constructor(activity: MainActivity, messageId: Int) {
+    this.activity = activity
+    this.messageText = null
+    this.messageId = messageId
+  }
+
+  fun setIsDismissable(isDismissable: Boolean): DialogMessage {
+    this.isDismissable = isDismissable
+    return this
+  }
+
+  fun setTitle(title: String): DialogMessage {
+    this.title = title
+    return this
+  }
+
+  fun setPositiveCallback(message: String, callback: (() -> Unit)): DialogMessage {
+    positiveMessage = message
+    positiveCallback = callback
+    return this
+  }
+
+  fun setNegativeCallback(message: String, callback: (() -> Unit)): DialogMessage {
+    negativeMessage = message
+    negativeCallback = callback
+    return this
+  }
+
+  fun setNeutalCallback(message: String, callback: (() -> Unit)): DialogMessage {
+    neutralMessage = message
+    neutralCallback = callback
+    return this
+  }
+
+  fun setOnDismissCallback(callback: () -> Unit): DialogMessage {
+    onDismissCallback = callback
+    return this
+  }
+
+  fun show() {
+    val dialog = AlertDialog.Builder(activity)
+
+    this.title?.let { dialog.setTitle(it) }
+
+    given(positiveMessage, positiveCallback)?.thenLet { message, callback ->
+      dialog.setPositiveButton(message) { dialog, it ->
+        callback.invoke()
+      }
+    }
+
+    given(negativeMessage, negativeCallback)?.thenLet { message, callback ->
+      dialog.setNegativeButton(message) { dialog, it ->
+        callback.invoke()
+      }
+    }
+
+    given(neutralMessage, neutralCallback)?.thenLet { message, callback ->
+      dialog.setNeutralButton(message) { dialog, it ->
+        callback.invoke()
+      }
+    }
+
+    onDismissCallback?.let {
+      dialog.setOnDismissListener { it() }
+    }
+
+    if (!isDismissable) {
+      dialog.setCancelable(false)
+    }
+
+    val dialogView = when {
+      messageText != null -> dialog.setMessage(messageText).create()
+      messageId != null -> dialog.setMessage(messageId).create()
+      else -> null
+    }
+
+    dialogView?.let { view ->
+//      view.setOnShowListener {
+//        view.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(getColors(activity).accent)
+//        view.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(getColors(activity).accent)
+//        view.getButton(AlertDialog.BUTTON_NEUTRAL)?.setTextColor(getColors(activity).accent)
+//      }
+
+      if (!activity.isDestroyed) {
+        try {
+          view.show()
+        } catch (exception: Exception) {
+
+        }
+      }
+    }
+  }
 }

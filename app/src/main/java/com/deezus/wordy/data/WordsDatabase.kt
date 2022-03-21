@@ -14,9 +14,9 @@ data class WordEntry(
 
 enum class GuessOutcome { PENDING, SKIPPED, FAILED, SUCCEEDED }
 
-@Entity(primaryKeys = ["word"])
+@Entity(primaryKeys = ["guessedWord"])
 data class GuessedWordEntry(
-  @ColumnInfo(name = "word") var word: String,
+  @ColumnInfo(name = "guessedWord") var word: String,
   @ColumnInfo(name = "time") var time: Long,
   @ColumnInfo(name = "outcome") var outcome: GuessOutcome,
   @ColumnInfo(name = "scoreEarned") var scoreEarned: Long,
@@ -48,17 +48,20 @@ private interface WordEntryDao {
 @Dao
 private interface GuessedWordEntryDao {
 
-  @Query("DELETE FROM GuessedWordEntry WHERE word = :word")
+  @Query("DELETE FROM GuessedWordEntry WHERE guessedWord = :word")
   fun delete(word: String)
 
   @Query("SELECT * FROM GuessedWordEntry ORDER BY time")
   fun getAll(): List<GuessedWordEntry>
 
-  @Query("SELECT * FROM GuessedWordEntry WHERE word = :word LIMIT 1")
+  @Query("SELECT * FROM GuessedWordEntry WHERE guessedWord = :word LIMIT 1")
   fun getWord(word: String): List<GuessedWordEntry>
 
+  @Query("SELECT COUNT(guessedWord) FROM GuessedWordEntry")
+  fun getSize(): Int
+
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  fun insert(entry: GuessedWordEntry)
+  fun insertAll(entry: List<GuessedWordEntry>)
 }
 
 @Database(entities = [WordEntry::class], version = 1, exportSchema = false)
@@ -93,10 +96,6 @@ suspend fun initWordDatabase(activity: MainActivity) = withContext(Dispatchers.D
     }?.let {
       word5Database?.userDao()?.insertAll(it)
     }
-
-    Log.d("WORDYYYY", "WORD INIT")
-  } else {
-    Log.d("WORDYYYY", "SKIPPED INIT")
   }
 }
 
@@ -115,7 +114,7 @@ suspend fun hasWord(word: String): Boolean = withContext(Dispatchers.Default) {
 
 suspend fun addGuessedWord(word: String, time: Long, outcome: GuessOutcome, scoreEarned: Long) = withContext(Dispatchers.Default) {
   val entry = GuessedWordEntry(word, time, outcome, scoreEarned)
-  guessedWordDatabase?.userDao()?.insert(entry)
+  guessedWordDatabase?.userDao()?.insertAll(listOf(entry))
 }
 
 suspend fun getGuessedWord(word: String): GuessedWordEntry? = withContext(Dispatchers.Default) {
