@@ -153,6 +153,15 @@ class WordyFragment : BaseFragment() {
 
             letterViews[currentX][index].setBackgroundResource(letterBackgroundId)
             letterViews[currentX][index].setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorLetterTextGuessed, Color.WHITE))
+
+            val keyBackgroundId = when {
+              currentWord[index] == letter -> R.drawable.key_background_match
+              currentWord.contains(letter) -> R.drawable.key_background_present
+              else -> R.drawable.key_background_no_match
+            }
+
+            letterViews[currentX][index].setBackgroundResource(keyBackgroundId)
+            keyViews[letter]?.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.BLACK))
           }
 
           currentX++
@@ -171,7 +180,7 @@ class WordyFragment : BaseFragment() {
   }
 
   private fun setupKey(keyView: TextView, key: Char) {
-    keyViews[key] = keyView
+    keyViews[key.lowercaseChar()] = keyView
 
     keyView.setOnClickListener {
       if (currentY < currentWord.length && currentX < maxGuessCount && letterViews[currentX][currentY].text.isEmpty()) {
@@ -242,5 +251,20 @@ class WordyFragment : BaseFragment() {
 
     return wordBuilder.toString().lowercase()
   }
+
+//  private fun updateKeyboardColor() {
+//    val guessedWord = getGuessedWord()
+//
+//    guessedLetters.forEach {
+//      when {
+//        guessedWord[].contains(it) -> {
+//
+//        }
+//        currentWord.contains(it) -> {
+//
+//        }
+//      }
+//    }
+//  }
 
 }
