@@ -185,6 +185,8 @@ class WordyFragment : BaseFragment() {
           }
 
           currentX++
+          canSubmit = false
+          binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_disabled)
 
           if (currentX == maxGuessCount) {
             scope.launch {
@@ -211,6 +213,8 @@ class WordyFragment : BaseFragment() {
 
   private fun setupKey(keyView: TextView, key: Char) {
     keyViews[key.lowercaseChar()] = keyView
+
+    keyView.text = key.uppercaseChar().toString()
 
     keyView.setOnClickListener {
       if (currentY < currentWord.length && currentX < maxGuessCount && letterViews[currentX][currentY].text.isEmpty()) {
@@ -279,14 +283,17 @@ class WordyFragment : BaseFragment() {
       scope.launch {
         binding.submitButton.text = if (!hasWord(getGuessedWord())) {
           canSubmit = false
-          "Not A\nWord"
+          binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_disabled)
+          "Not a Word"
         } else {
           canSubmit = true
+          binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_enabled)
           "Submit"
         }
       }
     } else {
       canSubmit = false
+      binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_disabled)
       binding.submitButton.text = "Submit"
     }
   }

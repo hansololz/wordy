@@ -4,6 +4,7 @@
   <dimen name="board_padding">36dp</dimen>
 
   <dimen name="spacing">16dp</dimen>
+  <dimen name="spacing_half">8dp</dimen>
 
   <dimen name="keyboard_text_size">16sp</dimen>
   <dimen name="submit_text_size">20sp</dimen>

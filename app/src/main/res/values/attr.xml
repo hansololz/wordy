@@ -19,7 +19,13 @@
   <attr name="colorLetterTextGuessed" format="color" />
   <attr name="colorLetterText" format="color" />
 
+  <attr name="colorButtonForeground" format="color" />
+  <attr name="colorSkipNextButtonBackground" format="color" />
+  <attr name="colorGetHintButtonBackground" format="color" />
+
   <attr name="colorButtonSubmitForeground" format="color" />
-  <attr name="colorButtonSubmitBackground" format="color" />
+
+  <attr name="colorButtonSubmitEnabledBackground" format="color" />
+  <attr name="colorButtonSubmitDisabledBackground" format="color" />
 
 </resources>

@@ -6,10 +6,8 @@
     android:top="@dimen/button_padding"
     android:bottom="@dimen/button_padding">
     <shape>
-      <solid android:color="?colorKeyMatch"/>
-      <stroke android:width="@dimen/letter_boarder_size"
-        android:color="?colorKeyMatch" />
-      <corners android:radius="@dimen/letter_boarder_radius" />
+      <solid android:color="?colorButtonSubmitEnabledBackground"/>
+      <corners android:radius="@dimen/button_boarder_radius" />
     </shape>
   </item>
 </layer-list>
