@@ -160,7 +160,7 @@ class WordyFragment : BaseFragment() {
                 setupGame()
               }
               .show()
-          } else if (currentX == maxGuessCount) {
+          } else if (currentX + 1 == maxGuessCount) {
             scope.launch {
               addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.FAILED, 0)
             }
