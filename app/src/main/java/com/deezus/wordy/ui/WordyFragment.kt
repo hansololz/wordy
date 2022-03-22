@@ -131,75 +131,36 @@ class WordyFragment : BaseFragment() {
     }
 
     binding.submitButton.setOnClickListener {
-      if (currentY == currentWord.length && canSubmit) {
-        val guessedWord = getGuessedWord()
+      val guessedWord = getGuessedWord()
 
-        if (currentWord == guessedWord) {
-          val newScore = min(maxGuessCount, max(maxGuessCount - currentX, 0)).toLong()
-          val settings = Settings(getMainActivity())
+      scope.launch {
+        if (currentY == currentWord.length && hasWord(guessedWord)) {
+          if (currentWord == guessedWord) {
+            val newScore = min(maxGuessCount, max(maxGuessCount - currentX, 0)).toLong()
+            val settings = Settings(getMainActivity())
 
-          settings.setScore(settings.getScore() + newScore)
-          updateScore()
+            settings.setScore(settings.getScore() + newScore)
+            updateScore()
 
-          scope.launch {
-            addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.SUCCEEDED, newScore)
-          }
-
-          val scoreMessage = if (newScore > 1) {
-            "$newScore points"
-          } else {
-            "$newScore point"
-          }
-
-          DialogMessage(getMainActivity(), "Congrats, you guessed the mystery word and earned $scoreMessage.")
-            .setOnDismissCallback {
-              setupGame()
-            }
-            .setPositiveCallback("Play Again") {
-              setupGame()
-            }
-            .show()
-        } else {
-          guessedWord.forEachIndexed { index, letter ->
-            when {
-              currentWord[index] == letter -> {
-                matchedLetters.add(letter)
-                letterViews[currentX][index].setBackgroundResource(R.drawable.letter_background_match)
-                letterViews[currentX][index].setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorLetterTextGuessed, Color.WHITE))
-              }
-              currentWord.contains(letter) -> {
-                presentLetters.add(letter)
-                letterViews[currentX][index].setBackgroundResource(R.drawable.letter_background_present)
-                letterViews[currentX][index].setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorLetterTextGuessed, Color.WHITE))
-              }
-              else -> {
-                noMatchLetters.add(letter)
-                letterViews[currentX][index].setBackgroundResource(R.drawable.letter_background_no_match)
-                letterViews[currentX][index].setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorLetterTextGuessed, Color.WHITE))
-              }
+            scope.launch {
+              addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.SUCCEEDED, newScore)
             }
 
-            when {
-              matchedLetters.contains(letter) -> {
-                keyViews[letter]?.setBackgroundResource(R.drawable.key_background_match)
-                keyViews[letter]?.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.BLACK))
-              }
-              presentLetters.contains(letter) -> {
-                keyViews[letter]?.setBackgroundResource(R.drawable.key_background_present)
-                keyViews[letter]?.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.BLACK))
-              }
-              noMatchLetters.contains(letter) -> {
-                keyViews[letter]?.setBackgroundResource(R.drawable.key_background_no_match)
-                keyViews[letter]?.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.BLACK))
-              }
+            val scoreMessage = if (newScore > 1) {
+              "$newScore points"
+            } else {
+              "$newScore point"
             }
-          }
 
-          currentX++
-          canSubmit = false
-          binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_disabled)
-
-          if (currentX == maxGuessCount) {
+            DialogMessage(getMainActivity(), "Congrats, you guessed the mystery word and earned $scoreMessage.")
+              .setOnDismissCallback {
+                setupGame()
+              }
+              .setPositiveCallback("Play Again") {
+                setupGame()
+              }
+              .show()
+          } else if (currentX == maxGuessCount) {
             scope.launch {
               addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.FAILED, 0)
             }
@@ -213,8 +174,12 @@ class WordyFragment : BaseFragment() {
               }
               .show()
           } else {
+            currentX++
             currentY = 0
-            letterViews[currentX][currentY].setBackgroundResource(R.drawable.letter_background_no_guess_and_focus)
+
+            updateLetters()
+            updateKeys()
+            updateSubmitButton()
           }
         }
       }
@@ -276,29 +241,21 @@ class WordyFragment : BaseFragment() {
   }
 
   private fun setupGame() {
-    updateScore()
-
     currentX = 0
     currentY = 0
 
-    noMatchLetters.clear()
-    matchedLetters.clear()
-    presentLetters.clear()
-
-    letterViews.forEach { array ->
-      array.forEach {
-        it.setBackgroundResource(R.drawable.letter_background_no_guess)
-        it.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorLetterText, Color.BLACK))
+    letterViews.forEach { row ->
+      row.forEach {
         it.text = ""
       }
     }
 
     letterViews[currentX][currentY].setBackgroundResource(R.drawable.letter_background_no_guess_and_focus)
 
-    keyViews.values.forEach {
-      it.setBackgroundResource(R.drawable.key_background_no_guess)
-      it.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyText, Color.WHITE))
-    }
+    updateScore()
+    updateLetters()
+    updateKeys()
+    updateSubmitButton()
 
     scope.launch {
       initWordDatabase(getMainActivity())
@@ -343,33 +300,78 @@ class WordyFragment : BaseFragment() {
     return wordBuilder.toString().lowercase()
   }
 
+  private fun updateKeys() {
+    val matchedLetters = hashSetOf<Char>()
+    val presentLetters = hashSetOf<Char>()
+    val noMatchLetters = hashSetOf<Char>()
+
+    letterViews.forEachIndexed { x, row ->
+      row.forEachIndexed { y, letter ->
+        letter.text.firstOrNull()?.lowercaseChar()?.let { char ->
+          when {
+            currentWord[y] == char -> matchedLetters.add(char)
+            currentWord.contains(char) -> presentLetters.add(char)
+            else -> noMatchLetters.add(char)
+          }
+        }
+      }
+    }
+
+    keyViews.forEach {
+      val char = it.key
+      val keyView = it.value
+
+      when {
+        matchedLetters.contains(char) -> {
+          keyView.setBackgroundResource(R.drawable.key_background_match)
+          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE))
+        }
+        presentLetters.contains(char) -> {
+          keyView.setBackgroundResource(R.drawable.key_background_present)
+          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE))
+        }
+        noMatchLetters.contains(char) -> {
+          keyView.setBackgroundResource(R.drawable.key_background_no_match)
+          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE))
+        }
+        else -> {
+          keyView.setBackgroundResource(R.drawable.key_background_no_guess)
+          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyText, Color.BLACK))
+        }
+      }
+    }
+  }
+
   private fun updateLetters() {
     letterViews.forEachIndexed { x, word -> 
       word.forEachIndexed { y, letter ->
         when {
           x < currentX -> {
-            val char = letter.text.firstOrNull()
+            val char = letter.text.firstOrNull()?.lowercaseChar()
 
             val letterBackgroundRes = when {
               char == null -> R.drawable.letter_background_no_guess
-              currentWord[x] == char -> R.drawable.letter_background_match
+              currentWord[y] == char -> R.drawable.letter_background_match
               currentWord.contains(char) -> R.drawable.letter_background_present
               else -> R.drawable.letter_background_no_match
             }
 
             letter.setBackgroundResource(letterBackgroundRes)
+            letter.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorLetterTextGuessed, Color.WHITE))
           }
           x == currentX -> {
-            val letterBackgroundRes = if (x == currentX && y ==currentY) {
+            val letterBackgroundRes = if (x == currentX && y == currentY) {
               R.drawable.letter_background_no_guess_and_focus
             } else {
               R.drawable.letter_background_no_guess
             }
 
             letter.setBackgroundResource(letterBackgroundRes)
+            letter.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorLetterText, Color.BLACK))
           }
           else -> {
             letter.setBackgroundResource(R.drawable.letter_background_no_guess)
+            letter.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorLetterText, Color.BLACK))
           }
         }
       }
