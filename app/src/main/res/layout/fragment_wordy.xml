@@ -451,7 +451,7 @@
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintWidth_percent="0.7">
+      app:layout_constraintWidth_percent="0.8">
 
       <TextView
         style="@style/keyboard_button"
@@ -500,7 +500,15 @@
         android:id="@+id/key_m"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/key_n"
-        app:layout_constraintEnd_toEndOf="parent "/>
+        app:layout_constraintEnd_toStartOf="@id/key_blank"/>
+
+      <TextView
+        android:id="@+id/key_blank"
+        style="@style/keyboard_button"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/key_m"
+        app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -513,11 +521,11 @@
       android:contentDescription="Backspace"
       android:textColor="?colorButtonSubmitForeground"
       android:padding="@dimen/spacing"
+      app:layout_constraintWidth_percent="0.2"
       app:tint="?colorKeyText"
       app:layout_constraintTop_toTopOf="@id/bottom_keyboard_row"
       app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toEndOf="@id/bottom_keyboard_row"/>
+      app:layout_constraintEnd_toEndOf="parent" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
