@@ -12,7 +12,7 @@ data class WordEntry(
   @ColumnInfo(name = "word") var word: String
 )
 
-enum class GuessOutcome { PENDING, SKIPPED, FAILED, SUCCEEDED }
+enum class GuessOutcome { NOT_COMPLETED, FAILED, SUCCEEDED }
 
 @Entity(primaryKeys = ["guessedWord"])
 data class GuessedWordEntry(

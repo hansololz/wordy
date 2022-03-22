@@ -209,6 +209,24 @@ class WordyFragment : BaseFragment() {
       }
     }
 
+    binding.skipNext.setOnClickListener {
+      DialogMessage(getMainActivity(), "Are you sure you want to skip to the next word?")
+        .setPositiveCallback("Yes") {
+          val oldWord = currentWord
+
+          setupGame()
+
+          DialogMessage(getMainActivity(), "The mystery word was \"$oldWord\".")
+            .setPositiveCallback("Ok") {
+
+            }
+            .show()
+        }
+        .setNegativeCallback("No") {
+
+        }
+        .show()
+    }
   }
 
   private fun setupKey(keyView: TextView, key: Char) {
@@ -276,7 +294,7 @@ class WordyFragment : BaseFragment() {
         Log.d("WORDYYY", randomWord)
         currentWord = randomWord
         deleteWord(randomWord)
-        addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.PENDING, 0)
+        addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.NOT_COMPLETED, 0)
         currentWord = randomWord
       }
     }
