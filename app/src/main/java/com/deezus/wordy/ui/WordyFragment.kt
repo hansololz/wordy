@@ -11,6 +11,7 @@ import com.deezus.wordy.*
 import com.deezus.wordy.data.Settings
 import com.deezus.wordy.databinding.FragmentWordyBinding
 import com.deezus.wordy.helpers.DialogMessage
+import com.deezus.wordy.helpers.showSnackBar
 import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.launch
 import kotlin.math.max
@@ -27,14 +28,10 @@ class WordyFragment : BaseFragment() {
   private var currentY = 0
   private val keyViews = hashMapOf<Char, TextView>()
   private var currentWord = "nomad"
-  private val noMatchLetters = hashSetOf<Char>()
-  private val presentLetters = hashSetOf<Char>()
-  private val matchedLetters = hashSetOf<Char>()
   private val maxGuessCount = 6
-  private var canSubmit = false
 
-  
-
+  private var hasAskedForHint = false
+  private var hintedLetters = hashSetOf<Char>()
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -203,6 +200,24 @@ class WordyFragment : BaseFragment() {
         }
         .show()
     }
+
+    binding.showHint.setOnClickListener {
+      val unusedLetters = getUnusedLetter()
+
+      Log.d("WORDYY", hintedLetters.toString())
+
+      hasAskedForHint = true
+
+      if (unusedLetters.isEmpty()) {
+        showSnackBar(getMainActivity(), "No more hints available.")
+      } else {
+        val hintedLetter = unusedLetters.toList().toList().shuffled().first()
+        hintedLetters.add(hintedLetter)
+      }
+
+      updateHintButton()
+      updateKeys()
+    }
   }
 
   private fun setupKey(keyView: TextView, key: Char) {
@@ -274,17 +289,14 @@ class WordyFragment : BaseFragment() {
     if (currentY >= currentWord.length) {
       scope.launch {
         binding.submitButton.text = if (!hasWord(getGuessedWord())) {
-          canSubmit = false
           binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_disabled)
           "Not a Word"
         } else {
-          canSubmit = true
           binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_enabled)
           "Submit"
         }
       }
     } else {
-      canSubmit = false
       binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_disabled)
       binding.submitButton.text = "Submit"
     }
@@ -306,12 +318,14 @@ class WordyFragment : BaseFragment() {
     val noMatchLetters = hashSetOf<Char>()
 
     letterViews.forEachIndexed { x, row ->
-      row.forEachIndexed { y, letter ->
-        letter.text.firstOrNull()?.lowercaseChar()?.let { char ->
-          when {
-            currentWord[y] == char -> matchedLetters.add(char)
-            currentWord.contains(char) -> presentLetters.add(char)
-            else -> noMatchLetters.add(char)
+      if (x < currentX) {
+        row.forEachIndexed { y, letter ->
+          letter.text.firstOrNull()?.lowercaseChar()?.let { char ->
+            when {
+              currentWord[y] == char -> matchedLetters.add(char)
+              currentWord.contains(char) -> presentLetters.add(char)
+              else -> noMatchLetters.add(char)
+            }
           }
         }
       }
@@ -330,7 +344,7 @@ class WordyFragment : BaseFragment() {
           keyView.setBackgroundResource(R.drawable.key_background_present)
           keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE))
         }
-        noMatchLetters.contains(char) -> {
+        noMatchLetters.contains(char) || hintedLetters.contains(char) -> {
           keyView.setBackgroundResource(R.drawable.key_background_no_match)
           keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE))
         }
@@ -380,5 +394,36 @@ class WordyFragment : BaseFragment() {
   
   private fun updateScore() {
     binding.scoreMessage.text = "Score\n${Settings(getMainActivity()).getScore()}"
+  }
+
+  private fun updateHintButton() {
+    when {
+      !hasAskedForHint -> {
+        binding.showHint.setBackgroundResource(R.drawable.button_background_get_hint)
+      }
+      getUnusedLetter().isNotEmpty() -> {
+        binding.showHint.setBackgroundResource(R.drawable.button_background_get_hint)
+      }
+      else -> {
+        binding.showHint.setBackgroundResource(R.drawable.button_background_get_hint_unavailable)
+      }
+    }
+  }
+
+  private fun getUnusedLetter(): Set<Char> {
+    val usedLetter = hashSetOf<Char>()
+
+    letterViews.forEachIndexed { x, row ->
+      row.forEachIndexed { y, letter ->
+        letter.text.firstOrNull()?.lowercaseChar()?.let { char ->
+          usedLetter.add(char)
+        }
+      }
+    }
+
+    return keyViews.filter { !usedLetter.contains(it.key) }
+      .filter { !currentWord.contains(it.key) }
+      .filter { !hintedLetters.contains(it.key) }
+      .keys
   }
 }

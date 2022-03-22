@@ -22,6 +22,7 @@
   <attr name="colorButtonForeground" format="color" />
   <attr name="colorSkipNextButtonBackground" format="color" />
   <attr name="colorGetHintButtonBackground" format="color" />
+  <attr name="colorGetHintUnavailableButtonBackground" format="color"/>
 
   <attr name="colorButtonSubmitForeground" format="color" />
 

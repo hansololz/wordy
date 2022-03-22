@@ -31,6 +31,7 @@
     <item name="colorButtonForeground">#FFFFFFFF</item>
     <item name="colorSkipNextButtonBackground">#FFFFA500</item>
     <item name="colorGetHintButtonBackground">#FF4DB4B7</item>
+    <item name="colorGetHintUnavailableButtonBackground">#FF808080</item>
 
     <item name="colorButtonSubmitForeground">#F0F0F0</item>
     <item name="colorButtonSubmitEnabledBackground">#FF73A659</item>

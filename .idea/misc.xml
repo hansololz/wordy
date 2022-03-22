@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/drawable/button_background.xml" value="0.237" />
         <entry key="app/src/main/res/drawable/button_background_get_hint.xml" value="0.229" />
+        <entry key="app/src/main/res/drawable/button_background_get_hint_unavaliable.xml" value="0.237" />
         <entry key="app/src/main/res/drawable/button_background_no_submit.xml" value="0.229" />
         <entry key="app/src/main/res/drawable/button_background_skip_next.xml" value="0.229" />
         <entry key="app/src/main/res/drawable/button_background_submit_enabled.xml" value="0.23" />
