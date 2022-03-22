@@ -250,6 +250,10 @@ class WordyFragment : BaseFragment() {
     currentX = 0
     currentY = 0
 
+    noMatchLetters.clear()
+    matchedLetters.clear()
+    presentLetters.clear()
+
     letterViews.forEach { array ->
       array.forEach {
         it.setBackgroundResource(R.drawable.letter_background_no_guess)
