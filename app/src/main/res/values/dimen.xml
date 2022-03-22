@@ -10,12 +10,12 @@
   <dimen name="submit_text_size">20sp</dimen>
   <dimen name="score_text_size">28sp</dimen>
 
-  <dimen name="letter_padding">2dp</dimen>
+  <dimen name="letter_padding">3dp</dimen>
   <dimen name="letter_text_size">24sp</dimen>
   <dimen name="letter_boarder_radius">8dp</dimen>
   <dimen name="letter_boarder_size">3dp</dimen>
 
   <dimen name="button_boarder_radius">8dp</dimen>
-  <dimen name="button_padding">6dp</dimen>
+  <dimen name="button_padding">0dp</dimen>
 
 </resources>

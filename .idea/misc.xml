@@ -7,6 +7,8 @@
         <entry key="app/src/main/res/drawable/button_background_get_hint.xml" value="0.229" />
         <entry key="app/src/main/res/drawable/button_background_no_submit.xml" value="0.229" />
         <entry key="app/src/main/res/drawable/button_background_skip_next.xml" value="0.229" />
+        <entry key="app/src/main/res/drawable/button_background_submit_enabled.xml" value="0.23" />
+        <entry key="app/src/main/res/drawable/ic_round_search_24.xml" value="0.237" />
         <entry key="app/src/main/res/drawable/ic_round_search_36.xml" value="0.2315" />
         <entry key="app/src/main/res/drawable/ic_round_skip_next_36.xml" value="0.294" />
         <entry key="app/src/main/res/drawable/key_background_match.xml" value="0.237" />

@@ -534,7 +534,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_constraintBottom_toBottomOf="parent"
-    android:padding="@dimen/spacing">
+    android:paddingTop="@dimen/spacing">
 
     <ImageView
       android:id="@+id/show_hint"
@@ -549,6 +549,23 @@
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"/>
 
+    <TextView
+      android:id="@+id/submit_button"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:background="@drawable/button_background_submit_disabled"
+      android:gravity="center"
+      android:text="Submit"
+      android:textColor="?colorButtonSubmitForeground"
+      android:textSize="@dimen/submit_text_size"
+      android:textStyle="bold"
+      android:layout_marginStart="@dimen/spacing"
+      android:layout_marginEnd="@dimen/spacing"
+      app:layout_constraintBottom_toBottomOf="@id/show_hint"
+      app:layout_constraintEnd_toStartOf="@id/skip_next"
+      app:layout_constraintStart_toEndOf="@id/show_hint"
+      app:layout_constraintTop_toTopOf="@id/show_hint" />
+
     <ImageView
       android:id="@+id/skip_next"
       android:layout_width="wrap_content"
@@ -561,21 +578,6 @@
       app:tint="?colorButtonForeground"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-      android:id="@+id/submit_button"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      android:background="@drawable/button_background_submit_disabled"
-      android:gravity="center"
-      android:text="Submit"
-      android:textColor="?colorButtonSubmitForeground"
-      android:textSize="@dimen/submit_text_size"
-      android:textStyle="bold"
-      app:layout_constraintBottom_toBottomOf="@id/show_hint"
-      app:layout_constraintEnd_toStartOf="@id/skip_next"
-      app:layout_constraintStart_toEndOf="@id/show_hint"
-      app:layout_constraintTop_toTopOf="@id/show_hint" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
