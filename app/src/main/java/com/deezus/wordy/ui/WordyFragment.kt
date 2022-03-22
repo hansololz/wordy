@@ -33,7 +33,8 @@ class WordyFragment : BaseFragment() {
   private val maxGuessCount = 6
   private var canSubmit = false
 
-//  private var settings = Settings(getMainActivity())
+  
+
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -124,14 +125,9 @@ class WordyFragment : BaseFragment() {
       if (currentY > 0) {
         currentY--
         letterViews[currentX][currentY].text = ""
-        letterViews[currentX][currentY].setBackgroundResource(R.drawable.letter_background_no_guess_and_focus)
-
-        if (currentY + 1 < currentWord.length) {
-          letterViews[currentX][currentY + 1].setBackgroundResource(R.drawable.letter_background_no_guess)
-        }
+        updateLetters()
+        updateSubmitButton()
       }
-
-      updateButton()
     }
 
     binding.submitButton.setOnClickListener {
@@ -261,7 +257,7 @@ class WordyFragment : BaseFragment() {
         letterViews[currentX][currentY].setBackgroundResource(R.drawable.letter_background_no_guess_and_focus)
       }
 
-      updateButton()
+      updateSubmitButton()
     }
   }
 
@@ -317,7 +313,7 @@ class WordyFragment : BaseFragment() {
     }
   }
 
-  private fun updateButton() {
+  private fun updateSubmitButton() {
     if (currentY >= currentWord.length) {
       scope.launch {
         binding.submitButton.text = if (!hasWord(getGuessedWord())) {
@@ -347,6 +343,39 @@ class WordyFragment : BaseFragment() {
     return wordBuilder.toString().lowercase()
   }
 
+  private fun updateLetters() {
+    letterViews.forEachIndexed { x, word -> 
+      word.forEachIndexed { y, letter ->
+        when {
+          x < currentX -> {
+            val char = letter.text.firstOrNull()
+
+            val letterBackgroundRes = when {
+              char == null -> R.drawable.letter_background_no_guess
+              currentWord[x] == char -> R.drawable.letter_background_match
+              currentWord.contains(char) -> R.drawable.letter_background_present
+              else -> R.drawable.letter_background_no_match
+            }
+
+            letter.setBackgroundResource(letterBackgroundRes)
+          }
+          x == currentX -> {
+            val letterBackgroundRes = if (x == currentX && y ==currentY) {
+              R.drawable.letter_background_no_guess_and_focus
+            } else {
+              R.drawable.letter_background_no_guess
+            }
+
+            letter.setBackgroundResource(letterBackgroundRes)
+          }
+          else -> {
+            letter.setBackgroundResource(R.drawable.letter_background_no_guess)
+          }
+        }
+      }
+    }
+  }
+  
   private fun updateScore() {
     binding.scoreMessage.text = "Score\n${Settings(getMainActivity()).getScore()}"
   }
