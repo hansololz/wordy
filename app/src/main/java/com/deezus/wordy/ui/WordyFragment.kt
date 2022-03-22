@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.deezus.wordy.*
+import com.deezus.wordy.data.Settings
 import com.deezus.wordy.databinding.FragmentWordyBinding
 import com.deezus.wordy.helpers.DialogMessage
 import com.google.android.material.color.MaterialColors
@@ -31,6 +32,8 @@ class WordyFragment : BaseFragment() {
   private val matchedLetters = hashSetOf<Char>()
   private val maxGuessCount = 6
   private var canSubmit = false
+
+//  private var settings = Settings(getMainActivity())
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -136,11 +139,23 @@ class WordyFragment : BaseFragment() {
         val guessedWord = getGuessedWord()
 
         if (currentWord == guessedWord) {
+          val newScore = min(maxGuessCount, max(maxGuessCount - currentX, 0)).toLong()
+          val settings = Settings(getMainActivity())
+
+          settings.setScore(settings.getScore() + newScore)
+          updateScore()
+
           scope.launch {
-            addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.SUCCEEDED, min(maxGuessCount, max(maxGuessCount - currentX, 0)).toLong())
+            addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.SUCCEEDED, newScore)
           }
 
-          DialogMessage(getMainActivity(), "Congrats, you guessed the word.")
+          val scoreMessage = if (newScore > 1) {
+            "$newScore points"
+          } else {
+            "$newScore point"
+          }
+
+          DialogMessage(getMainActivity(), "Congrats, you guessed the mystery word and earned $scoreMessage.")
             .setOnDismissCallback {
               setupGame()
             }
@@ -265,6 +280,8 @@ class WordyFragment : BaseFragment() {
   }
 
   private fun setupGame() {
+    updateScore()
+
     currentX = 0
     currentY = 0
 
@@ -328,5 +345,9 @@ class WordyFragment : BaseFragment() {
     }
 
     return wordBuilder.toString().lowercase()
+  }
+
+  private fun updateScore() {
+    binding.scoreMessage.text = "Score\n${Settings(getMainActivity()).getScore()}"
   }
 }
