@@ -131,7 +131,9 @@ class WordyFragment : BaseFragment() {
       val guessedWord = getGuessedWord()
 
       scope.launch {
-        if (currentY == currentWord.length && hasWord(guessedWord)) {
+        if (currentY < currentWord.length) {
+          showSnackBar(getMainActivity(), "Please enter a 5 letter word before guessing.")
+        } else if (hasWord(guessedWord)) {
           if (currentWord == guessedWord) {
             val newScore = min(maxGuessCount, max(maxGuessCount - currentX, 0)).toLong()
             val settings = Settings(getMainActivity())
@@ -140,7 +142,7 @@ class WordyFragment : BaseFragment() {
             updateScore()
 
             scope.launch {
-              addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.SUCCEEDED, newScore)
+              addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.SUCCEEDED, newScore, hasAskedForHint)
             }
 
             val scoreMessage = if (newScore > 1) {
@@ -159,7 +161,7 @@ class WordyFragment : BaseFragment() {
               .show()
           } else if (currentX + 1 == maxGuessCount) {
             scope.launch {
-              addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.FAILED, 0)
+              addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.FAILED, 0, hasAskedForHint)
             }
 
             DialogMessage(getMainActivity(), "Sorry, the word was \"$currentWord\"")
@@ -204,12 +206,10 @@ class WordyFragment : BaseFragment() {
     binding.showHint.setOnClickListener {
       val unusedLetters = getUnusedLetter()
 
-      Log.d("WORDYY", hintedLetters.toString())
-
       hasAskedForHint = true
 
       if (unusedLetters.isEmpty()) {
-        showSnackBar(getMainActivity(), "No more hints available.")
+        showSnackBar(getMainActivity(), "No more hint available.")
       } else {
         val hintedLetter = unusedLetters.toList().toList().shuffled().first()
         hintedLetters.add(hintedLetter)
@@ -276,11 +276,9 @@ class WordyFragment : BaseFragment() {
       initWordDatabase(getMainActivity())
 
       getRandomWord()?.let { randomWord ->
-        Log.d("WORDYYY", randomWord)
         currentWord = randomWord
         deleteWord(randomWord)
-        addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.NOT_COMPLETED, 0)
-        currentWord = randomWord
+        addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.NOT_COMPLETED, 0, hasAskedForHint)
       }
     }
   }

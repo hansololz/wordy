@@ -20,6 +20,7 @@ data class GuessedWordEntry(
   @ColumnInfo(name = "time") var time: Long,
   @ColumnInfo(name = "outcome") var outcome: GuessOutcome,
   @ColumnInfo(name = "scoreEarned") var scoreEarned: Long,
+  @ColumnInfo(name = "hinted") var hinted: Boolean
 )
 
 @Dao
@@ -88,8 +89,6 @@ suspend fun initWordDatabase(activity: MainActivity) = withContext(Dispatchers.D
 
   val availableWordsCount = word5Database?.userDao()?.getSize()
 
-  Log.d("WORDYYYY", "WORD COUNT $availableWordsCount")
-
   if (availableWordsCount != null && availableWordsCount == 0) {
     getWords(activity)?.map {
       WordEntry(it)
@@ -112,8 +111,8 @@ suspend fun hasWord(word: String): Boolean = withContext(Dispatchers.Default) {
       guessedWordDatabase?.userDao()?.getWord(word)?.firstOrNull() != null
 }
 
-suspend fun addGuessedWord(word: String, time: Long, outcome: GuessOutcome, scoreEarned: Long) = withContext(Dispatchers.Default) {
-  val entry = GuessedWordEntry(word, time, outcome, scoreEarned)
+suspend fun addGuessedWord(word: String, time: Long, outcome: GuessOutcome, scoreEarned: Long, hinted: Boolean) = withContext(Dispatchers.Default) {
+  val entry = GuessedWordEntry(word, time, outcome, scoreEarned, hinted)
   guessedWordDatabase?.userDao()?.insertAll(listOf(entry))
 }
 
