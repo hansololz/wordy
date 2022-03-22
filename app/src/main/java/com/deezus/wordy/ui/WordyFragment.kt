@@ -151,7 +151,7 @@ class WordyFragment : BaseFragment() {
               "$newScore point"
             }
 
-            DialogMessage(getMainActivity(), "Congrats, you guessed the mystery word and earned $scoreMessage.")
+            DialogMessage(getMainActivity(), "Congrats, you guessed the mystery word \"$currentWord\" and earned $scoreMessage.")
               .setOnDismissCallback {
                 setupGame()
               }
@@ -270,6 +270,7 @@ class WordyFragment : BaseFragment() {
     updateScore()
     updateLetters()
     updateKeys()
+    updateHintButton()
     updateSubmitButton()
 
     scope.launch {
