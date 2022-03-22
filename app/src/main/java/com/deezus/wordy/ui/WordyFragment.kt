@@ -265,7 +265,7 @@ class WordyFragment : BaseFragment() {
       }
     }
 
-    letterViews[currentX][currentY].setBackgroundResource(R.drawable.letter_background_no_guess_and_focus)
+    hintedLetters.clear()
 
     updateScore()
     updateLetters()
