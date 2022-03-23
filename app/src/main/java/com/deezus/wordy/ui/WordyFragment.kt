@@ -164,7 +164,7 @@ class WordyFragment : BaseFragment() {
               addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.FAILED, 0, hasAskedForHint)
             }
 
-            DialogMessage(getMainActivity(), "Sorry, the word was \"$currentWord\"")
+            DialogMessage(getMainActivity(), "Sorry, the mystery word was \"$currentWord\"")
               .setOnDismissCallback {
                 setupGame()
               }
@@ -292,12 +292,12 @@ class WordyFragment : BaseFragment() {
           "Not a Word"
         } else {
           binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_enabled)
-          "Submit"
+          "Guess"
         }
       }
     } else {
       binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_disabled)
-      binding.submitButton.text = "Submit"
+      binding.submitButton.text = "Enter 5 letters"
     }
   }
 
@@ -413,9 +413,11 @@ class WordyFragment : BaseFragment() {
     val usedLetter = hashSetOf<Char>()
 
     letterViews.forEachIndexed { x, row ->
-      row.forEachIndexed { y, letter ->
-        letter.text.firstOrNull()?.lowercaseChar()?.let { char ->
-          usedLetter.add(char)
+      if (x < currentX) {
+        row.forEachIndexed { y, letter ->
+          letter.text.firstOrNull()?.lowercaseChar()?.let { char ->
+            usedLetter.add(char)
+          }
         }
       }
     }
