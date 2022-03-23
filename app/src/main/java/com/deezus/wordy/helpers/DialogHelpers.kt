@@ -1,8 +1,10 @@
 package com.deezus.wordy.helpers
 
 import android.app.AlertDialog
+import android.graphics.Color
 import com.deezus.wordy.R
 import com.deezus.wordy.ui.MainActivity
+import com.google.android.material.color.MaterialColors
 
 
 class DialogMessage {
@@ -66,56 +68,55 @@ class DialogMessage {
   }
 
   fun show() {
-    val dialog = AlertDialog.Builder(activity)
+    val dialogBuilder = AlertDialog.Builder(activity)
 
-    this.title?.let { dialog.setTitle(it) }
+    this.title?.let { dialogBuilder.setTitle(it) }
 
     given(positiveMessage, positiveCallback)?.thenLet { message, callback ->
-      dialog.setPositiveButton(message) { dialog, it ->
+      dialogBuilder.setPositiveButton(message) { dialog, it ->
         callback.invoke()
       }
     }
 
     given(negativeMessage, negativeCallback)?.thenLet { message, callback ->
-      dialog.setNegativeButton(message) { dialog, it ->
+      dialogBuilder.setNegativeButton(message) { dialog, it ->
         callback.invoke()
       }
     }
 
     given(neutralMessage, neutralCallback)?.thenLet { message, callback ->
-      dialog.setNeutralButton(message) { dialog, it ->
+      dialogBuilder.setNeutralButton(message) { dialog, it ->
         callback.invoke()
       }
     }
 
     onDismissCallback?.let {
-      dialog.setOnDismissListener { it() }
+      dialogBuilder.setOnDismissListener { it() }
     }
 
     if (!isDismissable) {
-      dialog.setCancelable(false)
+      dialogBuilder.setCancelable(false)
     }
 
-    val dialogView = when {
-      messageText != null -> dialog.setMessage(messageText).create()
-      messageId != null -> dialog.setMessage(messageId).create()
-      else -> null
+    if (messageText != null) {
+      dialogBuilder.setMessage(messageText)
     }
 
-    dialogView?.let { view ->
-//      view.setOnShowListener {
-//        view.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(getColors(activity).accent)
-//        view.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(getColors(activity).accent)
-//        view.getButton(AlertDialog.BUTTON_NEUTRAL)?.setTextColor(getColors(activity).accent)
-//      }
+    val dialog = dialogBuilder.create()
 
-      if (!activity.isDestroyed) {
-        try {
-          view.show()
-        } catch (exception: Exception) {
+    try {
+      dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
 
-        }
+      dialog.setOnShowListener {
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+          ?.setTextColor(MaterialColors.getColor(activity, R.attr.colorDialogButton, Color.BLACK))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+          ?.setTextColor(MaterialColors.getColor(activity, R.attr.colorDialogButton, Color.BLACK))
       }
+
+      dialog.show()
+    } catch (exception: Exception) {
+
     }
   }
 }

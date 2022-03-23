@@ -2,9 +2,9 @@
 
   <style name="Theme.Wordy" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
 
-    <item name="colorPrimary">#FFE5B4</item>
+    <item name="colorPrimary">#FF202020</item>
     <item name="colorPrimaryVariant">#FFE5B4</item>
-    <item name="colorOnPrimary">#FFE5B4</item>
+    <item name="colorOnPrimary">#FF202020</item>
 
     <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
     <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
@@ -36,6 +36,9 @@
     <item name="colorButtonSubmitForeground">#F0F0F0</item>
     <item name="colorButtonSubmitEnabledBackground">#FF73A659</item>
     <item name="colorButtonSubmitDisabledBackground">#FFA0A0A0</item>
+
+    <item name="colorDialogButton">#FF202020</item>
+    <item name="colorDialogBackground">#FFFFFFFF</item>
 
   </style>
 

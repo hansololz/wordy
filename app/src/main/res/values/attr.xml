@@ -29,4 +29,7 @@
   <attr name="colorButtonSubmitEnabledBackground" format="color" />
   <attr name="colorButtonSubmitDisabledBackground" format="color" />
 
+  <attr name="colorDialogButton" format="color" />
+  <attr name="colorDialogBackground" format="color" />
+
 </resources>
