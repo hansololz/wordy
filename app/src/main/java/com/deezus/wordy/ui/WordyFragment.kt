@@ -2,6 +2,7 @@ package com.deezus.wordy.ui
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,8 +23,9 @@ import kotlin.math.min
 
 
 class WordyViewModel : ViewModel() {
-  val currentWord = MutableLiveData("")
-  val maxGuessCount = MutableLiveData(6)
+  val maxGuessCount = MutableLiveData<Int?>(null)
+  val wordLength = MutableLiveData<Int?>(null)
+  val currentWord = MutableLiveData<String?>(null)
   val currentGuess = MutableLiveData("")
   val pastGuesses = MutableLiveData(listOf<String>())
   val hasAskedForHint = MutableLiveData(false)
@@ -36,14 +38,7 @@ class WordyFragment : BaseFragment() {
   private val binding get() = _binding!!
 
   private val letterViews = arrayListOf<ArrayList<TextView>>()
-  private var currentX = 0
-  private var currentY = 0
   private val keyViews = hashMapOf<Char, TextView>()
-  private var currentWord = "nomad"
-  private val maxGuessCount = 6
-
-  private var hasAskedForHint = false
-  private var hintedLetters = hashSetOf<Char>()
 
   private lateinit var viewModel: WordyViewModel
 
@@ -60,8 +55,20 @@ class WordyFragment : BaseFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    setupView()
-//    setupGame()
+    viewModel.maxGuessCount.value = 6
+    viewModel.wordLength.value = 5
+
+    scope.launch {
+      initWordDatabase(getMainActivity())
+
+      getRandomWord()?.let { randomWord ->
+        viewModel.currentWord.value = randomWord
+        deleteWord(randomWord)
+        addGuessedWord(randomWord, System.currentTimeMillis(), GuessOutcome.NOT_COMPLETED, 0, hasAskedForHint())
+      }
+
+      setupView()
+    }
   }
 
   override fun onDestroyView() {
@@ -137,6 +144,18 @@ class WordyFragment : BaseFragment() {
     setupLetter(binding.letter52, 5, 2)
     setupLetter(binding.letter53, 5, 3)
     setupLetter(binding.letter54, 5, 4)
+
+    binding.deleteLetter.setOnClickListener {
+      if (getCurrentGuess().isNotEmpty()) {
+        viewModel.currentGuess.value = getCurrentGuess().substring(0, getCurrentGuess().length - 1)
+      }
+    }
+
+    viewModel.currentGuess.observe(getMainActivity()) {
+      updateLetters()
+      updateSubmitButton()
+    }
+
   }
 
   private fun setupKey(keyView: TextView, key: Char) {
@@ -145,12 +164,14 @@ class WordyFragment : BaseFragment() {
     keyView.text = key.uppercaseChar().toString()
 
     keyView.setOnClickListener {
-
+      if (getCurrentGuess().length < getWordLength()) {
+        viewModel.currentGuess.value = getCurrentGuess() + key
+      }
     }
   }
 
   private fun setupLetter(letterView: TextView, x: Int, y: Int) {
-    if (y >= currentWord.length || x >= maxGuessCount) {
+    if (y >= getWordLength() || x >= getMaxGuessCount()) {
       letterView.visibility = View.GONE
     } else {
       letterView.visibility = View.VISIBLE
@@ -160,6 +181,69 @@ class WordyFragment : BaseFragment() {
       }
 
       letterViews[x].add(letterView)
+    }
+  }
+
+  private fun updateLetters() {
+    for (i in 0 until getMaxGuessCount()) {
+      if (i < getCurrentX()) {
+        for (j in 0 until getWordLength()) {
+          val letter = letterViews[i][j]
+          val currentChar = getPastGuesses()[i][j]
+
+          letter.text = getPastGuesses()[i][j].uppercase()
+          letter.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorLetterTextGuessed, Color.WHITE))
+
+          val backgroundDrawableId = when {
+            currentChar == getCurrentWord()[j] -> R.drawable.letter_background_match
+            getCurrentWord().contains(currentChar) -> R.drawable.letter_background_present
+            else -> R.drawable.key_background_no_match
+          }
+
+          letter.setBackgroundResource(backgroundDrawableId)
+        }
+      } else {
+        for (j in 0 until getWordLength()) {
+          val letter = letterViews[i][j]
+
+          letter.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorLetterText, Color.BLACK))
+
+          val backgroundDrawableId = if (i == getCurrentX() && j == getCurrentY()) {
+            R.drawable.letter_background_no_guess_and_focus
+          } else {
+            R.drawable.letter_background_no_guess
+          }
+
+          letter.setBackgroundResource(backgroundDrawableId)
+
+          if (i == getCurrentX() && j < getCurrentGuess().length) {
+            letter.text = getCurrentGuess()[j].uppercase()
+          } else {
+            letter.text = ""
+          }
+        }
+      }
+    }
+  }
+
+  private fun updateSubmitButton() {
+    scope.launch {
+      Log.d("WORDY", "BB ${getCurrentGuess()} ${hasWord(getCurrentGuess())}")
+
+      when {
+        getCurrentGuess().length < getWordLength() -> {
+          binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_disabled)
+          binding.submitButton.text = "Guess"
+        }
+        hasWord(getCurrentGuess()) -> {
+          binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_enabled)
+          binding.submitButton.text = "Guess"
+        }
+        else -> {
+          binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_disabled)
+          binding.submitButton.text = "Not a Word"
+        }
+      }
     }
   }
 
@@ -190,6 +274,17 @@ class WordyFragment : BaseFragment() {
   private fun getHintedInvalidLetters(): Set<Char> {
     return viewModel.hintedInvalidLetters.value ?: setOf()
   }
+
+  private fun getMaxGuessCount(): Int {
+    return viewModel.maxGuessCount.value ?: 6
+  }
+
+  private fun getWordLength(): Int {
+    return viewModel.wordLength.value ?: 5
+  }
+
+
+
 
 //
 //    binding.deleteLetter.setOnClickListener {
