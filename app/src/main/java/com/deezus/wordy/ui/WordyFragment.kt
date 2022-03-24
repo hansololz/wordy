@@ -26,7 +26,7 @@ class WordyViewModel : ViewModel() {
   val maxGuessCount = MutableLiveData(6)
   val currentGuess = MutableLiveData("")
   val pastGuesses = MutableLiveData(listOf<String>())
-  val didAskForHint = MutableLiveData(false)
+  val hasAskedForHint = MutableLiveData(false)
   val hintedInvalidLetters = MutableLiveData(setOf<Char>())
 }
 
@@ -161,6 +161,34 @@ class WordyFragment : BaseFragment() {
 
       letterViews[x].add(letterView)
     }
+  }
+
+  private fun getCurrentX(): Int {
+    return viewModel.pastGuesses.value?.size ?: 0
+  }
+
+  private fun getCurrentY(): Int {
+    return viewModel.currentGuess.value?.length ?: 0
+  }
+
+  private fun getCurrentGuess(): String {
+    return viewModel.currentGuess.value ?: ""
+  }
+
+  private fun getCurrentWord(): String {
+    return viewModel.currentWord.value ?: ""
+  }
+
+  private fun getPastGuesses(): List<String> {
+    return viewModel.pastGuesses.value ?: listOf()
+  }
+
+  private fun hasAskedForHint(): Boolean {
+    return viewModel.hasAskedForHint.value ?: false
+  }
+
+  private fun getHintedInvalidLetters(): Set<Char> {
+    return viewModel.hintedInvalidLetters.value ?: setOf()
   }
 
 //
