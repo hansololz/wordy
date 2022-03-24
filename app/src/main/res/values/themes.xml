@@ -27,6 +27,7 @@
     <item name="colorKeyPresent">#FFFADA5E</item>
     <item name="colorKeyNoMatch">#FF777777</item>
     <item name="colorKeyTextGuessed">#FFFFFFFF</item>
+    <item name="colorKeyTextNoGuessed">#FF202020</item>
 
     <item name="colorButtonForeground">#FFFFFFFF</item>
     <item name="colorSkipNextButtonBackground">#FFFFA500</item>

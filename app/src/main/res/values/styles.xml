@@ -14,7 +14,7 @@
     <item name="android:background">@drawable/key_background_no_guess</item>
     <item name="android:textAllCaps">true</item>
     <item name="android:textStyle">bold</item>
-    <item name="android:textColor">?colorKeyNoGuess</item>
+    <item name="android:textColor">?colorKeyTextNoGuessed</item>
     <item name="android:textSize">@dimen/keyboard_text_size</item>
   </style>
 

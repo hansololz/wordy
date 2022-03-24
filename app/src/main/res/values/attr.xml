@@ -8,6 +8,8 @@
   <attr name="colorKeyPresent" format="color" />
   <attr name="colorKeyNoMatch" format="color" />
   <attr name="colorKeyTextGuessed" format="color" />
+  <attr name="colorKeyTextNoGuessed" format="color" />
+
   <attr name="colorText" format="color" />
 
   <attr name="colorLetterNoGuess" format="color" />

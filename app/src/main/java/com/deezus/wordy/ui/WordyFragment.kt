@@ -10,12 +10,10 @@ import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.deezus.wordy.*
 import com.deezus.wordy.data.Settings
 import com.deezus.wordy.databinding.FragmentWordyBinding
 import com.deezus.wordy.helpers.DialogMessage
-import com.deezus.wordy.helpers.showSnackBar
 import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.launch
 import kotlin.math.max
@@ -59,14 +57,7 @@ class WordyFragment : BaseFragment() {
     viewModel.wordLength.value = 5
 
     scope.launch {
-      initWordDatabase(getMainActivity())
-
-      getRandomWord()?.let { randomWord ->
-        viewModel.currentWord.value = randomWord
-        deleteWord(randomWord)
-        addGuessedWord(randomWord, System.currentTimeMillis(), GuessOutcome.NOT_COMPLETED, 0, hasAskedForHint())
-      }
-
+      setupGame()
       setupView()
     }
   }
@@ -151,11 +142,94 @@ class WordyFragment : BaseFragment() {
       }
     }
 
+    binding.submitButton.setOnClickListener {
+      scope.launch {
+        when {
+          getCurrentGuess().length > getWordLength() -> {
+
+          }
+          getCurrentGuess() == getCurrentWord() -> {
+            val newScore = min(getMaxGuessCount(), max(getMaxGuessCount() - getPastGuesses().size, 0)).toLong()
+            val settings = Settings(getMainActivity())
+
+            settings.setScore(settings.getScore() + newScore)
+            updateScore()
+
+            addGuessedWord(getCurrentWord(), System.currentTimeMillis(), GuessOutcome.SUCCEEDED, newScore, hasAskedForHint())
+
+            val scoreMessage = if (newScore > 1) {
+              "$newScore points"
+            } else {
+              "$newScore point"
+            }
+
+            DialogMessage(getMainActivity(), "Congrats, you guessed the mystery word \"${getCurrentWord()}\" and earned $scoreMessage.")
+              .setOnDismissCallback {
+                scope.launch {
+                  setupGame()
+                }
+              }
+              .setPositiveCallback("Play Again") {
+                scope.launch {
+                  setupGame()
+                }
+              }
+              .show()
+          }
+          hasWord(getCurrentGuess()) && getPastGuesses().size + 1 == getMaxGuessCount() -> {
+            addGuessedWord(getCurrentWord(), System.currentTimeMillis(), GuessOutcome.FAILED, 0, hasAskedForHint())
+
+            DialogMessage(getMainActivity(), "Sorry, the mystery word was \"${getCurrentWord()}\"")
+              .setOnDismissCallback {
+                scope.launch {
+                  setupGame()
+                }
+              }
+              .setPositiveCallback("Play Again") {
+                scope.launch {
+                  setupGame()
+                }
+              }
+              .show()
+          }
+
+          hasWord(getCurrentGuess()) -> {
+            viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
+            viewModel.currentGuess.value = ""
+          }
+          else -> {
+
+          }
+        }
+      }
+    }
+
     viewModel.currentGuess.observe(getMainActivity()) {
       updateLetters()
       updateSubmitButton()
+      updateKeys()
     }
 
+    binding.skipNext.setOnClickListener {
+      DialogMessage(getMainActivity(), "Are you sure you want to skip to the next word?")
+        .setPositiveCallback("Yes") {
+          val oldWord = getCurrentWord()
+
+          scope.launch {
+            setupGame()
+          }
+
+          DialogMessage(getMainActivity(), "The mystery word was \"$oldWord\".")
+            .setPositiveCallback("Ok") {
+
+            }
+            .show()
+        }
+        .setNegativeCallback("No") {
+
+        }
+        .show()
+    }
   }
 
   private fun setupKey(keyView: TextView, key: Char) {
@@ -226,6 +300,48 @@ class WordyFragment : BaseFragment() {
     }
   }
 
+  private fun updateKeys() {
+    val matchedLetters = hashSetOf<Char>()
+    val presentLetters = hashSetOf<Char>()
+    val noMatchLetters = hashSetOf<Char>()
+
+    getPastGuesses().forEach { guess ->
+      guess.forEachIndexed { index, letter ->
+        when {
+          letter == getCurrentWord()[index] -> matchedLetters.add(letter)
+          getCurrentWord().contains(letter) -> presentLetters.add(letter)
+          else -> noMatchLetters.add(letter)
+        }
+      }
+    }
+
+    noMatchLetters.addAll(getHintedInvalidLetters())
+
+    keyViews.forEach {
+      val key = it.key
+      val keyView = it.value
+
+      when {
+        matchedLetters.contains(key) -> {
+          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE))
+          keyView.setBackgroundResource(R.drawable.key_background_match)
+        }
+        presentLetters.contains(key) -> {
+          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE))
+          keyView.setBackgroundResource(R.drawable.key_background_present)
+        }
+        noMatchLetters.contains(key) -> {
+          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE))
+          keyView.setBackgroundResource(R.drawable.key_background_no_match)
+        }
+        else -> {
+          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorText, Color.WHITE))
+          keyView.setBackgroundResource(R.drawable.key_background_no_guess)
+        }
+      }
+    }
+  }
+
   private fun updateSubmitButton() {
     scope.launch {
       Log.d("WORDY", "BB ${getCurrentGuess()} ${hasWord(getCurrentGuess())}")
@@ -245,6 +361,25 @@ class WordyFragment : BaseFragment() {
         }
       }
     }
+  }
+
+  private fun updateScore() {
+    binding.scoreMessage.text = "Score\n${Settings(getMainActivity()).getScore()}"
+  }
+
+  private suspend fun setupGame() {
+    initWordDatabase(getMainActivity())
+
+    getRandomWord()?.let { randomWord ->
+      viewModel.currentWord.value = randomWord
+      deleteWord(randomWord)
+      addGuessedWord(randomWord, System.currentTimeMillis(), GuessOutcome.NOT_COMPLETED, 0, hasAskedForHint())
+    }
+
+    viewModel.pastGuesses.value = listOf()
+    viewModel.hasAskedForHint.value = false
+    viewModel.hintedInvalidLetters.value = setOf()
+    viewModel.currentGuess.value = ""
   }
 
   private fun getCurrentX(): Int {
