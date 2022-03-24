@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.deezus.wordy.*
 import com.deezus.wordy.data.Settings
 import com.deezus.wordy.databinding.FragmentWordyBinding
@@ -56,7 +57,10 @@ class WordyFragment : BaseFragment() {
     viewModel.wordLength.value = 5
 
     scope.launch {
-      setupGame()
+      if (getCurrentWord().isEmpty()) {
+        setupGame()
+      }
+
       setupView()
     }
   }
@@ -241,6 +245,10 @@ class WordyFragment : BaseFragment() {
       getUnusedLetters().shuffled().firstOrNull()?.let {
         viewModel.hintedInvalidLetters.value = getHintedInvalidLetters() + it
       }
+    }
+
+    binding.viewHistory.setOnClickListener {
+      findNavController().navigate(R.id.navigation_history)
     }
   }
 
