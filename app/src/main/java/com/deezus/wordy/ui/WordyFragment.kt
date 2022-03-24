@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.navigation.findNavController
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.deezus.wordy.*
 import com.deezus.wordy.data.Settings
@@ -18,6 +20,15 @@ import kotlinx.coroutines.launch
 import kotlin.math.max
 import kotlin.math.min
 
+
+class WordyViewModel : ViewModel() {
+  val currentWord = MutableLiveData("")
+  val maxGuessCount = MutableLiveData(6)
+  val currentGuess = MutableLiveData("")
+  val pastGuesses = MutableLiveData(listOf<String>())
+  val didAskForHint = MutableLiveData(false)
+  val hintedInvalidLetters = MutableLiveData(setOf<Char>())
+}
 
 class WordyFragment : BaseFragment() {
 
@@ -34,12 +45,15 @@ class WordyFragment : BaseFragment() {
   private var hasAskedForHint = false
   private var hintedLetters = hashSetOf<Char>()
 
+  private lateinit var viewModel: WordyViewModel
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
     _binding = FragmentWordyBinding.inflate(inflater, container, false)
+    viewModel = ViewModelProvider(getMainActivity())[WordyViewModel::class.java]
     return binding.root
   }
 
@@ -47,7 +61,7 @@ class WordyFragment : BaseFragment() {
     super.onViewCreated(view, savedInstanceState)
 
     setupView()
-    setupGame()
+//    setupGame()
   }
 
   override fun onDestroyView() {
@@ -56,34 +70,37 @@ class WordyFragment : BaseFragment() {
   }
 
   private fun setupView() {
-    setupKey(binding.keyQ, 'Q')
-    setupKey(binding.keyW, 'W')
-    setupKey(binding.keyE, 'E')
-    setupKey(binding.keyR, 'R')
-    setupKey(binding.keyT, 'T')
-    setupKey(binding.keyY, 'Y')
-    setupKey(binding.keyU, 'U')
-    setupKey(binding.keyI, 'I')
-    setupKey(binding.keyO, 'O')
-    setupKey(binding.keyP, 'P')
+    letterViews.clear()
+    keyViews.clear()
 
-    setupKey(binding.keyA, 'A')
-    setupKey(binding.keyS, 'S')
-    setupKey(binding.keyD, 'D')
-    setupKey(binding.keyF, 'F')
-    setupKey(binding.keyG, 'G')
-    setupKey(binding.keyH, 'H')
-    setupKey(binding.keyJ, 'J')
-    setupKey(binding.keyK, 'K')
-    setupKey(binding.keyL, 'L')
+    setupKey(binding.keyQ, 'q')
+    setupKey(binding.keyW, 'w')
+    setupKey(binding.keyE, 'e')
+    setupKey(binding.keyR, 'r')
+    setupKey(binding.keyT, 't')
+    setupKey(binding.keyY, 'y')
+    setupKey(binding.keyU, 'u')
+    setupKey(binding.keyI, 'i')
+    setupKey(binding.keyO, 'o')
+    setupKey(binding.keyP, 'p')
 
-    setupKey(binding.keyZ, 'Z')
-    setupKey(binding.keyX, 'X')
-    setupKey(binding.keyC, 'C')
-    setupKey(binding.keyV, 'V')
-    setupKey(binding.keyB, 'B')
-    setupKey(binding.keyN, 'N')
-    setupKey(binding.keyM, 'M')
+    setupKey(binding.keyA, 'a')
+    setupKey(binding.keyS, 's')
+    setupKey(binding.keyD, 'd')
+    setupKey(binding.keyF, 'f')
+    setupKey(binding.keyG, 'g')
+    setupKey(binding.keyH, 'h')
+    setupKey(binding.keyJ, 'j')
+    setupKey(binding.keyK, 'k')
+    setupKey(binding.keyL, 'l')
+
+    setupKey(binding.keyZ, 'z')
+    setupKey(binding.keyX, 'x')
+    setupKey(binding.keyC, 'c')
+    setupKey(binding.keyV, 'v')
+    setupKey(binding.keyB, 'b')
+    setupKey(binding.keyN, 'n')
+    setupKey(binding.keyM, 'm')
 
     setupLetter(binding.letter00, 0, 0)
     setupLetter(binding.letter01, 0, 1)
@@ -120,111 +137,6 @@ class WordyFragment : BaseFragment() {
     setupLetter(binding.letter52, 5, 2)
     setupLetter(binding.letter53, 5, 3)
     setupLetter(binding.letter54, 5, 4)
-
-    binding.deleteLetter.setOnClickListener {
-      if (currentY > 0) {
-        currentY--
-        letterViews[currentX][currentY].text = ""
-        updateLetters()
-        updateSubmitButton()
-      }
-    }
-
-    binding.submitButton.setOnClickListener {
-      val guessedWord = getGuessedWord()
-
-      scope.launch {
-        if (currentY < currentWord.length) {
-          showSnackBar(getMainActivity(), "Please enter a 5 letter word before guessing.")
-        } else if (hasWord(guessedWord)) {
-          if (currentWord == guessedWord) {
-            val newScore = min(maxGuessCount, max(maxGuessCount - currentX, 0)).toLong()
-            val settings = Settings(getMainActivity())
-
-            settings.setScore(settings.getScore() + newScore)
-            updateScore()
-
-            scope.launch {
-              addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.SUCCEEDED, newScore, hasAskedForHint)
-            }
-
-            val scoreMessage = if (newScore > 1) {
-              "$newScore points"
-            } else {
-              "$newScore point"
-            }
-
-            DialogMessage(getMainActivity(), "Congrats, you guessed the mystery word \"$currentWord\" and earned $scoreMessage.")
-              .setOnDismissCallback {
-                setupGame()
-              }
-              .setPositiveCallback("Play Again") {
-                setupGame()
-              }
-              .show()
-          } else if (currentX + 1 == maxGuessCount) {
-            scope.launch {
-              addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.FAILED, 0, hasAskedForHint)
-            }
-
-            DialogMessage(getMainActivity(), "Sorry, the mystery word was \"$currentWord\"")
-              .setOnDismissCallback {
-                setupGame()
-              }
-              .setPositiveCallback("Play Again") {
-                setupGame()
-              }
-              .show()
-          } else {
-            currentX++
-            currentY = 0
-
-            updateLetters()
-            updateKeys()
-            updateSubmitButton()
-          }
-        }
-      }
-    }
-
-    binding.skipNext.setOnClickListener {
-      DialogMessage(getMainActivity(), "Are you sure you want to skip to the next word?")
-        .setPositiveCallback("Yes") {
-          val oldWord = currentWord
-
-          setupGame()
-
-          DialogMessage(getMainActivity(), "The mystery word was \"$oldWord\".")
-            .setPositiveCallback("Ok") {
-
-            }
-            .show()
-        }
-        .setNegativeCallback("No") {
-
-        }
-        .show()
-    }
-
-    binding.showHint.setOnClickListener {
-      val unusedLetters = getUnusedLetter()
-
-      hasAskedForHint = true
-
-      if (unusedLetters.isEmpty()) {
-        showSnackBar(getMainActivity(), "No more hint available.")
-      } else {
-        val hintedLetter = unusedLetters.toList().toList().shuffled().first()
-        hintedLetters.add(hintedLetter)
-      }
-
-      updateHintButton()
-      updateKeys()
-    }
-
-    binding.viewHistory.setOnClickListener {
-      findNavController().navigate(R.id.navigation_history)
-    }
   }
 
   private fun setupKey(keyView: TextView, key: Char) {
@@ -233,18 +145,7 @@ class WordyFragment : BaseFragment() {
     keyView.text = key.uppercaseChar().toString()
 
     keyView.setOnClickListener {
-      if (currentY < currentWord.length && currentX < maxGuessCount && letterViews[currentX][currentY].text.isEmpty()) {
-        letterViews[currentX][currentY].text = key.toString()
-        currentY++
-      }
 
-      letterViews[currentX][currentY - 1].setBackgroundResource(R.drawable.letter_background_no_guess)
-
-      if (currentY < currentWord.length) {
-        letterViews[currentX][currentY].setBackgroundResource(R.drawable.letter_background_no_guess_and_focus)
-      }
-
-      updateSubmitButton()
     }
   }
 
@@ -262,176 +163,318 @@ class WordyFragment : BaseFragment() {
     }
   }
 
-  private fun setupGame() {
-    currentX = 0
-    currentY = 0
+//
+//    binding.deleteLetter.setOnClickListener {
+//      if (currentY > 0) {
+//        currentY--
+//        letterViews[currentX][currentY].text = ""
+//        updateLetters()
+//        updateSubmitButton()
+//      }
+//    }
+//
+//    binding.submitButton.setOnClickListener {
+//      val guessedWord = getGuessedWord()
+//
+//      scope.launch {
+//        if (currentY < currentWord.length) {
+//          showSnackBar(getMainActivity(), "Please enter a 5 letter word before guessing.")
+//        } else if (hasWord(guessedWord)) {
+//          if (currentWord == guessedWord) {
+//            val newScore = min(maxGuessCount, max(maxGuessCount - currentX, 0)).toLong()
+//            val settings = Settings(getMainActivity())
+//
+//            settings.setScore(settings.getScore() + newScore)
+//            updateScore()
+//
+//            scope.launch {
+//              addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.SUCCEEDED, newScore, hasAskedForHint)
+//            }
+//
+//            val scoreMessage = if (newScore > 1) {
+//              "$newScore points"
+//            } else {
+//              "$newScore point"
+//            }
+//
+//            DialogMessage(getMainActivity(), "Congrats, you guessed the mystery word \"$currentWord\" and earned $scoreMessage.")
+//              .setOnDismissCallback {
+//                setupGame()
+//              }
+//              .setPositiveCallback("Play Again") {
+//                setupGame()
+//              }
+//              .show()
+//          } else if (currentX + 1 == maxGuessCount) {
+//            scope.launch {
+//              addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.FAILED, 0, hasAskedForHint)
+//            }
+//
+//            DialogMessage(getMainActivity(), "Sorry, the mystery word was \"$currentWord\"")
+//              .setOnDismissCallback {
+//                setupGame()
+//              }
+//              .setPositiveCallback("Play Again") {
+//                setupGame()
+//              }
+//              .show()
+//          } else {
+//            currentX++
+//            currentY = 0
+//
+//            updateLetters()
+//            updateKeys()
+//            updateSubmitButton()
+//          }
+//        }
+//      }
+//    }
+//
+//    binding.skipNext.setOnClickListener {
+//      DialogMessage(getMainActivity(), "Are you sure you want to skip to the next word?")
+//        .setPositiveCallback("Yes") {
+//          val oldWord = currentWord
+//
+//          setupGame()
+//
+//          DialogMessage(getMainActivity(), "The mystery word was \"$oldWord\".")
+//            .setPositiveCallback("Ok") {
+//
+//            }
+//            .show()
+//        }
+//        .setNegativeCallback("No") {
+//
+//        }
+//        .show()
+//    }
+//
+//    binding.showHint.setOnClickListener {
+//      val unusedLetters = getUnusedLetter()
+//
+//      hasAskedForHint = true
+//
+//      if (unusedLetters.isEmpty()) {
+//        showSnackBar(getMainActivity(), "No more hint available.")
+//      } else {
+//        val hintedLetter = unusedLetters.toList().toList().shuffled().first()
+//        hintedLetters.add(hintedLetter)
+//      }
+//
+//      updateHintButton()
+//      updateKeys()
+//    }
+//
+//    binding.viewHistory.setOnClickListener {
+//      findNavController().navigate(R.id.navigation_history)
+//    }
 
-    letterViews.forEach { row ->
-      row.forEach {
-        it.text = ""
-      }
-    }
-
-    hintedLetters.clear()
-
-    updateScore()
-    updateLetters()
-    updateKeys()
-    updateHintButton()
-    updateSubmitButton()
-
-    scope.launch {
-      initWordDatabase(getMainActivity())
-
-      getRandomWord()?.let { randomWord ->
-        currentWord = randomWord
-        deleteWord(randomWord)
-        addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.NOT_COMPLETED, 0, hasAskedForHint)
-      }
-    }
-  }
-
-  private fun updateSubmitButton() {
-    if (currentY >= currentWord.length) {
-      scope.launch {
-        binding.submitButton.text = if (!hasWord(getGuessedWord())) {
-          binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_disabled)
-          "Not a Word"
-        } else {
-          binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_enabled)
-          "Guess"
-        }
-      }
-    } else {
-      binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_disabled)
-      binding.submitButton.text = "Enter 5 letters"
-    }
-  }
-
-  private fun getGuessedWord(): String {
-    val wordBuilder = StringBuilder()
-
-    letterViews[currentX].forEach {
-      wordBuilder.append(it.text)
-    }
-
-    return wordBuilder.toString().lowercase()
-  }
-
-  private fun updateKeys() {
-    val matchedLetters = hashSetOf<Char>()
-    val presentLetters = hashSetOf<Char>()
-    val noMatchLetters = hashSetOf<Char>()
-
-    letterViews.forEachIndexed { x, row ->
-      if (x < currentX) {
-        row.forEachIndexed { y, letter ->
-          letter.text.firstOrNull()?.lowercaseChar()?.let { char ->
-            when {
-              currentWord[y] == char -> matchedLetters.add(char)
-              currentWord.contains(char) -> presentLetters.add(char)
-              else -> noMatchLetters.add(char)
-            }
-          }
-        }
-      }
-    }
-
-    keyViews.forEach {
-      val char = it.key
-      val keyView = it.value
-
-      when {
-        matchedLetters.contains(char) -> {
-          keyView.setBackgroundResource(R.drawable.key_background_match)
-          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE))
-        }
-        presentLetters.contains(char) -> {
-          keyView.setBackgroundResource(R.drawable.key_background_present)
-          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE))
-        }
-        noMatchLetters.contains(char) || hintedLetters.contains(char) -> {
-          keyView.setBackgroundResource(R.drawable.key_background_no_match)
-          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE))
-        }
-        else -> {
-          keyView.setBackgroundResource(R.drawable.key_background_no_guess)
-          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorText, Color.BLACK))
-        }
-      }
-    }
-  }
-
-  private fun updateLetters() {
-    letterViews.forEachIndexed { x, word -> 
-      word.forEachIndexed { y, letter ->
-        when {
-          x < currentX -> {
-            val char = letter.text.firstOrNull()?.lowercaseChar()
-
-            val letterBackgroundRes = when {
-              char == null -> R.drawable.letter_background_no_guess
-              currentWord[y] == char -> R.drawable.letter_background_match
-              currentWord.contains(char) -> R.drawable.letter_background_present
-              else -> R.drawable.letter_background_no_match
-            }
-
-            letter.setBackgroundResource(letterBackgroundRes)
-            letter.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorLetterTextGuessed, Color.WHITE))
-          }
-          x == currentX -> {
-            val letterBackgroundRes = if (x == currentX && y == currentY) {
-              R.drawable.letter_background_no_guess_and_focus
-            } else {
-              R.drawable.letter_background_no_guess
-            }
-
-            letter.setBackgroundResource(letterBackgroundRes)
-            letter.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorLetterText, Color.BLACK))
-          }
-          else -> {
-            letter.setBackgroundResource(R.drawable.letter_background_no_guess)
-            letter.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorLetterText, Color.BLACK))
-          }
-        }
-      }
-    }
-  }
-  
-  private fun updateScore() {
-    binding.scoreMessage.text = "Score\n${Settings(getMainActivity()).getScore()}"
-  }
-
-  private fun updateHintButton() {
-    when {
-      !hasAskedForHint -> {
-        binding.showHint.setBackgroundResource(R.drawable.button_background_get_hint)
-      }
-      getUnusedLetter().isNotEmpty() -> {
-        binding.showHint.setBackgroundResource(R.drawable.button_background_get_hint)
-      }
-      else -> {
-        binding.showHint.setBackgroundResource(R.drawable.button_background_get_hint_unavailable)
-      }
-    }
-  }
-
-  private fun getUnusedLetter(): Set<Char> {
-    val usedLetter = hashSetOf<Char>()
-
-    letterViews.forEachIndexed { x, row ->
-      if (x < currentX) {
-        row.forEachIndexed { y, letter ->
-          letter.text.firstOrNull()?.lowercaseChar()?.let { char ->
-            usedLetter.add(char)
-          }
-        }
-      }
-    }
-
-    return keyViews.filter { !usedLetter.contains(it.key) }
-      .filter { !currentWord.contains(it.key) }
-      .filter { !hintedLetters.contains(it.key) }
-      .keys
-  }
+//
+//  private fun setupKey(keyView: TextView, key: Char) {
+//    keyViews[key.lowercaseChar()] = keyView
+//
+//    keyView.text = key.uppercaseChar().toString()
+//
+//    keyView.setOnClickListener {
+//      if (currentY < currentWord.length && currentX < maxGuessCount && letterViews[currentX][currentY].text.isEmpty()) {
+//        letterViews[currentX][currentY].text = key.toString()
+//        currentY++
+//      }
+//
+//      letterViews[currentX][currentY - 1].setBackgroundResource(R.drawable.letter_background_no_guess)
+//
+//      if (currentY < currentWord.length) {
+//        letterViews[currentX][currentY].setBackgroundResource(R.drawable.letter_background_no_guess_and_focus)
+//      }
+//
+//      updateSubmitButton()
+//    }
+//  }
+//
+//  private fun setupLetter(letterView: TextView, x: Int, y: Int) {
+//    if (y >= currentWord.length || x >= maxGuessCount) {
+//      letterView.visibility = View.GONE
+//    } else {
+//      letterView.visibility = View.VISIBLE
+//
+//      if (y == 0) {
+//        letterViews.add(arrayListOf())
+//      }
+//
+//      letterViews[x].add(letterView)
+//    }
+//  }
+//
+//  private fun setupGame() {
+//    currentX = 0
+//    currentY = 0
+//
+//    letterViews.forEach { row ->
+//      row.forEach {
+//        it.text = ""
+//      }
+//    }
+//
+//    hintedLetters.clear()
+//
+//    updateScore()
+//    updateLetters()
+//    updateKeys()
+//    updateHintButton()
+//    updateSubmitButton()
+//
+//    scope.launch {
+//      initWordDatabase(getMainActivity())
+//
+//      getRandomWord()?.let { randomWord ->
+//        currentWord = randomWord
+//        deleteWord(randomWord)
+//        addGuessedWord(currentWord, System.currentTimeMillis(), GuessOutcome.NOT_COMPLETED, 0, hasAskedForHint)
+//      }
+//    }
+//  }
+//
+//  private fun updateSubmitButton() {
+//    if (currentY >= currentWord.length) {
+//      scope.launch {
+//        binding.submitButton.text = if (!hasWord(getGuessedWord())) {
+//          binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_disabled)
+//          "Not a Word"
+//        } else {
+//          binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_enabled)
+//          "Guess"
+//        }
+//      }
+//    } else {
+//      binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_disabled)
+//      binding.submitButton.text = "Enter 5 letters"
+//    }
+//  }
+//
+//  private fun getGuessedWord(): String {
+//    val wordBuilder = StringBuilder()
+//
+//    letterViews[currentX].forEach {
+//      wordBuilder.append(it.text)
+//    }
+//
+//    return wordBuilder.toString().lowercase()
+//  }
+//
+//  private fun updateKeys() {
+//    val matchedLetters = hashSetOf<Char>()
+//    val presentLetters = hashSetOf<Char>()
+//    val noMatchLetters = hashSetOf<Char>()
+//
+//    letterViews.forEachIndexed { x, row ->
+//      if (x < currentX) {
+//        row.forEachIndexed { y, letter ->
+//          letter.text.firstOrNull()?.lowercaseChar()?.let { char ->
+//            when {
+//              currentWord[y] == char -> matchedLetters.add(char)
+//              currentWord.contains(char) -> presentLetters.add(char)
+//              else -> noMatchLetters.add(char)
+//            }
+//          }
+//        }
+//      }
+//    }
+//
+//    keyViews.forEach {
+//      val char = it.key
+//      val keyView = it.value
+//
+//      when {
+//        matchedLetters.contains(char) -> {
+//          keyView.setBackgroundResource(R.drawable.key_background_match)
+//          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE))
+//        }
+//        presentLetters.contains(char) -> {
+//          keyView.setBackgroundResource(R.drawable.key_background_present)
+//          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE))
+//        }
+//        noMatchLetters.contains(char) || hintedLetters.contains(char) -> {
+//          keyView.setBackgroundResource(R.drawable.key_background_no_match)
+//          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE))
+//        }
+//        else -> {
+//          keyView.setBackgroundResource(R.drawable.key_background_no_guess)
+//          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorText, Color.BLACK))
+//        }
+//      }
+//    }
+//  }
+//
+//  private fun updateLetters() {
+//    letterViews.forEachIndexed { x, word ->
+//      word.forEachIndexed { y, letter ->
+//        when {
+//          x < currentX -> {
+//            val char = letter.text.firstOrNull()?.lowercaseChar()
+//
+//            val letterBackgroundRes = when {
+//              char == null -> R.drawable.letter_background_no_guess
+//              currentWord[y] == char -> R.drawable.letter_background_match
+//              currentWord.contains(char) -> R.drawable.letter_background_present
+//              else -> R.drawable.letter_background_no_match
+//            }
+//
+//            letter.setBackgroundResource(letterBackgroundRes)
+//            letter.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorLetterTextGuessed, Color.WHITE))
+//          }
+//          x == currentX -> {
+//            val letterBackgroundRes = if (x == currentX && y == currentY) {
+//              R.drawable.letter_background_no_guess_and_focus
+//            } else {
+//              R.drawable.letter_background_no_guess
+//            }
+//
+//            letter.setBackgroundResource(letterBackgroundRes)
+//            letter.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorLetterText, Color.BLACK))
+//          }
+//          else -> {
+//            letter.setBackgroundResource(R.drawable.letter_background_no_guess)
+//            letter.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorLetterText, Color.BLACK))
+//          }
+//        }
+//      }
+//    }
+//  }
+//
+//  private fun updateScore() {
+//    binding.scoreMessage.text = "Score\n${Settings(getMainActivity()).getScore()}"
+//  }
+//
+//  private fun updateHintButton() {
+//    when {
+//      !hasAskedForHint -> {
+//        binding.showHint.setBackgroundResource(R.drawable.button_background_get_hint)
+//      }
+//      getUnusedLetter().isNotEmpty() -> {
+//        binding.showHint.setBackgroundResource(R.drawable.button_background_get_hint)
+//      }
+//      else -> {
+//        binding.showHint.setBackgroundResource(R.drawable.button_background_get_hint_unavailable)
+//      }
+//    }
+//  }
+//
+//  private fun getUnusedLetter(): Set<Char> {
+//    val usedLetter = hashSetOf<Char>()
+//
+//    letterViews.forEachIndexed { x, row ->
+//      if (x < currentX) {
+//        row.forEachIndexed { y, letter ->
+//          letter.text.firstOrNull()?.lowercaseChar()?.let { char ->
+//            usedLetter.add(char)
+//          }
+//        }
+//      }
+//    }
+//
+//    return keyViews.filter { !usedLetter.contains(it.key) }
+//      .filter { !currentWord.contains(it.key) }
+//      .filter { !hintedLetters.contains(it.key) }
+//      .keys
+//  }
 }
