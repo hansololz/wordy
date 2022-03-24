@@ -52,7 +52,7 @@ private interface GuessedWordEntryDao {
   @Query("DELETE FROM GuessedWordEntry WHERE guessedWord = :word")
   fun delete(word: String)
 
-  @Query("SELECT * FROM GuessedWordEntry ORDER BY time")
+  @Query("SELECT * FROM GuessedWordEntry ORDER BY time DESC")
   fun getAll(): List<GuessedWordEntry>
 
   @Query("SELECT * FROM GuessedWordEntry WHERE guessedWord = :word LIMIT 1")
@@ -120,6 +120,6 @@ suspend fun getGuessedWord(word: String): GuessedWordEntry? = withContext(Dispat
   guessedWordDatabase?.userDao()?.getWord(word)?.firstOrNull()
 }
 
-suspend fun getAllGuessedWords(word: String): List<GuessedWordEntry> = withContext(Dispatchers.Default) {
+suspend fun getAllGuessedWords(): List<GuessedWordEntry> = withContext(Dispatchers.Default) {
   guessedWordDatabase?.userDao()?.getAll() ?: listOf()
 }

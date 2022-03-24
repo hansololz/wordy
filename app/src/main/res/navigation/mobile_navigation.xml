@@ -10,6 +10,11 @@
     android:label="SettingsFragment" />
 
   <fragment
+    android:id="@+id/navigation_history"
+    android:name="com.deezus.wordy.ui.HistoryFragment"
+    android:label="HistoryFragment" />
+
+  <fragment
     android:id="@+id/navigation_wordy"
     android:name="com.deezus.wordy.ui.WordyFragment"
     android:label="WordyFragment" />

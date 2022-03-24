@@ -2,11 +2,12 @@ package com.deezus.wordy.ui
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.deezus.wordy.*
 import com.deezus.wordy.data.Settings
 import com.deezus.wordy.databinding.FragmentWordyBinding
@@ -39,12 +40,14 @@ class WordyFragment : BaseFragment() {
     savedInstanceState: Bundle?
   ): View {
     _binding = FragmentWordyBinding.inflate(inflater, container, false)
-    val root: View = binding.root
+    return binding.root
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
 
     setupView()
     setupGame()
-
-    return root
   }
 
   override fun onDestroyView() {
@@ -218,6 +221,10 @@ class WordyFragment : BaseFragment() {
       updateHintButton()
       updateKeys()
     }
+
+    binding.viewHistory.setOnClickListener {
+      findNavController().navigate(R.id.navigation_history)
+    }
   }
 
   private fun setupKey(keyView: TextView, key: Char) {
@@ -349,7 +356,7 @@ class WordyFragment : BaseFragment() {
         }
         else -> {
           keyView.setBackgroundResource(R.drawable.key_background_no_guess)
-          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyText, Color.BLACK))
+          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorText, Color.BLACK))
         }
       }
     }
