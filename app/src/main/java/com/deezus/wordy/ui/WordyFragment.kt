@@ -210,6 +210,11 @@ class WordyFragment : BaseFragment() {
       updateKeys()
     }
 
+    viewModel.hintedInvalidLetters.observe(getMainActivity()) {
+      updateKeys()
+      updateGetHintButton()
+    }
+
     binding.skipNext.setOnClickListener {
       DialogMessage(getMainActivity(), "Are you sure you want to skip to the next word?")
         .setPositiveCallback("Yes") {
@@ -229,6 +234,14 @@ class WordyFragment : BaseFragment() {
 
         }
         .show()
+    }
+
+    binding.showHint.setOnClickListener {
+      viewModel.hasAskedForHint.value = true
+
+      getUnusedLetters().shuffled().firstOrNull()?.let {
+        viewModel.hintedInvalidLetters.value = getHintedInvalidLetters() + it
+      }
     }
   }
 
@@ -344,8 +357,6 @@ class WordyFragment : BaseFragment() {
 
   private fun updateSubmitButton() {
     scope.launch {
-      Log.d("WORDY", "BB ${getCurrentGuess()} ${hasWord(getCurrentGuess())}")
-
       when {
         getCurrentGuess().length < getWordLength() -> {
           binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_disabled)
@@ -360,6 +371,14 @@ class WordyFragment : BaseFragment() {
           binding.submitButton.text = "Not a Word"
         }
       }
+    }
+  }
+
+  private fun updateGetHintButton() {
+    if (getUnusedLetters().isEmpty()) {
+      binding.showHint.setBackgroundResource(R.drawable.button_background_get_hint_unavailable)
+    } else {
+      binding.showHint.setBackgroundResource(R.drawable.button_background_get_hint)
     }
   }
 
@@ -418,7 +437,25 @@ class WordyFragment : BaseFragment() {
     return viewModel.wordLength.value ?: 5
   }
 
+  private fun getUnusedLetters(): List<Char> {
+    val usedLetter = hashSetOf<Char>()
 
+    getPastGuesses().forEach {
+      it.forEach {
+        usedLetter.add(it)
+      }
+    }
+
+    getCurrentWord().forEach {
+      usedLetter.add(it)
+    }
+
+    getHintedInvalidLetters().forEach {
+      usedLetter.add(it)
+    }
+
+    return keyViews.keys.filter { !usedLetter.contains(it) }
+  }
 
 
 //
