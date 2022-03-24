@@ -71,6 +71,8 @@ class WordyFragment : BaseFragment() {
   }
 
   private fun setupView() {
+    updateScore()
+
     letterViews.clear()
     keyViews.clear()
 
@@ -180,6 +182,9 @@ class WordyFragment : BaseFragment() {
               .show()
           }
           hasWord(getCurrentGuess()) && getPastGuesses().size + 1 == getMaxGuessCount() -> {
+            viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
+            viewModel.currentGuess.value = ""
+
             addGuessedWord(getCurrentWord(), System.currentTimeMillis(), GuessOutcome.FAILED, 0, hasAskedForHint())
 
             DialogMessage(getMainActivity(), "Sorry, the mystery word was \"${getCurrentWord()}\"")
@@ -195,7 +200,6 @@ class WordyFragment : BaseFragment() {
               }
               .show()
           }
-
           hasWord(getCurrentGuess()) -> {
             viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
             viewModel.currentGuess.value = ""
