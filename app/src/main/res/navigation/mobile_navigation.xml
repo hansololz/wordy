@@ -19,4 +19,14 @@
     android:name="com.deezus.wordy.ui.WordyFragment"
     android:label="WordyFragment" />
 
+  <fragment
+    android:id="@+id/navigation_definition"
+    android:name="com.deezus.wordy.ui.DefinitionFragment"
+    android:label="DefinitionFragment" />
+
+  <fragment
+    android:id="@+id/navigation_bookmark"
+    android:name="com.deezus.wordy.ui.BookmarkFragment"
+    android:label="BookmarkFragment" />
+
 </navigation>

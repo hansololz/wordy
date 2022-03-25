@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.deezus.wordy.*
 import com.deezus.wordy.data.Settings
+import com.deezus.wordy.data.initBookmarkDatabase
 import com.deezus.wordy.databinding.FragmentWordyBinding
 import com.deezus.wordy.helpers.DialogMessage
 import com.google.android.material.color.MaterialColors
@@ -254,6 +255,10 @@ class WordyFragment : BaseFragment() {
     binding.viewHistory.setOnClickListener {
       findNavController().navigate(R.id.navigation_history)
     }
+
+    binding.viewBookmark.setOnClickListener {
+      findNavController().navigate(R.id.navigation_bookmark)
+    }
   }
 
   private fun setupKey(keyView: TextView, key: Char) {
@@ -399,6 +404,7 @@ class WordyFragment : BaseFragment() {
 
   private suspend fun setupGame() {
     initWordDatabase(getMainActivity())
+    initBookmarkDatabase(getMainActivity())
 
     getRandomWord()?.let { randomWord ->
       viewModel.currentWord.value = randomWord

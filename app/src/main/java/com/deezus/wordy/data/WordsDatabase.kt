@@ -1,6 +1,5 @@
 package com.deezus.wordy
 
-import android.util.Log
 import androidx.room.*
 import com.deezus.wordy.ui.MainActivity
 import kotlinx.coroutines.Dispatchers
@@ -14,9 +13,9 @@ data class WordEntry(
 
 enum class GuessOutcome { NOT_COMPLETED, FAILED, SUCCEEDED }
 
-@Entity(primaryKeys = ["guessedWord"])
+@Entity(primaryKeys = ["word"])
 data class GuessedWordEntry(
-  @ColumnInfo(name = "guessedWord") var word: String,
+  @ColumnInfo(name = "word") var word: String,
   @ColumnInfo(name = "time") var time: Long,
   @ColumnInfo(name = "outcome") var outcome: GuessOutcome,
   @ColumnInfo(name = "scoreEarned") var scoreEarned: Long,
@@ -49,16 +48,16 @@ private interface WordEntryDao {
 @Dao
 private interface GuessedWordEntryDao {
 
-  @Query("DELETE FROM GuessedWordEntry WHERE guessedWord = :word")
+  @Query("DELETE FROM GuessedWordEntry WHERE word = :word")
   fun delete(word: String)
 
   @Query("SELECT * FROM GuessedWordEntry ORDER BY time DESC")
   fun getAll(): List<GuessedWordEntry>
 
-  @Query("SELECT * FROM GuessedWordEntry WHERE guessedWord = :word LIMIT 1")
+  @Query("SELECT * FROM GuessedWordEntry WHERE word = :word LIMIT 1")
   fun getWord(word: String): List<GuessedWordEntry>
 
-  @Query("SELECT COUNT(guessedWord) FROM GuessedWordEntry")
+  @Query("SELECT COUNT(word) FROM GuessedWordEntry")
   fun getSize(): Int
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)

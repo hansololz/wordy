@@ -4,14 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deezus.wordy.GuessedWordEntry
 import com.deezus.wordy.R
+import com.deezus.wordy.data.addBookmark
+import com.deezus.wordy.data.deleteBookmark
+import com.deezus.wordy.data.getBookmark
 import com.deezus.wordy.databinding.FragmentHistoryBinding
 import com.deezus.wordy.databinding.ItemHistoryBinding
-import android.text.format.DateFormat
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.deezus.wordy.getAllGuessedWords
 import com.deezus.wordy.scope
 import kotlinx.coroutines.launch
@@ -19,17 +24,22 @@ import kotlinx.coroutines.launch
 
 class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
   val title: TextView
-//  val context: TextView
+  val bookmarkButton: ImageView
+  val searchButton: ImageView
 
   init {
     val binding = ItemHistoryBinding.bind(view)
 
     title = binding.title
-//    context = binding.context
+    bookmarkButton = binding.bookmarkButton
+    searchButton = binding.searchButton
   }
 }
 
-private class HistoryAdapter(private val words: List<GuessedWordEntry>) : RecyclerView.Adapter<ViewHolder>() {
+private class HistoryAdapter(
+  private val navController: NavController,
+  private val words: List<GuessedWordEntry>)
+  : RecyclerView.Adapter<ViewHolder>() {
 
   override fun getItemCount(): Int {
     return words.size
@@ -43,20 +53,47 @@ private class HistoryAdapter(private val words: List<GuessedWordEntry>) : Recycl
   }
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    words[position].let {
-      val title = if (it.scoreEarned > 0) {
-        "${it.word} (+${it.scoreEarned})"
+    words[position].let { entry ->
+      val title = if (entry.scoreEarned > 0) {
+        "${entry.word} (+${entry.scoreEarned})"
       } else {
-        it.word
+        entry.word
       }
 
       holder.title.text = title
-//      holder.context.text = convertDate(it.time)
+      holder.searchButton.setOnClickListener {
+        navController.navigate(R.id.navigation_definition)
+      }
+      holder.bookmarkButton.setOnClickListener {
+        scope.launch {
+          if (getBookmark(entry.word) != null) {
+            deleteBookmark(entry.word)
+            holder.bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_border_24)
+          } else {
+            addBookmark(entry.word)
+            holder.bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_24)
+          }
+        }
+      }
+
+      scope.launch {
+        if (getBookmark(entry.word) != null) {
+          holder.bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_24)
+        } else {
+          holder.bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_border_24)
+        }
+      }
     }
   }
 
-  fun convertDate(dateInMilliseconds: Long): String {
-    return DateFormat.format("yyyy/MM/dd", dateInMilliseconds).toString()
+  private fun updateBookmarkButton(button: ImageView, word: String) {
+    scope.launch {
+      if (getBookmark(word) != null) {
+        button.setImageResource(R.drawable.ic_round_bookmark_24)
+      } else {
+        button.setImageResource(R.drawable.ic_round_bookmark_border_24)
+      }
+    }
   }
 }
 
@@ -83,7 +120,7 @@ class HistoryFragment : BaseFragment() {
 
     scope.launch {
       binding.feed.layoutManager = LinearLayoutManager(getMainActivity())
-      binding.feed.adapter = HistoryAdapter(getAllGuessedWords())
+      binding.feed.adapter = HistoryAdapter(findNavController(), getAllGuessedWords())
     }
   }
 
