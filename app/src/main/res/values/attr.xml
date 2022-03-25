@@ -40,4 +40,6 @@
   <attr name="colorButtonSearchBackground" format="color" />
   <attr name="colorButtonSearchForeground" format="color" />
 
+  <attr name="colorDivider" format="color" />
+
 </resources>

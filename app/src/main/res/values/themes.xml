@@ -47,6 +47,8 @@
     <item name="colorButtonSearchBackground">#FF4DB4B7</item>
     <item name="colorButtonSearchForeground">#FFFFFFFF</item>
 
+    <item name="colorDivider">#FFD4B996</item>
+
   </style>
 
 </resources>
