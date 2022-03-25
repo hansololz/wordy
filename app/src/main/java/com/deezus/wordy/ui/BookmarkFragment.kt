@@ -11,8 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deezus.wordy.R
-import com.deezus.wordy.data.BookmarkEntry
-import com.deezus.wordy.data.getAllBookmark
+import com.deezus.wordy.data.*
 import com.deezus.wordy.databinding.FragmentBookmarkBinding
 import com.deezus.wordy.databinding.ItemBookmarkBinding
 import com.deezus.wordy.scope
@@ -50,10 +49,29 @@ private class BookmarkAdapter(
   }
 
   override fun onBindViewHolder(holder: BookmarkViewHolder, position: Int) {
-    words[position].let {
-      holder.title.text = it.word
+    words[position].let { entry ->
+      holder.title.text = entry.word
       holder.searchButton.setOnClickListener {
         navController.navigate(R.id.navigation_definition)
+      }
+      holder.bookmarkButton.setOnClickListener {
+        scope.launch {
+          if (getBookmark(entry.word) != null) {
+            deleteBookmark(entry.word)
+            holder.bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_border_24)
+          } else {
+            addBookmark(entry.word)
+            holder.bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_24)
+          }
+        }
+      }
+
+      scope.launch {
+        if (getBookmark(entry.word) != null) {
+          holder.bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_24)
+        } else {
+          holder.bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_border_24)
+        }
       }
     }
   }
