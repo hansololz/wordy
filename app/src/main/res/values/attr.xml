@@ -37,4 +37,7 @@
   <attr name="colorButtonHistoryBackground" format="color" />
   <attr name="colorButtonHistoryForeground" format="color" />
 
+  <attr name="colorButtonSearchBackground" format="color" />
+  <attr name="colorButtonSearchForeground" format="color" />
+
 </resources>

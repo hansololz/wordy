@@ -44,6 +44,9 @@
     <item name="colorButtonHistoryBackground">#FF4DB4B7</item>
     <item name="colorButtonHistoryForeground">#FFFFFFFF</item>
 
+    <item name="colorButtonSearchBackground">#FF4DB4B7</item>
+    <item name="colorButtonSearchForeground">#FFFFFFFF</item>
+
   </style>
 
 </resources>
