@@ -19,13 +19,13 @@ import kotlinx.coroutines.launch
 
 class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
   val title: TextView
-  val context: TextView
+//  val context: TextView
 
   init {
     val binding = ItemHistoryBinding.bind(view)
 
     title = binding.title
-    context = binding.context
+//    context = binding.context
   }
 }
 
@@ -51,7 +51,7 @@ private class HistoryAdapter(private val words: List<GuessedWordEntry>) : Recycl
       }
 
       holder.title.text = title
-      holder.context.text = convertDate(it.time)
+//      holder.context.text = convertDate(it.time)
     }
   }
 

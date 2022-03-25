@@ -35,27 +35,15 @@
   <TextView
     android:id="@+id/title"
     android:layout_width="0dp"
-    android:layout_height="wrap_content"
+    android:layout_height="0dp"
     android:paddingStart="@dimen/spacing"
     android:paddingEnd="@dimen/spacing"
-    android:textColor="?colorLetterText"
-    android:textSize="@dimen/letter_text_size"
+    android:textSize="@dimen/score_text_size"
     android:textStyle="bold"
+    android:gravity="center_vertical"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toEndOf="@id/search_button"
-    app:layout_constraintTop_toTopOf="parent" />
-
-  <TextView
-    android:id="@+id/context"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:paddingStart="@dimen/spacing"
-    android:paddingEnd="@dimen/spacing_none"
-    android:textColor="?colorText"
-    android:textSize="16sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toEndOf="@id/search_button"
-    app:layout_constraintTop_toBottomOf="@id/title"
+    app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintBottom_toBottomOf="@id/search_button"/>
 
   <TextView
