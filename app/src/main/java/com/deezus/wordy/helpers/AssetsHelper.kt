@@ -6,7 +6,7 @@ import java.io.InputStreamReader
 
 
 fun getWords(activity: MainActivity): List<String>? {
-  return getWords(activity, "words/5.txt", 5)
+  return getWords(activity, "words/word5.txt", 5)
 }
 
 private fun getWords(activity: MainActivity, filepath: String, wordLength: Int) : List<String>? {

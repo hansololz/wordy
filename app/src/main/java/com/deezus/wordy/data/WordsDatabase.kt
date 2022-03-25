@@ -79,7 +79,7 @@ private var guessedWordDatabase: GuessedWordDatabase? = null
 
 suspend fun initWordDatabase(activity: MainActivity) = withContext(Dispatchers.Default) {
   word5Database = Room
-    .databaseBuilder(activity, WordDatabase::class.java, "database-word-5")
+    .databaseBuilder(activity, WordDatabase::class.java, "database-word5")
     .build()
 
   guessedWordDatabase = Room
