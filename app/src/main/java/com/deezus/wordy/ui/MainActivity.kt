@@ -1,7 +1,7 @@
 package com.deezus.wordy.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -9,6 +9,7 @@ import androidx.navigation.findNavController
 import com.deezus.wordy.R
 import com.deezus.wordy.data.*
 import com.deezus.wordy.databinding.ActivityMainBinding
+import com.deezus.wordy.helpers.navigationWithOptions
 import com.deezus.wordy.helpers.scope
 import kotlinx.coroutines.launch
 
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         val game = getGame(it)
         findNavController(R.id.host_fragment).apply {
           popBackStack(R.id.navigation_loading, true)
-          navigate(R.id.navigation_wordy)
+          navigationWithOptions(game.navigationId)
         }
       }
     }

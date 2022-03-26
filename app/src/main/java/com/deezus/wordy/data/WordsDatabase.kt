@@ -88,5 +88,5 @@ suspend fun deleteWord(wordSet: WordSet, word: String) = withContext(Dispatchers
 }
 
 suspend fun hasWord(language: Language, word: String): Boolean = withContext(Dispatchers.Default) {
-  wordDatabases[language]?.userDao()?.getWord(word) != null
+  wordDatabases[language]?.userDao()?.getWord(word)?.isNotEmpty() == true
 }

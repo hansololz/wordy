@@ -15,6 +15,7 @@ import com.deezus.wordy.*
 import com.deezus.wordy.data.*
 import com.deezus.wordy.databinding.FragmentWordyBinding
 import com.deezus.wordy.helpers.DialogMessage
+import com.deezus.wordy.helpers.navigationWithOptions
 import com.deezus.wordy.helpers.scope
 import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.launch
@@ -291,11 +292,11 @@ class WordyFragment : BaseFragment() {
     }
 
     binding.viewHistory.setOnClickListener {
-      findNavController().navigate(R.id.navigation_history)
+      findNavController().navigationWithOptions(R.id.navigation_history)
     }
 
     binding.viewBookmark.setOnClickListener {
-      findNavController().navigate(R.id.navigation_bookmark)
+      findNavController().navigationWithOptions(R.id.navigation_bookmark)
     }
   }
 
@@ -333,7 +334,7 @@ class WordyFragment : BaseFragment() {
     view.setOnClickListener {
       getPastGuesses().getOrNull(index)?.let {
         DefinitionFragment.currentWord = it
-        findNavController().navigate(R.id.navigation_definition)
+        findNavController().navigationWithOptions(R.id.navigation_definition)
       }
     }
   }
@@ -462,7 +463,6 @@ class WordyFragment : BaseFragment() {
     getRandomWord(game.wordSet)?.let { randomWord ->
       viewModel.currentWord.value = randomWord
       deleteWord(game.wordSet, randomWord)
-      val settings = Settings(getMainActivity())
       addHistory(
         getCurrentWord(),
         System.currentTimeMillis(),

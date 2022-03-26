@@ -17,6 +17,7 @@ import com.deezus.wordy.data.setupBookmarkButton
 import com.deezus.wordy.databinding.FragmentHistoryBinding
 import com.deezus.wordy.databinding.ItemHistoryBinding
 import com.deezus.wordy.databinding.ItemHistoryHeaderBinding
+import com.deezus.wordy.helpers.navigationWithOptions
 import com.deezus.wordy.helpers.scope
 import kotlinx.coroutines.launch
 
@@ -99,7 +100,7 @@ private class HistoryAdapter(
     holder.title.text = title
     holder.searchButton.setOnClickListener {
       DefinitionFragment.currentWord = entry.word
-      navController.navigate(R.id.navigation_definition)
+      navController.navigationWithOptions(R.id.navigation_definition)
     }
     setupBookmarkButton(holder.bookmarkButton, entry.word)
   }

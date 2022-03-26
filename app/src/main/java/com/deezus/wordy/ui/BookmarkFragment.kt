@@ -17,6 +17,7 @@ import com.deezus.wordy.data.setupBookmarkButton
 import com.deezus.wordy.databinding.FragmentBookmarkBinding
 import com.deezus.wordy.databinding.ItemBookmarkBinding
 import com.deezus.wordy.databinding.ItemBookmarkHeaderBinding
+import com.deezus.wordy.helpers.navigationWithOptions
 import com.deezus.wordy.helpers.scope
 import kotlinx.coroutines.launch
 
@@ -93,7 +94,7 @@ private class BookmarkAdapter(
     holder.title.text = entry.word
     holder.searchButton.setOnClickListener {
       DefinitionFragment.currentWord = entry.word
-      navController.navigate(R.id.navigation_definition)
+      navController.navigationWithOptions(R.id.navigation_definition)
     }
     setupBookmarkButton(holder.bookmarkButton, entry.word)
   }
