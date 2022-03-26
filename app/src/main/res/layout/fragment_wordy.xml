@@ -32,7 +32,7 @@
       android:src="@drawable/ic_round_bookmark_border_24"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:tint="?colorButtonSearchForeground" />
+      app:tint="?colorButtonForeground" />
 
     <ImageView
       android:id="@+id/view_history"
@@ -44,7 +44,7 @@
       android:src="@drawable/ic_round_history_24"
       app:layout_constraintStart_toEndOf="@id/view_bookmark"
       app:layout_constraintTop_toTopOf="parent"
-      app:tint="?colorButtonHistoryForeground" />
+      app:tint="?colorButtonForeground" />
 
     <ImageView
       android:id="@+id/view_settings"
@@ -57,7 +57,7 @@
       android:src="@drawable/ic_round_settings_24"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:tint="?colorButtonHistoryForeground" />
+      app:tint="?colorButtonForeground" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -676,7 +676,7 @@
       android:contentDescription="Backspace"
       android:padding="@dimen/spacing"
       android:src="@drawable/ic_round_backspace_24"
-      android:textColor="?colorButtonSubmitForeground"
+      android:textColor="?colorKeyTextNoGuessed"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/bottom_keyboard_row"
@@ -700,7 +700,7 @@
       android:padding="@dimen/spacing"
       android:src="@drawable/ic_round_question_mark_24"
       android:text="Get Hint"
-      android:textColor="?colorButtonSubmitForeground"
+      android:textColor="?colorButtonForeground"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:tint="?colorButtonForeground" />
@@ -714,7 +714,7 @@
       android:background="@drawable/button_background_disabled"
       android:gravity="center"
       android:text="Submit"
-      android:textColor="?colorButtonSubmitForeground"
+      android:textColor="?colorButtonForeground"
       android:textSize="@dimen/submit_text_size"
       android:textStyle="bold"
       app:layout_constraintBottom_toBottomOf="@id/show_hint"
@@ -730,11 +730,21 @@
       android:gravity="center"
       android:padding="@dimen/spacing"
       android:src="@drawable/ic_round_skip_next_24"
-      android:textColor="?colorButtonSubmitForeground"
+      android:textColor="?colorButtonWarning"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:tint="?colorButtonForeground" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--  <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--    android:id="@+id/prompt_holder"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:background="#80000000">-->
+<!--    -->
+<!--    -->
+
+<!--  </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,25 +20,25 @@
     android:id="@+id/bookmark_button"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/button_background_search"
+    android:background="@drawable/button_background_round_info"
     android:layout_marginTop="@dimen/spacing"
     android:padding="@dimen/spacing_half"
     android:src="@drawable/ic_round_bookmark_border_24"
     app:layout_constraintTop_toBottomOf="@id/divider"
-    app:tint="?colorButtonSearchForeground"
+    app:tint="?colorButtonForeground"
     app:layout_constraintStart_toStartOf="parent" />
 
   <ImageView
     android:id="@+id/search_button"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/button_background_search"
+    android:background="@drawable/button_background_round_info"
     android:padding="@dimen/spacing_half"
     android:src="@drawable/ic_round_search_24"
     android:layout_marginStart="@dimen/spacing"
     android:layout_marginEnd="@dimen/spacing_none"
     android:layout_marginTop="@dimen/spacing"
-    app:tint="?colorButtonSearchForeground"
+    app:tint="?colorButtonForeground"
     app:layout_constraintStart_toEndOf="@id/bookmark_button"
     app:layout_constraintTop_toBottomOf="@id/divider" />
 

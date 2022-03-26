@@ -22,23 +22,9 @@
   <attr name="colorLetterText" format="color" />
 
   <attr name="colorButtonForeground" format="color" />
-  <attr name="colorSkipNextButtonBackground" format="color" />
-  <attr name="colorGetHintButtonBackground" format="color" />
-  <attr name="colorGetHintUnavailableButtonBackground" format="color"/>
-
-  <attr name="colorButtonSubmitForeground" format="color" />
-
-  <attr name="colorButtonSubmitEnabledBackground" format="color" />
-  <attr name="colorButtonSubmitDisabledBackground" format="color" />
 
   <attr name="colorDialogButton" format="color" />
   <attr name="colorDialogBackground" format="color" />
-
-  <attr name="colorButtonHistoryBackground" format="color" />
-  <attr name="colorButtonHistoryForeground" format="color" />
-
-  <attr name="colorButtonSearchBackground" format="color" />
-  <attr name="colorButtonSearchForeground" format="color" />
 
   <attr name="colorButtonInfo" format="color" />
   <attr name="colorButtonWarning" format="color" />

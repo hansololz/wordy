@@ -30,22 +30,8 @@
     <item name="colorKeyTextNoGuessed">#FF202020</item>
 
     <item name="colorButtonForeground">#FFFFFFFF</item>
-    <item name="colorSkipNextButtonBackground">#FFFFA500</item>
-    <item name="colorGetHintButtonBackground">#FF4DB4B7</item>
-    <item name="colorGetHintUnavailableButtonBackground">#FFA0A0A0</item>
-
-    <item name="colorButtonSubmitForeground">#F0F0F0</item>
-    <item name="colorButtonSubmitEnabledBackground">#FF73A659</item>
-    <item name="colorButtonSubmitDisabledBackground">#FFA0A0A0</item>
-
     <item name="colorDialogButton">#FF202020</item>
     <item name="colorDialogBackground">#FFFFFFFF</item>
-
-    <item name="colorButtonHistoryBackground">#FF4DB4B7</item>
-    <item name="colorButtonHistoryForeground">#FFFFFFFF</item>
-
-    <item name="colorButtonSearchBackground">#FF4DB4B7</item>
-    <item name="colorButtonSearchForeground">#FFFFFFFF</item>
 
     <item name="colorDivider">#FFD4B996</item>
 
