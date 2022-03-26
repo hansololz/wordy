@@ -1,6 +1,7 @@
-package com.deezus.wordy
+package com.deezus.wordy.data
 
 import androidx.room.*
+import com.deezus.wordy.helpers.getWords
 import com.deezus.wordy.ui.MainActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -9,17 +10,6 @@ import kotlinx.coroutines.withContext
 @Entity(primaryKeys = ["word"])
 data class WordEntry(
   @ColumnInfo(name = "word") var word: String
-)
-
-enum class GuessOutcome { NOT_COMPLETED, FAILED, SKIPPED, SUCCEEDED }
-
-@Entity(primaryKeys = ["word"])
-data class GuessedWordEntry(
-  @ColumnInfo(name = "word") var word: String,
-  @ColumnInfo(name = "time") var time: Long,
-  @ColumnInfo(name = "outcome") var outcome: GuessOutcome,
-  @ColumnInfo(name = "scoreEarned") var scoreEarned: Long,
-  @ColumnInfo(name = "hinted") var hinted: Boolean
 )
 
 @Dao
@@ -37,31 +27,9 @@ private interface WordEntryDao {
   @Query("SELECT * FROM WordEntry ORDER BY RANDOM() LIMIT 1")
   fun getRandom(): List<WordEntry>
 
-  @Query("SELECT COUNT(word) FROM WordEntry")
-  fun getSize(): Int
-
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertAll(entries: List<WordEntry>)
 
-}
-
-@Dao
-private interface GuessedWordEntryDao {
-
-  @Query("DELETE FROM GuessedWordEntry WHERE word = :word")
-  fun delete(word: String)
-
-  @Query("SELECT * FROM GuessedWordEntry WHERE outcome = 'FAILED' OR outcome = 'SKIPPED' OR outcome = 'SUCCEEDED' ORDER BY time DESC")
-  fun getAll(): List<GuessedWordEntry>
-
-  @Query("SELECT * FROM GuessedWordEntry WHERE word = :word LIMIT 1")
-  fun getWord(word: String): List<GuessedWordEntry>
-
-  @Query("SELECT COUNT(word) FROM GuessedWordEntry")
-  fun getSize(): Int
-
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
-  fun insertAll(entry: List<GuessedWordEntry>)
 }
 
 @Database(entities = [WordEntry::class], version = 1, exportSchema = false)
@@ -69,56 +37,56 @@ private abstract class WordDatabase : RoomDatabase() {
   abstract fun userDao(): WordEntryDao
 }
 
-@Database(entities = [GuessedWordEntry::class], version = 1, exportSchema = false)
-private abstract class GuessedWordDatabase : RoomDatabase() {
-  abstract fun userDao(): GuessedWordEntryDao
-}
+private data class DatabaseHolder(
+  var database: WordDatabase?,
+  val databaseName: String,
+  val language: Language
+)
 
-private var word5Database: WordDatabase? = null
-private var guessedWordDatabase: GuessedWordDatabase? = null
+private var wordDatabases = hashMapOf<Language, WordDatabase>()
+private var wordSetDatabases = hashMapOf(
+  "english4" to DatabaseHolder(null, "database-english4", Language.ENGLISH),
+  "english5" to DatabaseHolder(null, "database-english5", Language.ENGLISH),
+  "english6" to DatabaseHolder(null, "database-english6", Language.ENGLISH),
+  "english7" to DatabaseHolder(null, "database-english7", Language.ENGLISH)
+)
 
 suspend fun initWordDatabase(activity: MainActivity) = withContext(Dispatchers.Default) {
-  word5Database = Room
-    .databaseBuilder(activity, WordDatabase::class.java, "database-word5")
+  val settings = Settings(activity)
+
+  Room
+    .databaseBuilder(activity, WordDatabase::class.java, "database-english")
     .build()
+    .let { wordDatabases[Language.ENGLISH] = it  }
 
-  guessedWordDatabase = Room
-    .databaseBuilder(activity, GuessedWordDatabase::class.java, "database-guessed-word")
-    .build()
+  wordSetDatabases.forEach {
+    val wordSetName = it.key
+    val value = it.value
 
-  val availableWordsCount = word5Database?.userDao()?.getSize()
+    value.database = Room
+      .databaseBuilder(activity, WordDatabase::class.java, value.databaseName)
+      .build()
 
-  if (availableWordsCount != null && availableWordsCount == 0) {
-    getWords(activity)?.map {
-      WordEntry(it)
-    }?.let {
-      word5Database?.userDao()?.insertAll(it)
+    if (!settings.isWordSetSaved(wordSetName)) {
+      getWords(activity, wordSetName)
+        ?.map { WordEntry(it) }
+        ?.let {
+          value.database?.userDao()?.insertAll(it)
+          wordDatabases[value.language]?.userDao()?.insertAll(it)
+          settings.setWordSetToTrue(wordSetName)
+        }
     }
   }
 }
 
-suspend fun getRandomWord(): String? = withContext(Dispatchers.Default) {
-  word5Database?.userDao()?.getRandom()?.firstOrNull()?.word
+suspend fun getRandomWord(activity: MainActivity): String? = withContext(Dispatchers.Default) {
+  wordSetDatabases[Settings(activity).getCurrentWordSetName()]?.database?.userDao()?.getRandom()?.firstOrNull()?.word
 }
 
-suspend fun deleteWord(word: String) = withContext(Dispatchers.Default) {
-  word5Database?.userDao()?.delete(word)
+suspend fun deleteWord(activity: MainActivity, word: String) = withContext(Dispatchers.Default) {
+  wordSetDatabases[Settings(activity).getCurrentWordSetName()]?.database?.userDao()?.delete(word)
 }
 
-suspend fun hasWord(word: String): Boolean = withContext(Dispatchers.Default) {
-  word5Database?.userDao()?.getWord(word)?.firstOrNull() != null ||
-      guessedWordDatabase?.userDao()?.getWord(word)?.firstOrNull() != null
-}
-
-suspend fun addGuessedWord(word: String, time: Long, outcome: GuessOutcome, scoreEarned: Long, hinted: Boolean) = withContext(Dispatchers.Default) {
-  val entry = GuessedWordEntry(word, time, outcome, scoreEarned, hinted)
-  guessedWordDatabase?.userDao()?.insertAll(listOf(entry))
-}
-
-suspend fun getGuessedWord(word: String): GuessedWordEntry? = withContext(Dispatchers.Default) {
-  guessedWordDatabase?.userDao()?.getWord(word)?.firstOrNull()
-}
-
-suspend fun getAllGuessedWords(): List<GuessedWordEntry> = withContext(Dispatchers.Default) {
-  guessedWordDatabase?.userDao()?.getAll() ?: listOf()
+suspend fun hasWord(activity: MainActivity, word: String): Boolean = withContext(Dispatchers.Default) {
+  wordDatabases[Settings(activity).getCurrentLanguage()]?.userDao()?.getWord(word) != null
 }

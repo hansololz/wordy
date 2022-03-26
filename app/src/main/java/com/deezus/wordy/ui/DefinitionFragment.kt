@@ -19,7 +19,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.deezus.wordy.data.setupBookmarkButton
 import com.deezus.wordy.databinding.FragmentDefinitionBinding
-import com.deezus.wordy.scope
+import com.deezus.wordy.helpers.scope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

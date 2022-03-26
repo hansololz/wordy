@@ -12,10 +12,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.deezus.wordy.*
-import com.deezus.wordy.data.Settings
-import com.deezus.wordy.data.initBookmarkDatabase
+import com.deezus.wordy.data.*
 import com.deezus.wordy.databinding.FragmentWordyBinding
 import com.deezus.wordy.helpers.DialogMessage
+import com.deezus.wordy.helpers.scope
 import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.launch
 import kotlin.math.max
@@ -159,6 +159,8 @@ class WordyFragment : BaseFragment() {
     }
 
     binding.submitButton.setOnClickListener {
+      val settings = Settings(getMainActivity())
+
       scope.launch {
         when {
           getCurrentGuess().length > getWordLength() -> {
@@ -166,12 +168,18 @@ class WordyFragment : BaseFragment() {
           }
           getCurrentGuess() == getCurrentWord() -> {
             val newScore = min(getMaxGuessCount(), max(getMaxGuessCount() - getPastGuesses().size, 0)).toLong()
-            val settings = Settings(getMainActivity())
 
             settings.setScore(settings.getScore() + newScore)
             updateScore()
 
-            addGuessedWord(getCurrentWord(), System.currentTimeMillis(), GuessOutcome.SUCCEEDED, newScore, hasAskedForHint())
+            addHistory(
+              getCurrentWord(),
+              System.currentTimeMillis(),
+              settings.getCurrentLanguage(),
+              settings.getCurrentGame(),
+              GameOutcome.SUCCEEDED,
+              newScore,
+              hasAskedForHint())
 
             val scoreMessage = if (newScore > 1) {
               "$newScore points"
@@ -192,11 +200,18 @@ class WordyFragment : BaseFragment() {
               }
               .show()
           }
-          hasWord(getCurrentGuess()) && getPastGuesses().size + 1 == getMaxGuessCount() -> {
+          hasWord(getMainActivity(), getCurrentGuess()) && getPastGuesses().size + 1 == getMaxGuessCount() -> {
             viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
             viewModel.currentGuess.value = ""
 
-            addGuessedWord(getCurrentWord(), System.currentTimeMillis(), GuessOutcome.FAILED, 0, hasAskedForHint())
+            addHistory(
+              getCurrentWord(),
+              System.currentTimeMillis(),
+              settings.getCurrentLanguage(),
+              settings.getCurrentGame(),
+              GameOutcome.FAILED,
+              0,
+              hasAskedForHint())
 
             DialogMessage(getMainActivity(), "Sorry, the mystery word was \"${getCurrentWord()}\"")
               .setOnDismissCallback {
@@ -211,7 +226,7 @@ class WordyFragment : BaseFragment() {
               }
               .show()
           }
-          hasWord(getCurrentGuess()) -> {
+          hasWord(getMainActivity(), getCurrentGuess()) -> {
             viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
             viewModel.currentGuess.value = ""
           }
@@ -239,7 +254,17 @@ class WordyFragment : BaseFragment() {
           val oldWord = getCurrentWord()
 
           scope.launch {
-            addGuessedWord(oldWord, System.currentTimeMillis(), GuessOutcome.SKIPPED, 0, hasAskedForHint())
+            val settings = Settings(getMainActivity())
+
+            addHistory(
+              getCurrentWord(),
+              System.currentTimeMillis(),
+              settings.getCurrentLanguage(),
+              settings.getCurrentGame(),
+              GameOutcome.SKIPPED,
+              0,
+              hasAskedForHint())
+
             setupGame()
           }
 
@@ -406,7 +431,7 @@ class WordyFragment : BaseFragment() {
           binding.submitButton.setBackgroundResource(R.drawable.button_background_disabled)
           binding.submitButton.text = "Guess"
         }
-        hasWord(getCurrentGuess()) -> {
+        hasWord(getMainActivity(), getCurrentGuess()) -> {
           binding.submitButton.setBackgroundResource(R.drawable.button_background_positive)
           binding.submitButton.text = "Guess"
         }
@@ -433,11 +458,20 @@ class WordyFragment : BaseFragment() {
   private suspend fun setupGame() {
     initWordDatabase(getMainActivity())
     initBookmarkDatabase(getMainActivity())
+    initHistoryDatabase(getMainActivity())
 
-    getRandomWord()?.let { randomWord ->
+    getRandomWord(getMainActivity())?.let { randomWord ->
       viewModel.currentWord.value = randomWord
-      deleteWord(randomWord)
-      addGuessedWord(randomWord, System.currentTimeMillis(), GuessOutcome.NOT_COMPLETED, 0, hasAskedForHint())
+      deleteWord(getMainActivity(), randomWord)
+      val settings = Settings(getMainActivity())
+      addHistory(
+        getCurrentWord(),
+        System.currentTimeMillis(),
+        settings.getCurrentLanguage(),
+        settings.getCurrentGame(),
+        GameOutcome.NOT_COMPLETED,
+        0,
+        hasAskedForHint())
     }
 
     viewModel.pastGuesses.value = listOf()

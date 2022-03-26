@@ -15,8 +15,7 @@ import com.deezus.wordy.data.*
 import com.deezus.wordy.databinding.FragmentBookmarkBinding
 import com.deezus.wordy.databinding.ItemBookmarkBinding
 import com.deezus.wordy.databinding.ItemBookmarkHeaderBinding
-import com.deezus.wordy.getAllGuessedWords
-import com.deezus.wordy.scope
+import com.deezus.wordy.helpers.scope
 import kotlinx.coroutines.launch
 
 

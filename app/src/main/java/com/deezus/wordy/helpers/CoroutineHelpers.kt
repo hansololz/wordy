@@ -1,4 +1,4 @@
-package com.deezus.wordy
+package com.deezus.wordy.helpers
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

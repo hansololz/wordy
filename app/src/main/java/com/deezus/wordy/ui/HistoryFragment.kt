@@ -10,14 +10,14 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.deezus.wordy.GuessedWordEntry
 import com.deezus.wordy.R
+import com.deezus.wordy.data.HistoryEntry
+import com.deezus.wordy.data.getAllHistory
 import com.deezus.wordy.data.setupBookmarkButton
 import com.deezus.wordy.databinding.FragmentHistoryBinding
 import com.deezus.wordy.databinding.ItemHistoryBinding
 import com.deezus.wordy.databinding.ItemHistoryHeaderBinding
-import com.deezus.wordy.getAllGuessedWords
-import com.deezus.wordy.scope
+import com.deezus.wordy.helpers.scope
 import kotlinx.coroutines.launch
 
 
@@ -46,7 +46,7 @@ class HistoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
 private class HistoryAdapter(
   private val navController: NavController,
-  private val words: List<GuessedWordEntry>)
+  private val words: List<HistoryEntry>)
   : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   override fun getItemCount(): Int {
@@ -89,7 +89,7 @@ private class HistoryAdapter(
     }
   }
 
-  private fun formatItem(holder: HistoryViewHolder, entry: GuessedWordEntry) {
+  private fun formatItem(holder: HistoryViewHolder, entry: HistoryEntry) {
     val title = if (entry.scoreEarned > 0) {
       "${entry.word} (+${entry.scoreEarned})"
     } else {
@@ -134,7 +134,7 @@ class HistoryFragment : BaseFragment() {
       binding.feed.adapter = historyAdapter
     } else {
       scope.launch {
-        historyAdapter = HistoryAdapter(findNavController(), getAllGuessedWords())
+        historyAdapter = HistoryAdapter(findNavController(), getAllHistory())
         binding.feed.adapter = historyAdapter
       }
     }

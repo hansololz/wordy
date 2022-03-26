@@ -3,7 +3,7 @@ package com.deezus.wordy.data
 import android.widget.ImageView
 import androidx.room.*
 import com.deezus.wordy.R
-import com.deezus.wordy.scope
+import com.deezus.wordy.helpers.scope
 import com.deezus.wordy.ui.MainActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
