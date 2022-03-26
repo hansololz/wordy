@@ -375,15 +375,15 @@ class WordyFragment : BaseFragment() {
     scope.launch {
       when {
         getCurrentGuess().length < getWordLength() -> {
-          binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_disabled)
+          binding.submitButton.setBackgroundResource(R.drawable.button_background_disabled)
           binding.submitButton.text = "Guess"
         }
         hasWord(getCurrentGuess()) -> {
-          binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_enabled)
+          binding.submitButton.setBackgroundResource(R.drawable.button_background_positive)
           binding.submitButton.text = "Guess"
         }
         else -> {
-          binding.submitButton.setBackgroundResource(R.drawable.button_background_submit_disabled)
+          binding.submitButton.setBackgroundResource(R.drawable.button_background_disabled)
           binding.submitButton.text = "Not a Word"
         }
       }
@@ -391,10 +391,10 @@ class WordyFragment : BaseFragment() {
   }
 
   private fun updateGetHintButton() {
-    if (getUnusedLetters().isEmpty()) {
-      binding.showHint.setBackgroundResource(R.drawable.button_background_get_hint_unavailable)
+    if (getUnusedLetters().isEmpty() && hasAskedForHint()) {
+      binding.showHint.setBackgroundResource(R.drawable.button_background_disabled)
     } else {
-      binding.showHint.setBackgroundResource(R.drawable.button_background_get_hint)
+      binding.showHint.setBackgroundResource(R.drawable.button_background_info)
     }
   }
 

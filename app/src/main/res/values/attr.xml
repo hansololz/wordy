@@ -40,6 +40,12 @@
   <attr name="colorButtonSearchBackground" format="color" />
   <attr name="colorButtonSearchForeground" format="color" />
 
+  <attr name="colorButtonInfo" format="color" />
+  <attr name="colorButtonWarning" format="color" />
+  <attr name="colorButtonPositive" format="color" />
+  <attr name="colorButtonDisabled" format="color" />
+  <attr name="colorButtonNeutral" format="color" />
+
   <attr name="colorDivider" format="color" />
 
 </resources>

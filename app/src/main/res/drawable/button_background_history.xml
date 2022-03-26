@@ -7,7 +7,7 @@
     android:bottom="@dimen/button_padding">
     <shape>
       <solid android:color="?attr/colorButtonHistoryBackground"/>
-      <corners android:radius="@dimen/button_boarder_radius" />
+      <corners android:radius="50dp" />
     </shape>
   </item>
 </layer-list>

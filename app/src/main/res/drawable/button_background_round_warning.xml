@@ -6,8 +6,8 @@
     android:top="@dimen/button_padding"
     android:bottom="@dimen/button_padding">
     <shape>
-      <solid android:color="?colorSkipNextButtonBackground"/>
-      <corners android:radius="@dimen/button_boarder_radius" />
+      <solid android:color="?attr/colorButtonWarning"/>
+      <corners android:radius="@dimen/button_round_boarder_radius" />
     </shape>
   </item>
 </layer-list>

@@ -6,7 +6,7 @@
     android:top="@dimen/button_padding"
     android:bottom="@dimen/button_padding">
     <shape>
-      <solid android:color="?colorButtonSubmitEnabledBackground"/>
+      <solid android:color="?attr/colorButtonDisabled"/>
       <corners android:radius="@dimen/button_boarder_radius" />
     </shape>
   </item>

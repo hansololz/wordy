@@ -27,10 +27,9 @@
       android:id="@+id/view_bookmark"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:background="@drawable/button_background_search"
-      android:padding="@dimen/spacing"
+      android:background="@drawable/button_background_round_info"
+      android:padding="@dimen/spacing_half"
       android:src="@drawable/ic_round_bookmark_border_24"
-      android:visibility="gone"
       app:tint="?colorButtonSearchForeground"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent" />
@@ -40,13 +39,24 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:src="@drawable/ic_round_history_24"
-      android:background="@drawable/button_background_history"
-      android:padding="@dimen/spacing"
-      android:layout_marginLeft="@dimen/spacing"
-      android:visibility="gone"
+      android:background="@drawable/button_background_round_info"
+      android:padding="@dimen/spacing_half"
+      android:layout_marginLeft="@dimen/spacing_half"
       app:tint="?colorButtonHistoryForeground"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintStart_toEndOf="@id/view_bookmark"/>
+
+    <ImageView
+      android:id="@+id/goto_settings"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:src="@drawable/ic_round_settings_24"
+      android:background="@drawable/button_background_round_warning"
+      android:padding="@dimen/spacing_half"
+      android:layout_marginLeft="@dimen/spacing_half"
+      app:tint="?colorButtonHistoryForeground"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"/>
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -568,7 +578,7 @@
       android:id="@+id/show_hint"
       android:layout_width="wrap_content"
       android:layout_height="0dp"
-      android:background="@drawable/button_background_get_hint"
+      android:background="@drawable/button_background_info"
       android:padding="@dimen/spacing"
       android:src="@drawable/ic_round_question_mark_24"
       android:text="Get Hint"
@@ -581,7 +591,7 @@
       android:id="@+id/submit_button"
       android:layout_width="0dp"
       android:layout_height="0dp"
-      android:background="@drawable/button_background_submit_disabled"
+      android:background="@drawable/button_background_disabled"
       android:gravity="center"
       android:text="Submit"
       android:textColor="?colorButtonSubmitForeground"
@@ -598,7 +608,7 @@
       android:id="@+id/skip_next"
       android:layout_width="wrap_content"
       android:layout_height="0dp"
-      android:background="@drawable/button_background_skip_next"
+      android:background="@drawable/button_background_warning"
       android:gravity="center"
       android:padding="@dimen/spacing"
       android:src="@drawable/ic_round_skip_next_24"

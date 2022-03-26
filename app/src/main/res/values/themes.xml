@@ -49,6 +49,11 @@
 
     <item name="colorDivider">#FFD4B996</item>
 
+    <item name="colorButtonInfo">#FF4DB4B7</item>
+    <item name="colorButtonWarning">#FFFFA500</item>
+    <item name="colorButtonPositive">#FF73A659</item>
+    <item name="colorButtonDisabled">#FFA0A0A0</item>
+
   </style>
 
 </resources>
