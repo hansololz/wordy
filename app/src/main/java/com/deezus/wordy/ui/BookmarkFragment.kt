@@ -15,6 +15,7 @@ import com.deezus.wordy.data.*
 import com.deezus.wordy.databinding.FragmentBookmarkBinding
 import com.deezus.wordy.databinding.ItemBookmarkBinding
 import com.deezus.wordy.databinding.ItemBookmarkHeaderBinding
+import com.deezus.wordy.getAllGuessedWords
 import com.deezus.wordy.scope
 import kotlinx.coroutines.launch
 
@@ -101,6 +102,8 @@ class BookmarkFragment : BaseFragment() {
   private var _binding: FragmentBookmarkBinding? = null
   private val binding get() = _binding!!
 
+  private var bookmarkAdapter: BookmarkAdapter? = null
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -118,9 +121,15 @@ class BookmarkFragment : BaseFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    scope.launch {
-      binding.feed.layoutManager = LinearLayoutManager(getMainActivity())
-      binding.feed.adapter = BookmarkAdapter(findNavController(), getAllBookmark())
+    binding.feed.layoutManager = LinearLayoutManager(getMainActivity())
+
+    if (bookmarkAdapter != null) {
+      binding.feed.adapter = bookmarkAdapter
+    } else {
+      scope.launch {
+        bookmarkAdapter = BookmarkAdapter(findNavController(), getAllBookmark())
+        binding.feed.adapter = bookmarkAdapter
+      }
     }
   }
 }

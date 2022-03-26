@@ -12,9 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deezus.wordy.GuessedWordEntry
 import com.deezus.wordy.R
-import com.deezus.wordy.data.addBookmark
-import com.deezus.wordy.data.deleteBookmark
-import com.deezus.wordy.data.getBookmark
 import com.deezus.wordy.data.setupBookmarkButton
 import com.deezus.wordy.databinding.FragmentHistoryBinding
 import com.deezus.wordy.databinding.ItemHistoryBinding
@@ -112,6 +109,8 @@ class HistoryFragment : BaseFragment() {
   private var _binding: FragmentHistoryBinding? = null
   private val binding get() = _binding!!
 
+  private var historyAdapter: HistoryAdapter? = null
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -129,9 +128,15 @@ class HistoryFragment : BaseFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    scope.launch {
-      binding.feed.layoutManager = LinearLayoutManager(getMainActivity())
-      binding.feed.adapter = HistoryAdapter(findNavController(), getAllGuessedWords())
+    binding.feed.layoutManager = LinearLayoutManager(getMainActivity())
+
+    if (historyAdapter != null) {
+      binding.feed.adapter = historyAdapter
+    } else {
+      scope.launch {
+        historyAdapter = HistoryAdapter(findNavController(), getAllGuessedWords())
+        binding.feed.adapter = historyAdapter
+      }
     }
   }
 }
