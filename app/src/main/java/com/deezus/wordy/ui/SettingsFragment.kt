@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.deezus.wordy.databinding.FragmentSettingsBinding
-import com.deezus.wordy.ui.BaseFragment
 
 
 class SettingsFragment : BaseFragment() {

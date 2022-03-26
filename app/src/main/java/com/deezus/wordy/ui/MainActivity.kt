@@ -36,7 +36,10 @@ class MainActivity : AppCompatActivity() {
     mainViewModel.currentGame.observe(this) { gameName ->
       gameName?.let {
         val game = getGame(it)
-        findNavController(R.id.host_fragment).navigate(game.navigationId)
+        findNavController(R.id.host_fragment).apply {
+          popBackStack(R.id.navigation_loading, true)
+          navigate(R.id.navigation_wordy)
+        }
       }
     }
 

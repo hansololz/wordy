@@ -11,7 +11,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deezus.wordy.R
-import com.deezus.wordy.data.*
+import com.deezus.wordy.data.BookmarkEntry
+import com.deezus.wordy.data.getAllBookmark
+import com.deezus.wordy.data.setupBookmarkButton
 import com.deezus.wordy.databinding.FragmentBookmarkBinding
 import com.deezus.wordy.databinding.ItemBookmarkBinding
 import com.deezus.wordy.databinding.ItemBookmarkHeaderBinding
