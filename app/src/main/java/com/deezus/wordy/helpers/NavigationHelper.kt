@@ -19,6 +19,5 @@ fun NavController.navigationWithOptions(navigationId: Int) {
 }
 
 fun NavController.popWithOptions() {
-  navigateUp()
-//  (navigationId, null, getDefaultNavigationOptions())
+  popBackStack()
 }
