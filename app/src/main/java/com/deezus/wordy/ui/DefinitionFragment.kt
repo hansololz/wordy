@@ -1,9 +1,14 @@
 package com.deezus.wordy.ui
 
+import android.content.res.Resources
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.StyleSpan
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +33,7 @@ import java.net.UnknownHostException
 data class Content(
   var errorMessage: String? = null,
   var loadingMessage: String? = null,
-  var definition: String? = null
+  var definition: SpannableStringBuilder? = null
 )
 
 class DefinitionViewModel : ViewModel() {
@@ -67,9 +72,7 @@ class DefinitionFragment : BaseFragment() {
       findNavController().popBackStack()
     }
     binding.title.text = currentWord
-    binding.let {
-      setupBookmarkButton(it.bookmarkButton, currentWord)
-    }
+    setupBookmarkButton(binding.bookmarkButton, currentWord)
 
     viewModel.content.observe(getMainActivity()) { maybeContent ->
       if (_binding != null) {
@@ -98,31 +101,116 @@ class DefinitionFragment : BaseFragment() {
       }
     }
 
+    viewModel.content.value = Content(loadingMessage = "Loading word definition...")
+
     populateDefinition()
   }
 
   private fun populateDefinition() {
-    Log.d("WORDYYY", "WORD: $currentWord")
-
     scope.launch {
       try {
         val response = fetchDefinition()
+        val responseString = response.body?.string()
 
-        val meanings = JSONArray(response.body?.string())
+        if (responseString?.contains("No Definitions Found") == true) {
+          throw Resources.NotFoundException()
+        }
+
+        val meanings = JSONArray(responseString)
           .getJSONObject(0)
           .getJSONArray("meanings")
 
         val builder = SpannableStringBuilder()
 
+        val headerSize = 24
+        val textSize = 16
+
+        for (i in 0 until meanings.length()) {
+          val meaning = meanings.getJSONObject(i)
+
+          if (meaning.has("partOfSpeech")) {
+            val partOfSpeech = SpannableString(meaning.getString("partOfSpeech"))
+
+            partOfSpeech.setSpan(AbsoluteSizeSpan(headerSize, true), 0, partOfSpeech.length, 0)
+            partOfSpeech.setSpan(StyleSpan(Typeface.BOLD), 0, partOfSpeech.length, 0)
+
+            builder.append(partOfSpeech)
+            builder.append("\n\n")
+
+            val definitions = meaning.getJSONArray("definitions")
+            for (j in 0 until definitions.length()) {
+              val definition = definitions.getJSONObject(j)
+
+              val definitionString = SpannableString(definition.getString("definition"))
+              definitionString.setSpan(AbsoluteSizeSpan(textSize, true), 0, definitionString.length, 0)
+
+              val definitionHeading = SpannableString("Definition: ")
+              definitionHeading.setSpan(StyleSpan(Typeface.BOLD), 0, definitionHeading.length, 0)
+              definitionHeading.setSpan(AbsoluteSizeSpan(textSize, true), 0, definitionHeading.length, 0)
+
+              builder.append(definitionHeading)
+              builder.append(definitionString)
+              builder.append("\n")
+
+              if (definition.has("example")) {
+                val exampleString = SpannableString(definition.getString("example"))
+                exampleString.setSpan(AbsoluteSizeSpan(textSize, true), 0, exampleString.length, 0)
+
+                val exampleHeading = SpannableString("Example: ")
+                exampleHeading.setSpan(StyleSpan(Typeface.BOLD), 0, exampleHeading.length, 0)
+                exampleHeading.setSpan(AbsoluteSizeSpan(textSize, true), 0, exampleHeading.length, 0)
+
+                builder.append(exampleHeading)
+                builder.append(exampleString)
+                builder.append("\n")
+              }
+
+              builder.append("\n")
+            }
+          }
+
+          if (meaning.has("synonyms")) {
+            val synonyms = meaning.getJSONArray("synonyms")
+
+            if (synonyms.length() > 0) {
+              var synonymsString = synonyms.getString(0)
+
+              for (j in 1 until synonyms.length()) {
+                synonymsString += ", ${synonyms.getString(j)}"
+              }
+
+              val synonymsSpannableString = SpannableString(synonymsString)
+              synonymsSpannableString.setSpan(AbsoluteSizeSpan(textSize, true), 0, synonymsSpannableString.length, 0)
+
+              val synonymHeader = if (synonyms.length() > 1) {
+                "Synonyms"
+              } else {
+                "Synonym"
+              }
+
+              val synonymHeading = SpannableString("$synonymHeader: ")
+              synonymHeading.setSpan(StyleSpan(Typeface.BOLD), 0, synonymHeading.length, 0)
+              synonymHeading.setSpan(AbsoluteSizeSpan(textSize, true), 0, synonymHeading.length, 0)
+              builder.append(synonymHeading)
+              builder.append(synonymsSpannableString)
+              builder.append("\n\n")
+            }
+          }
+
+          builder.append("\n")
+        }
+
         Log.d("WORDYYY", meanings.toString())
 
-        viewModel.content.value = Content(definition = meanings.toString())
+        viewModel.content.value = Content(definition = builder)
+      } catch (exception: Resources.NotFoundException) {
+        viewModel.content.value = Content(errorMessage = "Could not find word definition.")
       } catch (exception: UnknownHostException) {
-        viewModel.content.value = Content(errorMessage = "Failed to establish connection with word definition service.")
-      }catch (exception: JSONException) {
-        viewModel.content.value = Content(errorMessage = "Failed to parse response from server.")
+        viewModel.content.value = Content(errorMessage = "Could not establish connection with word definition service.")
+      } catch (exception: JSONException) {
+        viewModel.content.value = Content(errorMessage = "Could not parse response from server.")
       } catch (exception: Exception) {
-        viewModel.content.value = Content(errorMessage = "Failed to fetch definition.\n$exception")
+        viewModel.content.value = Content(errorMessage = "Could not fetch definition.")
       }
     }
   }

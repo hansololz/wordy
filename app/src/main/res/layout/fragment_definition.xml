@@ -4,20 +4,19 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
-  <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+  <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <ImageView
       android:id="@+id/back_button"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spacing"
+      android:layout_marginTop="@dimen/spacing"
       android:background="@drawable/button_background_round_warning"
       android:padding="@dimen/spacing_half"
       android:src="@drawable/ic_round_arrow_back_24"
-      android:layout_marginTop="@dimen/spacing"
-      android:layout_marginStart="@dimen/spacing"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:tint="?colorButtonForeground" />
@@ -26,11 +25,11 @@
       android:id="@+id/bookmark_button"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spacing"
+      android:layout_marginTop="@dimen/spacing"
       android:background="@drawable/button_background_round_info"
       android:padding="@dimen/spacing_half"
       android:src="@drawable/ic_round_bookmark_border_24"
-      android:layout_marginTop="@dimen/spacing"
-      android:layout_marginStart="@dimen/spacing"
       app:layout_constraintStart_toEndOf="@id/back_button"
       app:layout_constraintTop_toTopOf="parent"
       app:tint="?colorButtonForeground" />
@@ -54,27 +53,29 @@
       android:id="@+id/divider"
       android:layout_width="match_parent"
       android:layout_height="1dp"
-      android:background="?colorDivider"
       android:layout_marginStart="@dimen/spacing"
-      android:layout_marginEnd="@dimen/spacing"
       android:layout_marginTop="@dimen/spacing"
+      android:layout_marginEnd="@dimen/spacing"
+      android:background="?colorDivider"
       app:layout_constraintTop_toBottomOf="@id/title" />
 
     <TextView
       android:id="@+id/loading_message"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:gravity="center"
       android:padding="@dimen/spacing"
-      android:text="Loading word definition..."
-      app:layout_constraintTop_toBottomOf="@id/divider"/>
+      android:textSize="@dimen/message_text_size"
+      app:layout_constraintTop_toBottomOf="@id/divider" />
 
     <TextView
       android:id="@+id/error_message"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:gravity="center"
       android:padding="@dimen/spacing"
-      android:text="Loading word definition..."
-      app:layout_constraintTop_toBottomOf="@id/divider"/>
+      android:textSize="@dimen/message_text_size"
+      app:layout_constraintTop_toBottomOf="@id/divider" />
 
     <TextView
       android:id="@+id/definition"
@@ -82,7 +83,7 @@
       android:layout_height="wrap_content"
       android:padding="@dimen/spacing"
       android:text=""
-      app:layout_constraintTop_toBottomOf="@id/divider"/>
+      app:layout_constraintTop_toBottomOf="@id/divider" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
