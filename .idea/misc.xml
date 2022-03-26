@@ -13,6 +13,8 @@
         <entry key="app/src/main/res/drawable/button_background_neutral.xml" value="0.2475" />
         <entry key="app/src/main/res/drawable/button_background_no_submit.xml" value="0.229" />
         <entry key="app/src/main/res/drawable/button_background_positive.xml" value="0.2475" />
+        <entry key="app/src/main/res/drawable/button_background_round_info.xml" value="0.2475" />
+        <entry key="app/src/main/res/drawable/button_background_round_warning.xml" value="0.2475" />
         <entry key="app/src/main/res/drawable/button_background_search.xml" value="0.21" />
         <entry key="app/src/main/res/drawable/button_background_skip_next.xml" value="0.229" />
         <entry key="app/src/main/res/drawable/button_background_submit_enabled.xml" value="0.23" />
@@ -41,7 +43,9 @@
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.225" />
         <entry key="app/src/main/res/layout/fragment_wordy.xml" value="0.10843373493975904" />
         <entry key="app/src/main/res/layout/item_bookmark.xml" value="0.2838541666666667" />
+        <entry key="app/src/main/res/layout/item_bookmark_header.xml" value="0.24166666666666667" />
         <entry key="app/src/main/res/layout/item_history.xml" value="0.29375" />
+        <entry key="app/src/main/res/layout/item_history_header.xml" value="0.24166666666666667" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.229" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.229" />
       </map>

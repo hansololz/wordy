@@ -17,12 +17,22 @@ import com.deezus.wordy.data.deleteBookmark
 import com.deezus.wordy.data.getBookmark
 import com.deezus.wordy.databinding.FragmentHistoryBinding
 import com.deezus.wordy.databinding.ItemHistoryBinding
+import com.deezus.wordy.databinding.ItemHistoryHeaderBinding
 import com.deezus.wordy.getAllGuessedWords
 import com.deezus.wordy.scope
 import kotlinx.coroutines.launch
 
 
-class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class HistoryHeaderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+  val backButton: ImageView
+
+  init {
+    val binding = ItemHistoryHeaderBinding.bind(view)
+    backButton = binding.backButton
+  }
+}
+
+class HistoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
   val title: TextView
   val bookmarkButton: ImageView
   val searchButton: ImageView
@@ -39,59 +49,76 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 private class HistoryAdapter(
   private val navController: NavController,
   private val words: List<GuessedWordEntry>)
-  : RecyclerView.Adapter<ViewHolder>() {
+  : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   override fun getItemCount(): Int {
-    return words.size
+    return words.size + 1
   }
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-    val view = LayoutInflater.from(parent.context)
-      .inflate(R.layout.item_history, parent, false)
-
-    return ViewHolder(view)
-  }
-
-  override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    words[position].let { entry ->
-      val title = if (entry.scoreEarned > 0) {
-        "${entry.word} (+${entry.scoreEarned})"
-      } else {
-        entry.word
-      }
-
-      holder.title.text = title
-      holder.searchButton.setOnClickListener {
-        navController.navigate(R.id.navigation_definition)
-      }
-      holder.bookmarkButton.setOnClickListener {
-        scope.launch {
-          if (getBookmark(entry.word) != null) {
-            deleteBookmark(entry.word)
-            holder.bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_border_24)
-          } else {
-            addBookmark(entry.word)
-            holder.bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_24)
-          }
-        }
-      }
-
-      scope.launch {
-        if (getBookmark(entry.word) != null) {
-          holder.bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_24)
-        } else {
-          holder.bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_border_24)
-        }
-      }
+  override fun getItemViewType(position: Int): Int {
+    return if (position == 0) {
+      0
+    } else {
+      1
     }
   }
 
-  private fun updateBookmarkButton(button: ImageView, word: String) {
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    return if (viewType == 0) {
+      val view = LayoutInflater.from(parent.context)
+        .inflate(R.layout.item_history_header, parent, false)
+
+      HistoryHeaderViewHolder(view)
+    } else {
+      val view = LayoutInflater.from(parent.context)
+        .inflate(R.layout.item_history, parent, false)
+
+      HistoryViewHolder(view)
+    }
+  }
+
+  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    if (position == 0) {
+      formatHeader(holder as HistoryHeaderViewHolder)
+    } else {
+      formatItem(holder as HistoryViewHolder, words[position - 1])
+    }
+  }
+
+  private fun formatHeader(holder: HistoryHeaderViewHolder) {
+    holder.backButton.setOnClickListener {
+      navController.popBackStack()
+    }
+  }
+
+  private fun formatItem(holder: HistoryViewHolder, entry: GuessedWordEntry) {
+    val title = if (entry.scoreEarned > 0) {
+      "${entry.word} (+${entry.scoreEarned})"
+    } else {
+      entry.word
+    }
+
+    holder.title.text = title
+    holder.searchButton.setOnClickListener {
+      navController.navigate(R.id.navigation_definition)
+    }
+    holder.bookmarkButton.setOnClickListener {
+      scope.launch {
+        if (getBookmark(entry.word) != null) {
+          deleteBookmark(entry.word)
+          holder.bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_border_24)
+        } else {
+          addBookmark(entry.word)
+          holder.bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_24)
+        }
+      }
+    }
+
     scope.launch {
-      if (getBookmark(word) != null) {
-        button.setImageResource(R.drawable.ic_round_bookmark_24)
+      if (getBookmark(entry.word) != null) {
+        holder.bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_24)
       } else {
-        button.setImageResource(R.drawable.ic_round_bookmark_border_24)
+        holder.bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_border_24)
       }
     }
   }
@@ -123,5 +150,4 @@ class HistoryFragment : BaseFragment() {
       binding.feed.adapter = HistoryAdapter(findNavController(), getAllGuessedWords())
     }
   }
-
 }
