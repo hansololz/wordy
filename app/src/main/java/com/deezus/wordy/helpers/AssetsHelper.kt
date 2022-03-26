@@ -1,28 +1,20 @@
 package com.deezus.wordy.helpers
 
+import com.deezus.wordy.data.WordSet
 import com.deezus.wordy.ui.MainActivity
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
 
-fun getEnglish4(activity: MainActivity): List<String>? {
-  return getWords(activity, "english4")
-}
+private val wordSetToFilenameMap = mapOf(
+  WordSet.ENGLISH_4 to "english4",
+  WordSet.ENGLISH_5 to "english5",
+  WordSet.ENGLISH_6 to "english6",
+  WordSet.ENGLISH_7 to "english7"
+)
 
-fun getEnglish5(activity: MainActivity): List<String>? {
-  return getWords(activity, "english5")
-}
-
-fun getEnglish6(activity: MainActivity): List<String>? {
-  return getWords(activity, "english6")
-}
-
-fun getEnglish7(activity: MainActivity): List<String>? {
-  return getWords(activity, "english7")
-}
-
-fun getWords(activity: MainActivity, wordSetName: String): List<String>? {
-  return getWords(activity, "words/$wordSetName.txt", 5)
+fun getWords(activity: MainActivity, wordSet: WordSet): List<String>? {
+  return getWords(activity, "words/${wordSetToFilenameMap[wordSet]}.txt", 5)
 }
 
 private fun getWords(activity: MainActivity, filepath: String, wordLength: Int) : List<String>? {

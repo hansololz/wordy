@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/mobile_navigation"
-  app:startDestination="@id/navigation_wordy">
+  app:startDestination="@id/navigation_loading">
 
   <fragment
     android:id="@+id/navigation_settings"
@@ -28,5 +28,10 @@
     android:id="@+id/navigation_bookmark"
     android:name="com.deezus.wordy.ui.BookmarkFragment"
     android:label="BookmarkFragment" />
+
+  <fragment
+    android:id="@+id/navigation_loading"
+    android:name="com.deezus.wordy.ui.LoadingFragment"
+    android:label="LoadingFragment" />
 
 </navigation>

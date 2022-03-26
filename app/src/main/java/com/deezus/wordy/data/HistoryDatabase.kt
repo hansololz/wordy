@@ -6,14 +6,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 
-enum class GameOutcome { NOT_COMPLETED, FAILED, SKIPPED, SUCCEEDED }
-
 @Entity(primaryKeys = ["word"])
 data class HistoryEntry(
   @ColumnInfo(name = "word") var word: String,
   @ColumnInfo(name = "time") var time: Long,
-  @ColumnInfo(name = "language") var language: Language,
-  @ColumnInfo(name = "game") var game: Game,
+  @ColumnInfo(name = "gameName") var game: GameName,
   @ColumnInfo(name = "outcome") var outcome: GameOutcome,
   @ColumnInfo(name = "scoreEarned") var scoreEarned: Long,
   @ColumnInfo(name = "hinted") var hinted: Boolean
@@ -42,9 +39,9 @@ suspend fun initHistoryDatabase(activity: MainActivity) {
     .build()
 }
 
-suspend fun addHistory(word: String, time: Long, language: Language, game: Game, outcome: GameOutcome,
-   scoreEarned: Long, hinted: Boolean) = withContext(Dispatchers.Default) {
-  val entry = HistoryEntry(word, time, language, game, outcome, scoreEarned, hinted)
+suspend fun addHistory(word: String, time: Long, game: GameName, outcome: GameOutcome,
+                       scoreEarned: Long, hinted: Boolean) = withContext(Dispatchers.Default) {
+  val entry = HistoryEntry(word, time, game, outcome, scoreEarned, hinted)
   historyDatabase?.userDao()?.insert(entry)
 }
 

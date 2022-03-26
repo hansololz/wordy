@@ -26,7 +26,7 @@
     android:paddingStart="@dimen/spacing"
     android:paddingEnd="@dimen/spacing"
     android:text="Bookmark"
-    android:textSize="@dimen/score_text_size"
+    android:textSize="@dimen/header_text_size"
     android:textStyle="bold"
     app:layout_constraintBottom_toBottomOf="@id/back_button"
     app:layout_constraintEnd_toEndOf="parent"

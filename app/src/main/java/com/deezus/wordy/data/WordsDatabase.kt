@@ -45,10 +45,10 @@ private data class DatabaseHolder(
 
 private var wordDatabases = hashMapOf<Language, WordDatabase>()
 private var wordSetDatabases = hashMapOf(
-  "english4" to DatabaseHolder(null, "database-english4", Language.ENGLISH),
-  "english5" to DatabaseHolder(null, "database-english5", Language.ENGLISH),
-  "english6" to DatabaseHolder(null, "database-english6", Language.ENGLISH),
-  "english7" to DatabaseHolder(null, "database-english7", Language.ENGLISH)
+  WordSet.ENGLISH_4 to DatabaseHolder(null, "database-english4", Language.ENGLISH),
+  WordSet.ENGLISH_5 to DatabaseHolder(null, "database-english5", Language.ENGLISH),
+  WordSet.ENGLISH_6 to DatabaseHolder(null, "database-english6", Language.ENGLISH),
+  WordSet.ENGLISH_7 to DatabaseHolder(null, "database-english7", Language.ENGLISH)
 )
 
 suspend fun initWordDatabase(activity: MainActivity) = withContext(Dispatchers.Default) {
@@ -79,14 +79,14 @@ suspend fun initWordDatabase(activity: MainActivity) = withContext(Dispatchers.D
   }
 }
 
-suspend fun getRandomWord(activity: MainActivity): String? = withContext(Dispatchers.Default) {
-  wordSetDatabases[Settings(activity).getCurrentWordSetName()]?.database?.userDao()?.getRandom()?.firstOrNull()?.word
+suspend fun getRandomWord(wordSet: WordSet): String? = withContext(Dispatchers.Default) {
+  wordSetDatabases[wordSet]?.database?.userDao()?.getRandom()?.firstOrNull()?.word
 }
 
-suspend fun deleteWord(activity: MainActivity, word: String) = withContext(Dispatchers.Default) {
-  wordSetDatabases[Settings(activity).getCurrentWordSetName()]?.database?.userDao()?.delete(word)
+suspend fun deleteWord(wordSet: WordSet, word: String) = withContext(Dispatchers.Default) {
+  wordSetDatabases[wordSet]?.database?.userDao()?.delete(word)
 }
 
-suspend fun hasWord(activity: MainActivity, word: String): Boolean = withContext(Dispatchers.Default) {
-  wordDatabases[Settings(activity).getCurrentLanguage()]?.userDao()?.getWord(word) != null
+suspend fun hasWord(language: Language, word: String): Boolean = withContext(Dispatchers.Default) {
+  wordDatabases[language]?.userDao()?.getWord(word) != null
 }

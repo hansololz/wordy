@@ -42,6 +42,7 @@ class WordyFragment : BaseFragment() {
   private val searchButtons = arrayListOf<ConstraintLayout>()
 
   private lateinit var viewModel: WordyViewModel
+  private lateinit var game: Game
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -50,6 +51,10 @@ class WordyFragment : BaseFragment() {
   ): View {
     _binding = FragmentWordyBinding.inflate(inflater, container, false)
     viewModel = ViewModelProvider(getMainActivity())[WordyViewModel::class.java]
+
+    game = getMainActivity().mainViewModel.currentGame.value
+      ?.let { getGame(it) }!!
+
     return binding.root
   }
 
@@ -175,8 +180,7 @@ class WordyFragment : BaseFragment() {
             addHistory(
               getCurrentWord(),
               System.currentTimeMillis(),
-              settings.getCurrentLanguage(),
-              settings.getCurrentGame(),
+              game.gameName,
               GameOutcome.SUCCEEDED,
               newScore,
               hasAskedForHint())
@@ -200,15 +204,14 @@ class WordyFragment : BaseFragment() {
               }
               .show()
           }
-          hasWord(getMainActivity(), getCurrentGuess()) && getPastGuesses().size + 1 == getMaxGuessCount() -> {
+          hasWord(game.language, getCurrentGuess()) && getPastGuesses().size + 1 == getMaxGuessCount() -> {
             viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
             viewModel.currentGuess.value = ""
 
             addHistory(
               getCurrentWord(),
               System.currentTimeMillis(),
-              settings.getCurrentLanguage(),
-              settings.getCurrentGame(),
+              game.gameName,
               GameOutcome.FAILED,
               0,
               hasAskedForHint())
@@ -226,7 +229,7 @@ class WordyFragment : BaseFragment() {
               }
               .show()
           }
-          hasWord(getMainActivity(), getCurrentGuess()) -> {
+          hasWord(game.language, getCurrentGuess()) -> {
             viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
             viewModel.currentGuess.value = ""
           }
@@ -259,8 +262,7 @@ class WordyFragment : BaseFragment() {
             addHistory(
               getCurrentWord(),
               System.currentTimeMillis(),
-              settings.getCurrentLanguage(),
-              settings.getCurrentGame(),
+              game.gameName,
               GameOutcome.SKIPPED,
               0,
               hasAskedForHint())
@@ -431,7 +433,7 @@ class WordyFragment : BaseFragment() {
           binding.submitButton.setBackgroundResource(R.drawable.button_background_disabled)
           binding.submitButton.text = "Guess"
         }
-        hasWord(getMainActivity(), getCurrentGuess()) -> {
+        hasWord(game.language, getCurrentGuess()) -> {
           binding.submitButton.setBackgroundResource(R.drawable.button_background_positive)
           binding.submitButton.text = "Guess"
         }
@@ -456,19 +458,15 @@ class WordyFragment : BaseFragment() {
   }
 
   private suspend fun setupGame() {
-    initWordDatabase(getMainActivity())
-    initBookmarkDatabase(getMainActivity())
-    initHistoryDatabase(getMainActivity())
 
-    getRandomWord(getMainActivity())?.let { randomWord ->
+    getRandomWord(game.wordSet)?.let { randomWord ->
       viewModel.currentWord.value = randomWord
-      deleteWord(getMainActivity(), randomWord)
+      deleteWord(game.wordSet, randomWord)
       val settings = Settings(getMainActivity())
       addHistory(
         getCurrentWord(),
         System.currentTimeMillis(),
-        settings.getCurrentLanguage(),
-        settings.getCurrentGame(),
+        game.gameName,
         GameOutcome.NOT_COMPLETED,
         0,
         hasAskedForHint())
