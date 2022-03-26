@@ -25,10 +25,14 @@ import org.json.JSONException
 import java.net.UnknownHostException
 
 
+data class Content(
+  var errorMessage: String? = null,
+  var loadingMessage: String? = null,
+  var definition: String? = null
+)
+
 class DefinitionViewModel : ViewModel() {
-  val errorMessage = MutableLiveData<String?>(null)
-  val loadingMessage = MutableLiveData<String?>("Loading word definition...")
-  val definition = MutableLiveData<SpannableString?>(null)
+  val content = MutableLiveData(Content(loadingMessage = "Loading word definition..."))
 }
 
 class DefinitionFragment : BaseFragment() {
@@ -46,8 +50,8 @@ class DefinitionFragment : BaseFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    viewModel = ViewModelProvider(getMainActivity())[DefinitionViewModel::class.java]
     _binding = FragmentDefinitionBinding.inflate(inflater, container, false)
+    viewModel = ViewModelProvider(getMainActivity())[DefinitionViewModel::class.java]
     return binding.root
   }
 
@@ -59,38 +63,47 @@ class DefinitionFragment : BaseFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    _binding?.backButton?.setOnClickListener {
+    binding.backButton.setOnClickListener {
       findNavController().popBackStack()
     }
-    _binding?.title?.text = currentWord
-    _binding?.content?.visibility = View.GONE
-    _binding?.let {
+    binding.title.text = currentWord
+    binding.let {
       setupBookmarkButton(it.bookmarkButton, currentWord)
     }
 
-    viewModel.definition.observe(getMainActivity()) {
-      _binding?.loadingMessage?.visibility = View.GONE
-      _binding?.content?.visibility = View.VISIBLE
+    viewModel.content.observe(getMainActivity()) { maybeContent ->
+      if (_binding != null) {
+        maybeContent?.let { content ->
+          if (content.definition != null ) {
+            binding.definition.text = content.definition
+            binding.definition.visibility = View.VISIBLE
+          } else {
+            binding.definition.visibility = View.GONE
+          }
+
+          if (content.loadingMessage != null ) {
+            binding.loadingMessage.text = content.loadingMessage
+            binding.loadingMessage.visibility = View.VISIBLE
+          } else {
+            binding.loadingMessage.visibility = View.GONE
+          }
+
+          if (content.errorMessage != null ) {
+            binding.errorMessage.text = content.errorMessage
+            binding.errorMessage.visibility = View.VISIBLE
+          } else {
+            binding.errorMessage.visibility = View.GONE
+          }
+        }
+      }
     }
 
-    viewModel.loadingMessage.observe(getMainActivity()) {
-      _binding?.loadingMessage?.text = it
-      _binding?.loadingMessage?.visibility = View.VISIBLE
-      _binding?.content?.visibility = View.GONE
-    }
-
-    viewModel.errorMessage.observe(getMainActivity()) {
-      _binding?.loadingMessage?.text = it
-      _binding?.loadingMessage?.visibility = View.VISIBLE
-      _binding?.content?.visibility = View.GONE
-    }
-
-    scope.launch {
-      populateDefinition()
-    }
+    populateDefinition()
   }
 
   private fun populateDefinition() {
+    Log.d("WORDYYY", "WORD: $currentWord")
+
     scope.launch {
       try {
         val response = fetchDefinition()
@@ -101,18 +114,20 @@ class DefinitionFragment : BaseFragment() {
 
         val builder = SpannableStringBuilder()
 
-        viewModel.loadingMessage.value = meanings.toString()
+        Log.d("WORDYYY", meanings.toString())
+
+        viewModel.content.value = Content(definition = meanings.toString())
       } catch (exception: UnknownHostException) {
-        viewModel.loadingMessage.value = "Failed to establish connection with word definition service."
+        viewModel.content.value = Content(errorMessage = "Failed to establish connection with word definition service.")
       }catch (exception: JSONException) {
-        viewModel.loadingMessage.value = "Failed to parse response from server."
+        viewModel.content.value = Content(errorMessage = "Failed to parse response from server.")
       } catch (exception: Exception) {
-        viewModel.loadingMessage.value = "Failed to fetch definition.\n$exception"
+        viewModel.content.value = Content(errorMessage = "Failed to fetch definition.\n$exception")
       }
     }
   }
 
-  private suspend fun fetchDefinition(): Response = withContext(Dispatchers.IO) {
+  private suspend fun fetchDefinition(): Response = withContext(Dispatchers.Default) {
     val request: Request = Request.Builder()
       .get()
       .url("https://api.dictionaryapi.dev/api/v2/entries/en/$currentWord")
