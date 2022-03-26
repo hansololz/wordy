@@ -35,6 +35,7 @@
         <entry key="app/src/main/res/drawable/letter_background_no_match.xml" value="0.225" />
         <entry key="app/src/main/res/drawable/letter_background_no_present.xml" value="0.225" />
         <entry key="app/src/main/res/drawable/letter_background_present.xml" value="0.237" />
+        <entry key="app/src/main/res/drawable/prompt_background.xml" value="0.268" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3591485507246377" />
         <entry key="app/src/main/res/layout/dialog.xml" value="0.22239583333333332" />
         <entry key="app/src/main/res/layout/fragment_bookmark.xml" value="0.2838541666666667" />

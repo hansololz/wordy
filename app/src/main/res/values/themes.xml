@@ -31,7 +31,7 @@
 
     <item name="colorButtonForeground">#FFFFFFFF</item>
     <item name="colorDialogButton">#FF202020</item>
-    <item name="colorDialogBackground">#FFFFFFFF</item>
+    <item name="colorDialogBackground">#FFFFE5B4</item>
 
     <item name="colorDivider">#FFD4B996</item>
 

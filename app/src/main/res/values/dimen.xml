@@ -7,11 +7,11 @@
   <dimen name="spacing_half">8dp</dimen>
   <dimen name="spacing_none">0dp</dimen>
 
+  <dimen name="text_size">16sp</dimen>
+
   <dimen name="keyboard_text_size">16sp</dimen>
   <dimen name="submit_text_size">20sp</dimen>
   <dimen name="header_text_size">28sp</dimen>
-
-  <dimen name="message_text_size">16sp</dimen>
 
   <dimen name="letter_padding">3dp</dimen>
   <dimen name="letter_text_size">24sp</dimen>
@@ -23,5 +23,7 @@
   <dimen name="button_padding">0dp</dimen>
 
   <dimen name="dialog_boarder_radius">8dp</dimen>
+
+  <dimen name="prompt_boarder_radius">8dp</dimen>
 
 </resources>
