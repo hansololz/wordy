@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.AbsoluteSizeSpan
+import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.util.Log
 import android.util.TypedValue
@@ -131,7 +132,7 @@ class DefinitionFragment : BaseFragment() {
           if (meaning.has("partOfSpeech")) {
             val partOfSpeech = SpannableString(meaning.getString("partOfSpeech"))
 
-            partOfSpeech.setSpan(AbsoluteSizeSpan(headerSize, true), 0, partOfSpeech.length, 0)
+            partOfSpeech.setSpan(RelativeSizeSpan(1.5f), 0, partOfSpeech.length, 0)
             partOfSpeech.setSpan(StyleSpan(Typeface.BOLD), 0, partOfSpeech.length, 0)
 
             builder.append(partOfSpeech)
@@ -142,11 +143,9 @@ class DefinitionFragment : BaseFragment() {
               val definition = definitions.getJSONObject(j)
 
               val definitionString = SpannableString(definition.getString("definition"))
-              definitionString.setSpan(AbsoluteSizeSpan(textSize, true), 0, definitionString.length, 0)
 
               val definitionHeading = SpannableString("Definition: ")
               definitionHeading.setSpan(StyleSpan(Typeface.BOLD), 0, definitionHeading.length, 0)
-              definitionHeading.setSpan(AbsoluteSizeSpan(textSize, true), 0, definitionHeading.length, 0)
 
               builder.append(definitionHeading)
               builder.append(definitionString)
@@ -154,11 +153,8 @@ class DefinitionFragment : BaseFragment() {
 
               if (definition.has("example")) {
                 val exampleString = SpannableString(definition.getString("example"))
-                exampleString.setSpan(AbsoluteSizeSpan(textSize, true), 0, exampleString.length, 0)
-
                 val exampleHeading = SpannableString("Example: ")
                 exampleHeading.setSpan(StyleSpan(Typeface.BOLD), 0, exampleHeading.length, 0)
-                exampleHeading.setSpan(AbsoluteSizeSpan(textSize, true), 0, exampleHeading.length, 0)
 
                 builder.append(exampleHeading)
                 builder.append(exampleString)
@@ -180,7 +176,6 @@ class DefinitionFragment : BaseFragment() {
               }
 
               val synonymsSpannableString = SpannableString(synonymsString)
-              synonymsSpannableString.setSpan(AbsoluteSizeSpan(textSize, true), 0, synonymsSpannableString.length, 0)
 
               val synonymHeader = if (synonyms.length() > 1) {
                 "Synonyms"
@@ -190,7 +185,6 @@ class DefinitionFragment : BaseFragment() {
 
               val synonymHeading = SpannableString("$synonymHeader: ")
               synonymHeading.setSpan(StyleSpan(Typeface.BOLD), 0, synonymHeading.length, 0)
-              synonymHeading.setSpan(AbsoluteSizeSpan(textSize, true), 0, synonymHeading.length, 0)
               builder.append(synonymHeading)
               builder.append(synonymsSpannableString)
               builder.append("\n\n")

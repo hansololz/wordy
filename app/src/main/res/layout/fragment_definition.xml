@@ -84,6 +84,7 @@
       android:padding="@dimen/spacing"
       android:text=""
       android:textIsSelectable="true"
+      android:textSize="@dimen/message_text_size"
       app:layout_constraintTop_toBottomOf="@id/divider" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
