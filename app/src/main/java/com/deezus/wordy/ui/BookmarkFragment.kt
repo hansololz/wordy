@@ -90,6 +90,7 @@ private class BookmarkAdapter(
   private fun formatItem(holder: BookmarkViewHolder, entry: BookmarkEntry) {
     holder.title.text = entry.word
     holder.searchButton.setOnClickListener {
+      DefinitionFragment.currentWord = entry.word
       navController.navigate(R.id.navigation_definition)
     }
     holder.bookmarkButton.setOnClickListener {

@@ -4,12 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.deezus.wordy.databinding.FragmentDefinitionBinding
 
 
 class DefinitionFragment : BaseFragment() {
   private var _binding: FragmentDefinitionBinding? = null
   private val binding get() = _binding!!
+
+  companion object {
+    var currentWord = ""
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -28,5 +33,9 @@ class DefinitionFragment : BaseFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
+    binding.backButton.setOnClickListener {
+      findNavController().popBackStack()
+    }
+    binding.title.text = currentWord
   }
 }

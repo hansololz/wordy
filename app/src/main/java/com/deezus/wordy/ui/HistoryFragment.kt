@@ -100,8 +100,10 @@ private class HistoryAdapter(
 
     holder.title.text = title
     holder.searchButton.setOnClickListener {
+      DefinitionFragment.currentWord = entry.word
       navController.navigate(R.id.navigation_definition)
     }
+
     holder.bookmarkButton.setOnClickListener {
       scope.launch {
         if (getBookmark(entry.word) != null) {
