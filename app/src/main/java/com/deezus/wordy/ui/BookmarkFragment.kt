@@ -62,12 +62,12 @@ private class BookmarkAdapter(
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     return if (viewType == 0) {
       val view = LayoutInflater.from(parent.context)
-        .inflate(R.layout.item_history_header, parent, false)
+        .inflate(R.layout.item_bookmark_header, parent, false)
 
       BookmarkHeaderViewHolder(view)
     } else {
       val view = LayoutInflater.from(parent.context)
-        .inflate(R.layout.item_history, parent, false)
+        .inflate(R.layout.item_bookmark, parent, false)
 
       BookmarkViewHolder(view)
     }

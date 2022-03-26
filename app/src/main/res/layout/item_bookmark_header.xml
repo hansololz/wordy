@@ -6,7 +6,7 @@
   android:paddingStart="@dimen/spacing"
   android:paddingTop="@dimen/spacing"
   android:paddingEnd="@dimen/spacing"
-  android:paddingBottom="@dimen/spacing_none">
+  android:paddingBottom="@dimen/spacing">
 
   <ImageView
     android:id="@+id/back_button"
@@ -32,13 +32,5 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
-
-  <TextView
-    android:layout_width="match_parent"
-    android:layout_height="1dp"
-    android:layout_marginTop="@dimen/spacing"
-    android:background="?colorDivider"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/back_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
