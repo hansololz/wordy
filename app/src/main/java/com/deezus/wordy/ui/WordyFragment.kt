@@ -229,6 +229,7 @@ class WordyFragment : BaseFragment() {
           val oldWord = getCurrentWord()
 
           scope.launch {
+            addGuessedWord(oldWord, System.currentTimeMillis(), GuessOutcome.SKIPPED, 0, hasAskedForHint())
             setupGame()
           }
 

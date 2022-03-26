@@ -11,7 +11,7 @@ data class WordEntry(
   @ColumnInfo(name = "word") var word: String
 )
 
-enum class GuessOutcome { NOT_COMPLETED, FAILED, SUCCEEDED }
+enum class GuessOutcome { NOT_COMPLETED, FAILED, SKIPPED, SUCCEEDED }
 
 @Entity(primaryKeys = ["word"])
 data class GuessedWordEntry(
@@ -51,7 +51,7 @@ private interface GuessedWordEntryDao {
   @Query("DELETE FROM GuessedWordEntry WHERE word = :word")
   fun delete(word: String)
 
-  @Query("SELECT * FROM GuessedWordEntry ORDER BY time DESC")
+  @Query("SELECT * FROM GuessedWordEntry WHERE outcome = 'FAILED' OR outcome = 'SKIPPED' OR outcome = 'SUCCEEDED' ORDER BY time DESC")
   fun getAll(): List<GuessedWordEntry>
 
   @Query("SELECT * FROM GuessedWordEntry WHERE word = :word LIMIT 1")
