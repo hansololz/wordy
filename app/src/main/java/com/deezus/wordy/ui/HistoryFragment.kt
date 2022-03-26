@@ -18,6 +18,7 @@ import com.deezus.wordy.databinding.FragmentHistoryBinding
 import com.deezus.wordy.databinding.ItemHistoryBinding
 import com.deezus.wordy.databinding.ItemHistoryHeaderBinding
 import com.deezus.wordy.helpers.navigationWithOptions
+import com.deezus.wordy.helpers.popWithOptions
 import com.deezus.wordy.helpers.scope
 import kotlinx.coroutines.launch
 
@@ -86,7 +87,7 @@ private class HistoryAdapter(
 
   private fun formatHeader(holder: HistoryHeaderViewHolder) {
     holder.backButton.setOnClickListener {
-      navController.popBackStack()
+      navController.popWithOptions()
     }
   }
 

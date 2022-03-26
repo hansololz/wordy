@@ -17,3 +17,8 @@ private fun getDefaultNavigationOptions(): NavOptions {
 fun NavController.navigationWithOptions(navigationId: Int) {
   navigate(navigationId, null, getDefaultNavigationOptions())
 }
+
+fun NavController.popWithOptions() {
+  navigateUp()
+//  (navigationId, null, getDefaultNavigationOptions())
+}

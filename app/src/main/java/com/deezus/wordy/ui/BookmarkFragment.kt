@@ -18,6 +18,7 @@ import com.deezus.wordy.databinding.FragmentBookmarkBinding
 import com.deezus.wordy.databinding.ItemBookmarkBinding
 import com.deezus.wordy.databinding.ItemBookmarkHeaderBinding
 import com.deezus.wordy.helpers.navigationWithOptions
+import com.deezus.wordy.helpers.popWithOptions
 import com.deezus.wordy.helpers.scope
 import kotlinx.coroutines.launch
 
@@ -86,7 +87,7 @@ private class BookmarkAdapter(
 
   private fun formatHeader(holder: BookmarkHeaderViewHolder) {
     holder.backButton.setOnClickListener {
-      navController.popBackStack()
+      navController.popWithOptions()
     }
   }
 

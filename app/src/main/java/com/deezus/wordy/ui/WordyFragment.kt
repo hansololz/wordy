@@ -298,6 +298,11 @@ class WordyFragment : BaseFragment() {
     binding.viewBookmark.setOnClickListener {
       findNavController().navigationWithOptions(R.id.navigation_bookmark)
     }
+
+    binding.viewSettings.visibility = View.GONE
+    binding.viewSettings.setOnClickListener {
+      findNavController().navigationWithOptions(R.id.navigation_settings)
+    }
   }
 
   private fun setupKey(keyView: TextView, key: Char) {

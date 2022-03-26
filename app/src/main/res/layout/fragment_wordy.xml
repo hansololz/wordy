@@ -47,12 +47,13 @@
       app:tint="?colorButtonHistoryForeground" />
 
     <ImageView
-      android:id="@+id/goto_settings"
+      android:id="@+id/view_settings"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginLeft="@dimen/spacing_half"
       android:background="@drawable/button_background_round_warning"
       android:padding="@dimen/spacing_half"
+      android:visibility="gone"
       android:src="@drawable/ic_round_settings_24"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="parent"

@@ -44,7 +44,6 @@
       android:text="Title"
       android:textSize="@dimen/header_text_size"
       android:textStyle="bold"
-      app:layout_constraintBottom_toBottomOf="@id/back_button"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="@id/back_button" />

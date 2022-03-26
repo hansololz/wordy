@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.deezus.wordy.data.setupBookmarkButton
 import com.deezus.wordy.databinding.FragmentDefinitionBinding
+import com.deezus.wordy.helpers.popWithOptions
 import com.deezus.wordy.helpers.scope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -69,7 +70,7 @@ class DefinitionFragment : BaseFragment() {
     super.onViewCreated(view, savedInstanceState)
 
     binding.backButton.setOnClickListener {
-      findNavController().popBackStack()
+      findNavController().popWithOptions()
     }
     binding.title.text = currentWord
     setupBookmarkButton(binding.bookmarkButton, currentWord)
