@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.deezus.wordy.data.setupBookmarkButton
 import com.deezus.wordy.databinding.FragmentDefinitionBinding
+import okhttp3.OkHttpClient
 
 
 class DefinitionFragment : BaseFragment() {
@@ -14,6 +16,7 @@ class DefinitionFragment : BaseFragment() {
 
   companion object {
     var currentWord = ""
+    var httpClient: OkHttpClient = OkHttpClient()
   }
 
   override fun onCreateView(
@@ -37,5 +40,7 @@ class DefinitionFragment : BaseFragment() {
       findNavController().popBackStack()
     }
     binding.title.text = currentWord
+
+    setupBookmarkButton(binding.bookmarkButton, currentWord)
   }
 }

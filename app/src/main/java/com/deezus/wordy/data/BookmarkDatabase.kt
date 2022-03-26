@@ -1,8 +1,12 @@
 package com.deezus.wordy.data
 
+import android.widget.ImageView
 import androidx.room.*
+import com.deezus.wordy.R
+import com.deezus.wordy.scope
 import com.deezus.wordy.ui.MainActivity
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
@@ -58,7 +62,27 @@ suspend fun deleteBookmark(word: String) = withContext(Dispatchers.Default) {
   bookmarkDatabase?.userDao()?.delete(word)
 }
 
+fun setupBookmarkButton(bookmarkButton: ImageView, word: String) {
+  bookmarkButton.setOnClickListener {
+    scope.launch {
+      if (getBookmark(word) != null) {
+        deleteBookmark(word)
+        bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_border_24)
+      } else {
+        addBookmark(word)
+        bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_24)
+      }
+    }
+  }
 
+  scope.launch {
+    if (getBookmark(word) != null) {
+      bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_24)
+    } else {
+      bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_border_24)
+    }
+  }
+}
 
 
 

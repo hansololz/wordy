@@ -93,25 +93,7 @@ private class BookmarkAdapter(
       DefinitionFragment.currentWord = entry.word
       navController.navigate(R.id.navigation_definition)
     }
-    holder.bookmarkButton.setOnClickListener {
-      scope.launch {
-        if (getBookmark(entry.word) != null) {
-          deleteBookmark(entry.word)
-          holder.bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_border_24)
-        } else {
-          addBookmark(entry.word)
-          holder.bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_24)
-        }
-      }
-    }
-
-    scope.launch {
-      if (getBookmark(entry.word) != null) {
-        holder.bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_24)
-      } else {
-        holder.bookmarkButton.setImageResource(R.drawable.ic_round_bookmark_border_24)
-      }
-    }
+    setupBookmarkButton(holder.bookmarkButton, entry.word)
   }
 }
 
