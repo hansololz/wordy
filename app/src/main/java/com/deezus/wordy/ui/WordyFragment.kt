@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -38,6 +39,7 @@ class WordyFragment : BaseFragment() {
 
   private val letterViews = arrayListOf<ArrayList<TextView>>()
   private val keyViews = hashMapOf<Char, TextView>()
+  private val searchButtons = arrayListOf<ConstraintLayout>()
 
   private lateinit var viewModel: WordyViewModel
 
@@ -76,6 +78,7 @@ class WordyFragment : BaseFragment() {
 
     letterViews.clear()
     keyViews.clear()
+    searchButtons.clear()
 
     setupKey(binding.keyQ, 'q')
     setupKey(binding.keyW, 'w')
@@ -141,6 +144,13 @@ class WordyFragment : BaseFragment() {
     setupLetter(binding.letter52, 5, 2)
     setupLetter(binding.letter53, 5, 3)
     setupLetter(binding.letter54, 5, 4)
+
+    setupSearchButton(binding.searchButton0)
+    setupSearchButton(binding.searchButton1)
+    setupSearchButton(binding.searchButton2)
+    setupSearchButton(binding.searchButton3)
+    setupSearchButton(binding.searchButton4)
+    setupSearchButton(binding.searchButton5)
 
     binding.deleteLetter.setOnClickListener {
       if (getCurrentGuess().isNotEmpty()) {
@@ -288,6 +298,19 @@ class WordyFragment : BaseFragment() {
     }
   }
 
+  private fun setupSearchButton(view: ConstraintLayout) {
+    val index = searchButtons.size
+
+    searchButtons.add(view)
+
+    view.setOnClickListener {
+      getPastGuesses().getOrNull(index)?.let {
+        DefinitionFragment.currentWord = it
+        findNavController().navigate(R.id.navigation_definition)
+      }
+    }
+  }
+
   private fun updateLetters() {
     for (i in 0 until getMaxGuessCount()) {
       if (i < getCurrentX()) {
@@ -306,6 +329,8 @@ class WordyFragment : BaseFragment() {
 
           letter.setBackgroundResource(backgroundDrawableId)
         }
+
+        searchButtons[i].visibility = View.VISIBLE
       } else {
         for (j in 0 until getWordLength()) {
           val letter = letterViews[i][j]
@@ -326,6 +351,8 @@ class WordyFragment : BaseFragment() {
             letter.text = ""
           }
         }
+
+        searchButtons[i].visibility = View.INVISIBLE
       }
     }
   }

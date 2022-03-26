@@ -41,7 +41,7 @@
         <entry key="app/src/main/res/layout/fragment_definition.xml" value="0.2838541666666667" />
         <entry key="app/src/main/res/layout/fragment_history.xml" value="0.29375" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.225" />
-        <entry key="app/src/main/res/layout/fragment_wordy.xml" value="0.10843373493975904" />
+        <entry key="app/src/main/res/layout/fragment_wordy.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_bookmark.xml" value="0.2838541666666667" />
         <entry key="app/src/main/res/layout/item_bookmark_header.xml" value="0.24166666666666667" />
         <entry key="app/src/main/res/layout/item_history.xml" value="0.29375" />
