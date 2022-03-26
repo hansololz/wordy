@@ -15,13 +15,13 @@
       android:id="@+id/score_message"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:textSize="@dimen/score_text_size"
-      android:text="Score\n0"
       android:gravity="center_horizontal"
+      android:text="Score\n0"
+      android:textSize="@dimen/score_text_size"
       android:textStyle="bold"
-      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"/>
+      app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
       android:id="@+id/view_bookmark"
@@ -30,33 +30,33 @@
       android:background="@drawable/button_background_round_info"
       android:padding="@dimen/spacing_half"
       android:src="@drawable/ic_round_bookmark_border_24"
-      app:tint="?colorButtonSearchForeground"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+      app:layout_constraintTop_toTopOf="parent"
+      app:tint="?colorButtonSearchForeground" />
 
     <ImageView
       android:id="@+id/view_history"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:src="@drawable/ic_round_history_24"
+      android:layout_marginLeft="@dimen/spacing"
       android:background="@drawable/button_background_round_info"
       android:padding="@dimen/spacing_half"
-      android:layout_marginLeft="@dimen/spacing"
-      app:tint="?colorButtonHistoryForeground"
+      android:src="@drawable/ic_round_history_24"
+      app:layout_constraintStart_toEndOf="@id/view_bookmark"
       app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintStart_toEndOf="@id/view_bookmark"/>
+      app:tint="?colorButtonHistoryForeground" />
 
     <ImageView
       android:id="@+id/goto_settings"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:src="@drawable/ic_round_settings_24"
+      android:layout_marginLeft="@dimen/spacing_half"
       android:background="@drawable/button_background_round_warning"
       android:padding="@dimen/spacing_half"
-      android:layout_marginLeft="@dimen/spacing_half"
-      app:tint="?colorButtonHistoryForeground"
+      android:src="@drawable/ic_round_settings_24"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"/>
+      app:tint="?colorButtonHistoryForeground" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -66,254 +66,254 @@
     android:layout_height="0dp"
     android:layout_marginStart="@dimen/spacing"
     android:layout_marginEnd="@dimen/spacing"
-    app:layout_constraintTop_toBottomOf="@id/head_holder"
     app:layout_constraintBottom_toTopOf="@id/keyboard"
-    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintDimensionRatio="5:6"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintDimensionRatio="5:6">
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/head_holder">
 
     <TextView
-      style="@style/letters_slot"
       android:id="@+id/letter_0_0"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@id/letter_0_1"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-      style="@style/letters_slot"
       android:id="@+id/letter_0_1"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintStart_toEndOf="@id/letter_0_0"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@id/letter_0_2"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintStart_toEndOf="@id/letter_0_0"
+      app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-      style="@style/letters_slot"
       android:id="@+id/letter_0_2"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintStart_toEndOf="@id/letter_0_1"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@id/letter_0_3"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintStart_toEndOf="@id/letter_0_1"
+      app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
-      style="@style/letters_slot"
       android:id="@+id/letter_0_3"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintStart_toEndOf="@id/letter_0_2"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@id/letter_0_4"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintStart_toEndOf="@id/letter_0_2"
+      app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-      style="@style/letters_slot"
       android:id="@+id/letter_0_4"
-      app:layout_constraintTop_toTopOf="parent"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/letter_0_3"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-      style="@style/letters_slot"
       android:id="@+id/letter_1_0"
-      app:layout_constraintTop_toBottomOf="@id/letter_0_0"
-      app:layout_constraintStart_toStartOf="parent"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@id/letter_0_1"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/letter_0_0" />
 
     <TextView
-      style="@style/letters_slot"
       android:id="@+id/letter_1_1"
-      app:layout_constraintTop_toBottomOf="@id/letter_0_1"
-      app:layout_constraintStart_toEndOf="@id/letter_1_0"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@id/letter_1_2"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintStart_toEndOf="@id/letter_1_0"
+      app:layout_constraintTop_toBottomOf="@id/letter_0_1" />
 
     <TextView
-      style="@style/letters_slot"
       android:id="@+id/letter_1_2"
-      app:layout_constraintTop_toBottomOf="@id/letter_0_2"
-      app:layout_constraintStart_toEndOf="@id/letter_1_1"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@id/letter_1_3"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintStart_toEndOf="@id/letter_1_1"
+      app:layout_constraintTop_toBottomOf="@id/letter_0_2" />
 
     <TextView
-      style="@style/letters_slot"
       android:id="@+id/letter_1_3"
-      app:layout_constraintTop_toBottomOf="@id/letter_0_3"
-      app:layout_constraintStart_toEndOf="@id/letter_1_2"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@id/letter_1_4"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintStart_toEndOf="@id/letter_1_2"
+      app:layout_constraintTop_toBottomOf="@id/letter_0_3" />
 
     <TextView
-      style="@style/letters_slot"
       android:id="@+id/letter_1_4"
-      app:layout_constraintTop_toBottomOf="@id/letter_0_4"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/letter_1_3"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintTop_toBottomOf="@id/letter_0_4" />
 
     <TextView
-      style="@style/letters_slot"
       android:id="@+id/letter_2_0"
-      app:layout_constraintTop_toBottomOf="@id/letter_1_0"
-      app:layout_constraintStart_toStartOf="parent"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@id/letter_2_1"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/letter_1_0" />
 
     <TextView
-      style="@style/letters_slot"
       android:id="@+id/letter_2_1"
-      app:layout_constraintTop_toBottomOf="@id/letter_1_1"
-      app:layout_constraintStart_toEndOf="@id/letter_2_0"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@id/letter_2_2"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintStart_toEndOf="@id/letter_2_0"
+      app:layout_constraintTop_toBottomOf="@id/letter_1_1" />
 
     <TextView
-      style="@style/letters_slot"
       android:id="@+id/letter_2_2"
-      app:layout_constraintTop_toBottomOf="@id/letter_1_2"
-      app:layout_constraintStart_toEndOf="@id/letter_2_1"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@id/letter_2_3"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintStart_toEndOf="@id/letter_2_1"
+      app:layout_constraintTop_toBottomOf="@id/letter_1_2" />
 
 
     <TextView
-      style="@style/letters_slot"
       android:id="@+id/letter_2_3"
-      app:layout_constraintTop_toBottomOf="@id/letter_1_3"
-      app:layout_constraintStart_toEndOf="@id/letter_2_2"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@id/letter_2_4"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintStart_toEndOf="@id/letter_2_2"
+      app:layout_constraintTop_toBottomOf="@id/letter_1_3" />
 
     <TextView
-      style="@style/letters_slot"
       android:id="@+id/letter_2_4"
-      app:layout_constraintTop_toBottomOf="@id/letter_1_4"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/letter_2_3"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintTop_toBottomOf="@id/letter_1_4" />
 
     <TextView
-      style="@style/letters_slot"
       android:id="@+id/letter_3_0"
-      app:layout_constraintTop_toBottomOf="@id/letter_2_0"
-      app:layout_constraintStart_toStartOf="parent"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@id/letter_3_1"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/letter_2_0" />
 
     <TextView
-      style="@style/letters_slot"
       android:id="@+id/letter_3_1"
-      app:layout_constraintTop_toBottomOf="@id/letter_2_1"
-      app:layout_constraintStart_toEndOf="@id/letter_3_0"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@id/letter_3_2"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintStart_toEndOf="@id/letter_3_0"
+      app:layout_constraintTop_toBottomOf="@id/letter_2_1" />
 
     <TextView
-      style="@style/letters_slot"
       android:id="@+id/letter_3_2"
-      app:layout_constraintTop_toBottomOf="@id/letter_2_2"
-      app:layout_constraintStart_toEndOf="@id/letter_3_1"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@id/letter_3_3"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintStart_toEndOf="@id/letter_3_1"
+      app:layout_constraintTop_toBottomOf="@id/letter_2_2" />
 
 
     <TextView
-      style="@style/letters_slot"
       android:id="@+id/letter_3_3"
-      app:layout_constraintTop_toBottomOf="@id/letter_2_3"
-      app:layout_constraintStart_toEndOf="@id/letter_3_2"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@id/letter_3_4"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintStart_toEndOf="@id/letter_3_2"
+      app:layout_constraintTop_toBottomOf="@id/letter_2_3" />
 
     <TextView
-      style="@style/letters_slot"
       android:id="@+id/letter_3_4"
-      app:layout_constraintTop_toBottomOf="@id/letter_2_4"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/letter_3_3"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintTop_toBottomOf="@id/letter_2_4" />
 
     <TextView
-      style="@style/letters_slot"
       android:id="@+id/letter_4_0"
-      app:layout_constraintTop_toBottomOf="@id/letter_3_0"
-      app:layout_constraintStart_toStartOf="parent"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toStartOf="@id/letter_4_1"
-      app:layout_constraintDimensionRatio="1:1"/>
-
-    <TextView
-      style="@style/letters_slot"
-      android:id="@+id/letter_4_1"
-      app:layout_constraintTop_toBottomOf="@id/letter_3_1"
-      app:layout_constraintStart_toEndOf="@id/letter_4_0"
-      app:layout_constraintEnd_toStartOf="@id/letter_4_2"
-      app:layout_constraintDimensionRatio="1:1"/>
-
-    <TextView
-      style="@style/letters_slot"
-      android:id="@+id/letter_4_2"
-      app:layout_constraintTop_toBottomOf="@id/letter_3_2"
-      app:layout_constraintStart_toEndOf="@id/letter_4_1"
-      app:layout_constraintEnd_toStartOf="@id/letter_4_3"
-      app:layout_constraintDimensionRatio="1:1"/>
-
-    <TextView
-      style="@style/letters_slot"
-      android:id="@+id/letter_4_3"
-      app:layout_constraintTop_toBottomOf="@id/letter_3_3"
-      app:layout_constraintStart_toEndOf="@id/letter_4_2"
-      app:layout_constraintEnd_toStartOf="@id/letter_4_4"
-      app:layout_constraintDimensionRatio="1:1"/>
-
-    <TextView
-      style="@style/letters_slot"
-      android:id="@+id/letter_4_4"
-      app:layout_constraintTop_toBottomOf="@id/letter_3_4"
-      app:layout_constraintStart_toEndOf="@id/letter_4_3"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintDimensionRatio="1:1"/>
-
-    <TextView
-      style="@style/letters_slot"
-      android:id="@+id/letter_5_0"
-      app:layout_constraintTop_toBottomOf="@id/letter_4_0"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toStartOf="@id/letter_5_1"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintTop_toBottomOf="@id/letter_3_0" />
 
     <TextView
+      android:id="@+id/letter_4_1"
       style="@style/letters_slot"
-      android:id="@+id/letter_5_1"
-      app:layout_constraintTop_toBottomOf="@id/letter_4_1"
-      app:layout_constraintStart_toEndOf="@id/letter_5_0"
-      app:layout_constraintEnd_toStartOf="@id/letter_5_2"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toStartOf="@id/letter_4_2"
+      app:layout_constraintStart_toEndOf="@id/letter_4_0"
+      app:layout_constraintTop_toBottomOf="@id/letter_3_1" />
 
     <TextView
+      android:id="@+id/letter_4_2"
       style="@style/letters_slot"
-      android:id="@+id/letter_5_2"
-      app:layout_constraintTop_toBottomOf="@id/letter_4_2"
-      app:layout_constraintStart_toEndOf="@id/letter_5_1"
-      app:layout_constraintEnd_toStartOf="@id/letter_5_3"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toStartOf="@id/letter_4_3"
+      app:layout_constraintStart_toEndOf="@id/letter_4_1"
+      app:layout_constraintTop_toBottomOf="@id/letter_3_2" />
 
     <TextView
+      android:id="@+id/letter_4_3"
       style="@style/letters_slot"
-      android:id="@+id/letter_5_3"
-      app:layout_constraintTop_toBottomOf="@id/letter_4_3"
-      app:layout_constraintStart_toEndOf="@id/letter_5_2"
-      app:layout_constraintEnd_toStartOf="@id/letter_5_4"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toStartOf="@id/letter_4_4"
+      app:layout_constraintStart_toEndOf="@id/letter_4_2"
+      app:layout_constraintTop_toBottomOf="@id/letter_3_3" />
 
     <TextView
+      android:id="@+id/letter_4_4"
       style="@style/letters_slot"
-      android:id="@+id/letter_5_4"
-      app:layout_constraintTop_toBottomOf="@id/letter_4_4"
-      app:layout_constraintStart_toEndOf="@id/letter_5_3"
+      app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintDimensionRatio="1:1"/>
+      app:layout_constraintStart_toEndOf="@id/letter_4_3"
+      app:layout_constraintTop_toBottomOf="@id/letter_3_4" />
+
+    <TextView
+      android:id="@+id/letter_5_0"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toStartOf="@id/letter_5_1"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/letter_4_0" />
+
+    <TextView
+      android:id="@+id/letter_5_1"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toStartOf="@id/letter_5_2"
+      app:layout_constraintStart_toEndOf="@id/letter_5_0"
+      app:layout_constraintTop_toBottomOf="@id/letter_4_1" />
+
+    <TextView
+      android:id="@+id/letter_5_2"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toStartOf="@id/letter_5_3"
+      app:layout_constraintStart_toEndOf="@id/letter_5_1"
+      app:layout_constraintTop_toBottomOf="@id/letter_4_2" />
+
+    <TextView
+      android:id="@+id/letter_5_3"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toStartOf="@id/letter_5_4"
+      app:layout_constraintStart_toEndOf="@id/letter_5_2"
+      app:layout_constraintTop_toBottomOf="@id/letter_4_3" />
+
+    <TextView
+      android:id="@+id/letter_5_4"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/letter_5_3"
+      app:layout_constraintTop_toBottomOf="@id/letter_4_4" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -321,109 +321,115 @@
     android:layout_width="wrap_content"
     android:layout_height="0dp"
     android:layout_marginLeft="-12dp"
-    app:layout_constraintTop_toTopOf="@id/letters_holder"
     app:layout_constraintBottom_toBottomOf="@id/letters_holder"
-    app:layout_constraintStart_toEndOf="@id/letters_holder">
+    app:layout_constraintStart_toEndOf="@id/letters_holder"
+    app:layout_constraintTop_toTopOf="@id/letters_holder">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-      android:layout_width="wrap_content"
-      android:layout_height="0dp"
       android:id="@+id/search_button_0"
-      app:layout_constraintTop_toTopOf="parent"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:visibility="invisible"
       app:layout_constraintBottom_toTopOf="@id/search_button_1"
-      app:layout_constraintStart_toStartOf="parent">
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent">
 
       <ImageView
         style="@style/search_definition"
-        app:tint="?colorButtonForeground"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?colorButtonForeground" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-      android:layout_width="wrap_content"
-      android:layout_height="0dp"
       android:id="@+id/search_button_1"
-      app:layout_constraintTop_toBottomOf="@id/search_button_0"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:visibility="invisible"
       app:layout_constraintBottom_toTopOf="@id/search_button_2"
-      app:layout_constraintStart_toStartOf="parent" >
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/search_button_0">
 
       <ImageView
         style="@style/search_definition"
-        app:tint="?colorButtonForeground"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?colorButtonForeground" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-      android:layout_width="wrap_content"
-      android:layout_height="0dp"
       android:id="@+id/search_button_2"
-      app:layout_constraintTop_toBottomOf="@id/search_button_1"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:visibility="invisible"
       app:layout_constraintBottom_toTopOf="@id/search_button_3"
-      app:layout_constraintStart_toStartOf="parent" >
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/search_button_1">
 
       <ImageView
         style="@style/search_definition"
-        app:tint="?colorButtonForeground"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?colorButtonForeground" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-      android:layout_width="wrap_content"
-      android:layout_height="0dp"
       android:id="@+id/search_button_3"
-      app:layout_constraintTop_toBottomOf="@id/search_button_2"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:visibility="invisible"
       app:layout_constraintBottom_toTopOf="@id/search_button_4"
-      app:layout_constraintStart_toStartOf="parent" >
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/search_button_2">
 
       <ImageView
         style="@style/search_definition"
-        app:tint="?colorButtonForeground"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?colorButtonForeground" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-      android:layout_width="wrap_content"
-      android:layout_height="0dp"
       android:id="@+id/search_button_4"
-      app:layout_constraintTop_toBottomOf="@id/search_button_3"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:visibility="invisible"
       app:layout_constraintBottom_toTopOf="@id/search_button_5"
-      app:layout_constraintStart_toStartOf="parent" >
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/search_button_3">
 
       <ImageView
         style="@style/search_definition"
-        app:tint="?colorButtonForeground"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?colorButtonForeground" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/search_button_5"
       android:layout_width="wrap_content"
       android:layout_height="0dp"
-      android:id="@+id/search_button_5"
-      app:layout_constraintTop_toBottomOf="@id/search_button_4"
+      android:visibility="invisible"
       app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintStart_toStartOf="parent" >
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/search_button_4">
 
       <ImageView
         style="@style/search_definition"
-        app:tint="?colorButtonForeground"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="?colorButtonForeground" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -433,9 +439,9 @@
     android:id="@+id/keyboard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/spacing"
     android:layout_marginStart="@dimen/spacing"
     android:layout_marginEnd="@dimen/spacing"
+    android:paddingTop="@dimen/spacing"
     app:layout_constraintBottom_toTopOf="@id/buttons_holder">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -448,74 +454,74 @@
       app:layout_constraintWidth_percent="1">
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_q"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_w"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/key_w"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_w"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_e"
         app:layout_constraintStart_toEndOf="@id/key_q"
-        app:layout_constraintEnd_toStartOf="@id/key_e"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_e"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_r"
         app:layout_constraintStart_toEndOf="@id/key_w"
-        app:layout_constraintEnd_toStartOf="@id/key_r"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_r"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_t"
         app:layout_constraintStart_toEndOf="@id/key_e"
-        app:layout_constraintEnd_toStartOf="@id/key_t"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_t"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_y"
         app:layout_constraintStart_toEndOf="@id/key_r"
-        app:layout_constraintEnd_toStartOf="@id/key_y"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_y"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_u"
         app:layout_constraintStart_toEndOf="@id/key_t"
-        app:layout_constraintEnd_toStartOf="@id/key_u"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_u"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_i"
         app:layout_constraintStart_toEndOf="@id/key_y"
-        app:layout_constraintEnd_toStartOf="@id/key_i"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_i"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_o"
         app:layout_constraintStart_toEndOf="@id/key_u"
-        app:layout_constraintEnd_toStartOf="@id/key_o"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_o"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_p"
         app:layout_constraintStart_toEndOf="@id/key_i"
-        app:layout_constraintEnd_toStartOf="@id/key_p"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_p"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/key_o"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -529,67 +535,67 @@
       app:layout_constraintWidth_percent="0.9">
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_a"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_s"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/key_s"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_s"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_d"
         app:layout_constraintStart_toEndOf="@id/key_a"
-        app:layout_constraintEnd_toStartOf="@id/key_d"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_d"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_f"
         app:layout_constraintStart_toEndOf="@id/key_s"
-        app:layout_constraintEnd_toStartOf="@id/key_f"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_f"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_g"
         app:layout_constraintStart_toEndOf="@id/key_d"
-        app:layout_constraintEnd_toStartOf="@id/key_g"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_g"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_h"
         app:layout_constraintStart_toEndOf="@id/key_f"
-        app:layout_constraintEnd_toStartOf="@id/key_h"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_h"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_j"
         app:layout_constraintStart_toEndOf="@id/key_g"
-        app:layout_constraintEnd_toStartOf="@id/key_j"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_j"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_k"
         app:layout_constraintStart_toEndOf="@id/key_h"
-        app:layout_constraintEnd_toStartOf="@id/key_k"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_k"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_l"
         app:layout_constraintStart_toEndOf="@id/key_j"
-        app:layout_constraintEnd_toStartOf="@id/key_l"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_l"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/key_k"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -603,53 +609,53 @@
       app:layout_constraintWidth_percent="0.8">
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_z"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_x"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/key_x"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_x"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_c"
         app:layout_constraintStart_toEndOf="@id/key_z"
-        app:layout_constraintEnd_toStartOf="@id/key_c"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_c"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_v"
         app:layout_constraintStart_toEndOf="@id/key_x"
-        app:layout_constraintEnd_toStartOf="@id/key_v"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_v"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_b"
         app:layout_constraintStart_toEndOf="@id/key_c"
-        app:layout_constraintEnd_toStartOf="@id/key_b"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_b"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_n"
         app:layout_constraintStart_toEndOf="@id/key_v"
-        app:layout_constraintEnd_toStartOf="@id/key_n"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_n"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_m"
         app:layout_constraintStart_toEndOf="@id/key_b"
-        app:layout_constraintEnd_toStartOf="@id/key_m"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
-        style="@style/keyboard_button"
         android:id="@+id/key_m"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/keyboard_button"
+        app:layout_constraintEnd_toStartOf="@id/key_blank"
         app:layout_constraintStart_toEndOf="@id/key_n"
-        app:layout_constraintEnd_toStartOf="@id/key_blank"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
       <TextView
         android:id="@+id/key_blank"
@@ -662,19 +668,19 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-      style="@style/keyboard_button"
       android:id="@+id/delete_letter"
+      style="@style/keyboard_button"
       android:layout_width="0dp"
       android:layout_height="0dp"
-      android:src="@drawable/ic_round_backspace_24"
       android:contentDescription="Backspace"
-      android:textColor="?colorButtonSubmitForeground"
       android:padding="@dimen/spacing"
-      app:layout_constraintWidth_percent="0.2"
-      app:tint="?attr/colorText"
-      app:layout_constraintTop_toTopOf="@id/bottom_keyboard_row"
+      android:src="@drawable/ic_round_backspace_24"
+      android:textColor="?colorButtonSubmitForeground"
       app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent" />
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/bottom_keyboard_row"
+      app:layout_constraintWidth_percent="0.2"
+      app:tint="?attr/colorText" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -682,8 +688,8 @@
     android:id="@+id/buttons_holder"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:layout_constraintBottom_toBottomOf="parent"
-    android:padding="@dimen/spacing">
+    android:padding="@dimen/spacing"
+    app:layout_constraintBottom_toBottomOf="parent">
 
     <ImageView
       android:id="@+id/show_hint"
@@ -694,22 +700,22 @@
       android:src="@drawable/ic_round_question_mark_24"
       android:text="Get Hint"
       android:textColor="?colorButtonSubmitForeground"
-      app:tint="?colorButtonForeground"
       app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintStart_toStartOf="parent"/>
+      app:layout_constraintStart_toStartOf="parent"
+      app:tint="?colorButtonForeground" />
 
     <TextView
       android:id="@+id/submit_button"
       android:layout_width="0dp"
       android:layout_height="0dp"
+      android:layout_marginStart="@dimen/spacing"
+      android:layout_marginEnd="@dimen/spacing"
       android:background="@drawable/button_background_disabled"
       android:gravity="center"
       android:text="Submit"
       android:textColor="?colorButtonSubmitForeground"
       android:textSize="@dimen/submit_text_size"
       android:textStyle="bold"
-      android:layout_marginStart="@dimen/spacing"
-      android:layout_marginEnd="@dimen/spacing"
       app:layout_constraintBottom_toBottomOf="@id/show_hint"
       app:layout_constraintEnd_toStartOf="@id/skip_next"
       app:layout_constraintStart_toEndOf="@id/show_hint"
@@ -724,9 +730,9 @@
       android:padding="@dimen/spacing"
       android:src="@drawable/ic_round_skip_next_24"
       android:textColor="?colorButtonSubmitForeground"
-      app:tint="?colorButtonForeground"
       app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent" />
+      app:layout_constraintEnd_toEndOf="parent"
+      app:tint="?colorButtonForeground" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
