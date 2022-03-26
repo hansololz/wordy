@@ -61,11 +61,19 @@
       app:layout_constraintTop_toBottomOf="@id/title" />
 
     <TextView
+      android:id="@+id/loading_message"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:padding="@dimen/spacing"
+      android:text="Loading word definition..."
+      app:layout_constraintTop_toBottomOf="@id/divider"/>
+
+    <TextView
       android:id="@+id/content"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:padding="@dimen/spacing"
-      android:text="THISHIH\n\n\nsdfasfasdfsda"
+      android:text=""
       app:layout_constraintTop_toBottomOf="@id/divider"/>
 
   </androidx.constraintlayout.widget.ConstraintLayout>
