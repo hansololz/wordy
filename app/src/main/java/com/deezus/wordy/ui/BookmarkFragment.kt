@@ -18,6 +18,7 @@ import com.deezus.wordy.databinding.FragmentBookmarkBinding
 import com.deezus.wordy.databinding.ItemBookmarkBinding
 import com.deezus.wordy.databinding.ItemBookmarkHeaderBinding
 import com.deezus.wordy.helpers.navigationWithOptions
+import com.deezus.wordy.helpers.performFeedback
 import com.deezus.wordy.helpers.popWithOptions
 import com.deezus.wordy.helpers.scope
 import kotlinx.coroutines.launch
@@ -47,6 +48,7 @@ class BookmarkViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 }
 
 private class BookmarkAdapter(
+  private val activity: MainActivity,
   private val navController: NavController,
   private val words: List<BookmarkEntry>)
   : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -88,6 +90,7 @@ private class BookmarkAdapter(
   private fun formatHeader(holder: BookmarkHeaderViewHolder) {
     holder.backButton.setOnClickListener {
       navController.popWithOptions()
+      performFeedback(activity, it)
     }
   }
 
@@ -96,8 +99,9 @@ private class BookmarkAdapter(
     holder.searchButton.setOnClickListener {
       DefinitionFragment.currentWord = entry.word
       navController.navigationWithOptions(R.id.navigation_definition)
+      performFeedback(activity, it)
     }
-    setupBookmarkButton(holder.bookmarkButton, entry.word)
+    setupBookmarkButton(activity, holder.bookmarkButton, entry.word)
   }
 }
 
@@ -130,7 +134,7 @@ class BookmarkFragment : BaseFragment() {
       binding.feed.adapter = bookmarkAdapter
     } else {
       scope.launch {
-        bookmarkAdapter = BookmarkAdapter(findNavController(), getAllBookmark())
+        bookmarkAdapter = BookmarkAdapter(getMainActivity(), findNavController(), getAllBookmark())
         binding.feed.adapter = bookmarkAdapter
       }
     }

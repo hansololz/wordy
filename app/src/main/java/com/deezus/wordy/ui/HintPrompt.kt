@@ -9,6 +9,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import com.deezus.wordy.R
 import com.deezus.wordy.databinding.DialogHintsBinding
+import com.deezus.wordy.helpers.performFeedback
 
 
 enum class HintAction { NONE, REVEAL_INVALID_CHARACTER, REVEAL_VALID_CHARACTER }
@@ -34,11 +35,13 @@ fun showHintPrompt(activity: MainActivity, callback: (HintAction) -> Unit) {
     binding.revealValidCharacter.setOnClickListener {
       dismissAction = HintAction.REVEAL_VALID_CHARACTER
       dialog.dismiss()
+      performFeedback(activity, it)
     }
 
     binding.revealInvalidCharacter.setOnClickListener {
       dismissAction = HintAction.REVEAL_INVALID_CHARACTER
       dialog.dismiss()
+      performFeedback(activity, it)
     }
 
     dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

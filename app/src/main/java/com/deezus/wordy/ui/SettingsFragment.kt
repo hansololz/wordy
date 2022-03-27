@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.deezus.wordy.data.GameName
 import com.deezus.wordy.data.Settings
 import com.deezus.wordy.databinding.FragmentSettingsBinding
+import com.deezus.wordy.helpers.performFeedback
 import com.deezus.wordy.helpers.popWithOptions
 
 
@@ -39,6 +40,7 @@ class SettingsFragment : BaseFragment() {
 
     binding.backButton.setOnClickListener {
       findNavController().popWithOptions()
+      performFeedback(getMainActivity(), it)
     }
 
     when (settings.getCurrentGame()) {
