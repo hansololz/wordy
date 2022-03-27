@@ -13,7 +13,8 @@ data class HistoryEntry(
   @ColumnInfo(name = "gameName") var game: GameName,
   @ColumnInfo(name = "outcome") var outcome: GameOutcome,
   @ColumnInfo(name = "scoreEarned") var scoreEarned: Long,
-  @ColumnInfo(name = "hinted") var hinted: Boolean
+  @ColumnInfo(name = "hinted") var hinted: Boolean,
+  @ColumnInfo(name = "guesses") var guesses: String
 )
 
 @Dao
@@ -40,8 +41,8 @@ suspend fun initHistoryDatabase(activity: MainActivity) {
 }
 
 suspend fun addHistory(word: String, time: Long, game: GameName, outcome: GameOutcome,
-    scoreEarned: Long, hinted: Boolean) = withContext(Dispatchers.Default) {
-  val entry = HistoryEntry(word, time, game, outcome, scoreEarned, hinted)
+    scoreEarned: Long, hinted: Boolean, guesses: List<String>) = withContext(Dispatchers.Default) {
+  val entry = HistoryEntry(word, time, game, outcome, scoreEarned, hinted, guesses.joinToString())
   historyDatabase?.userDao()?.insert(entry)
 }
 

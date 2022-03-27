@@ -223,7 +223,8 @@ class WordyFragment : BaseFragment() {
                 game.gameName,
                 GameOutcome.SUCCEEDED,
                 newScore,
-                hasAskedForHint())
+                hasAskedForHint(),
+                getPastGuesses())
             }
           }
           hasWord(game.language, getCurrentGuess()) && getPastGuesses().size + 1 == getMaxGuessCount() -> {
@@ -237,7 +238,8 @@ class WordyFragment : BaseFragment() {
                 game.gameName,
                 GameOutcome.SKIPPED,
                 0,
-                hasAskedForHint())
+                hasAskedForHint(),
+                getPastGuesses())
             }
           }
           hasWord(game.language, getCurrentGuess()) -> {
@@ -277,7 +279,8 @@ class WordyFragment : BaseFragment() {
               game.gameName,
               GameOutcome.SKIPPED,
               0,
-              hasAskedForHint())
+              hasAskedForHint(),
+              getPastGuesses())
 
             setupGame()
           }
@@ -565,7 +568,8 @@ class WordyFragment : BaseFragment() {
         game.gameName,
         GameOutcome.NOT_COMPLETED,
         0,
-        hasAskedForHint())
+        hasAskedForHint(),
+        listOf())
     }
 
     viewModel.pastGuesses.value = listOf()
