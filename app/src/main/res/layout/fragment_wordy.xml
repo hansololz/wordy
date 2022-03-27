@@ -68,7 +68,7 @@
     android:layout_marginStart="@dimen/spacing"
     android:layout_marginEnd="@dimen/spacing"
     app:layout_constraintBottom_toTopOf="@id/keyboard"
-    app:layout_constraintDimensionRatio="5:6"
+    app:layout_constraintDimensionRatio="6:6"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/head_holder">
@@ -111,7 +111,16 @@
       style="@style/letters_slot"
       app:layout_constraintDimensionRatio="1:1"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/letter_0_5"
       app:layout_constraintStart_toEndOf="@id/letter_0_3"
+      app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+      android:id="@+id/letter_0_5"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/letter_0_4"
       app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -150,9 +159,17 @@
       android:id="@+id/letter_1_4"
       style="@style/letters_slot"
       app:layout_constraintDimensionRatio="1:1"
-      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/letter_1_5"
       app:layout_constraintStart_toEndOf="@id/letter_1_3"
       app:layout_constraintTop_toBottomOf="@id/letter_0_4" />
+
+    <TextView
+      android:id="@+id/letter_1_5"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/letter_1_4"
+      app:layout_constraintTop_toBottomOf="@id/letter_0_5" />
 
     <TextView
       android:id="@+id/letter_2_0"
@@ -191,9 +208,17 @@
       android:id="@+id/letter_2_4"
       style="@style/letters_slot"
       app:layout_constraintDimensionRatio="1:1"
-      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/letter_2_5"
       app:layout_constraintStart_toEndOf="@id/letter_2_3"
       app:layout_constraintTop_toBottomOf="@id/letter_1_4" />
+
+    <TextView
+      android:id="@+id/letter_2_5"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/letter_2_4"
+      app:layout_constraintTop_toBottomOf="@id/letter_1_5" />
 
     <TextView
       android:id="@+id/letter_3_0"
@@ -232,9 +257,17 @@
       android:id="@+id/letter_3_4"
       style="@style/letters_slot"
       app:layout_constraintDimensionRatio="1:1"
-      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/letter_3_5"
       app:layout_constraintStart_toEndOf="@id/letter_3_3"
       app:layout_constraintTop_toBottomOf="@id/letter_2_4" />
+
+    <TextView
+      android:id="@+id/letter_3_5"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/letter_3_4"
+      app:layout_constraintTop_toBottomOf="@id/letter_2_5" />
 
     <TextView
       android:id="@+id/letter_4_0"
@@ -272,9 +305,17 @@
       android:id="@+id/letter_4_4"
       style="@style/letters_slot"
       app:layout_constraintDimensionRatio="1:1"
-      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/letter_4_5"
       app:layout_constraintStart_toEndOf="@id/letter_4_3"
       app:layout_constraintTop_toBottomOf="@id/letter_3_4" />
+
+    <TextView
+      android:id="@+id/letter_4_5"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/letter_4_4"
+      app:layout_constraintTop_toBottomOf="@id/letter_3_5" />
 
     <TextView
       android:id="@+id/letter_5_0"
@@ -312,9 +353,17 @@
       android:id="@+id/letter_5_4"
       style="@style/letters_slot"
       app:layout_constraintDimensionRatio="1:1"
-      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/letter_5_5"
       app:layout_constraintStart_toEndOf="@id/letter_5_3"
       app:layout_constraintTop_toBottomOf="@id/letter_4_4" />
+
+    <TextView
+      android:id="@+id/letter_5_5"
+      style="@style/letters_slot"
+      app:layout_constraintDimensionRatio="1:1"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/letter_5_4"
+      app:layout_constraintTop_toBottomOf="@id/letter_4_5" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
