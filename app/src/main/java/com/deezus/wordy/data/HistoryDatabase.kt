@@ -40,7 +40,7 @@ suspend fun initHistoryDatabase(activity: MainActivity) {
 }
 
 suspend fun addHistory(word: String, time: Long, game: GameName, outcome: GameOutcome,
-                       scoreEarned: Long, hinted: Boolean) = withContext(Dispatchers.Default) {
+    scoreEarned: Long, hinted: Boolean) = withContext(Dispatchers.Default) {
   val entry = HistoryEntry(word, time, game, outcome, scoreEarned, hinted)
   historyDatabase?.userDao()?.insert(entry)
 }

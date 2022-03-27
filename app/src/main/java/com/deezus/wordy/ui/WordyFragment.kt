@@ -2,6 +2,7 @@ package com.deezus.wordy.ui
 
 import android.graphics.Color
 import android.os.Bundle
+import android.provider.Contacts.Settings.getSetting
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -173,62 +174,37 @@ class WordyFragment : BaseFragment() {
 
           }
           getCurrentGuess() == getCurrentWord() -> {
-            val newScore = min(getMaxGuessCount(), max(getMaxGuessCount() - getPastGuesses().size, 0)).toLong()
+            viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
+            viewModel.currentGuess.value = ""
+
+            val newScore = getEarnedScore()
 
             settings.setScore(settings.getScore() + newScore)
             updateScore()
 
-            addHistory(
-              getCurrentWord(),
-              System.currentTimeMillis(),
-              game.gameName,
-              GameOutcome.SUCCEEDED,
-              newScore,
-              hasAskedForHint())
-
-            val scoreMessage = if (newScore > 1) {
-              "$newScore points"
-            } else {
-              "$newScore point"
+            scope.launch {
+              addHistory(
+                getCurrentWord(),
+                System.currentTimeMillis(),
+                game.gameName,
+                GameOutcome.SUCCEEDED,
+                newScore,
+                hasAskedForHint())
             }
-
-            DialogMessage(getMainActivity(), "Congrats, you guessed the mystery word \"${getCurrentWord()}\" and earned $scoreMessage.")
-              .setOnDismissCallback {
-                scope.launch {
-                  setupGame()
-                }
-              }
-              .setPositiveCallback("Play Again") {
-                scope.launch {
-                  setupGame()
-                }
-              }
-              .show()
           }
           hasWord(game.language, getCurrentGuess()) && getPastGuesses().size + 1 == getMaxGuessCount() -> {
             viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
             viewModel.currentGuess.value = ""
 
-            addHistory(
-              getCurrentWord(),
-              System.currentTimeMillis(),
-              game.gameName,
-              GameOutcome.FAILED,
-              0,
-              hasAskedForHint())
-
-            DialogMessage(getMainActivity(), "Sorry, the mystery word was \"${getCurrentWord()}\"")
-              .setOnDismissCallback {
-                scope.launch {
-                  setupGame()
-                }
-              }
-              .setPositiveCallback("Play Again") {
-                scope.launch {
-                  setupGame()
-                }
-              }
-              .show()
+            scope.launch {
+              addHistory(
+                getCurrentWord(),
+                System.currentTimeMillis(),
+                game.gameName,
+                GameOutcome.SKIPPED,
+                0,
+                hasAskedForHint())
+            }
           }
           hasWord(game.language, getCurrentGuess()) -> {
             viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
@@ -245,6 +221,7 @@ class WordyFragment : BaseFragment() {
       updateLetters()
       updateSubmitButton()
       updateKeys()
+      updateModule()
     }
 
     viewModel.hintedInvalidLetters.observe(getMainActivity()) {
@@ -258,8 +235,6 @@ class WordyFragment : BaseFragment() {
           val oldWord = getCurrentWord()
 
           scope.launch {
-            val settings = Settings(getMainActivity())
-
             addHistory(
               getCurrentWord(),
               System.currentTimeMillis(),
@@ -328,6 +303,47 @@ class WordyFragment : BaseFragment() {
       }
 
       letterViews[x].add(letterView)
+    }
+  }
+
+  private fun getEarnedScore(): Long {
+    return min(getMaxGuessCount(), max(getMaxGuessCount() - (getPastGuesses().size - 1), 0)).toLong()
+  }
+
+  private fun updateModule() {
+    if (getPastGuesses().lastOrNull() == getCurrentWord()) {
+      val newScore = getEarnedScore()
+      val scoreMessage = if (newScore > 1) {
+        "$newScore points"
+      } else {
+        "$newScore point"
+      }
+
+      DialogMessage(getMainActivity(), "Congrats, you guessed the mystery word \"${getCurrentWord()}\" and earned $scoreMessage.")
+        .setOnDismissCallback {
+          scope.launch {
+            setupGame()
+          }
+        }
+        .setPositiveCallback("Play Again") {
+          scope.launch {
+            setupGame()
+          }
+        }
+        .show()
+    } else if (getPastGuesses().size >= getMaxGuessCount()) {
+      DialogMessage(getMainActivity(), "Sorry, the mystery word was \"${getCurrentWord()}\"")
+        .setOnDismissCallback {
+          scope.launch {
+            setupGame()
+          }
+        }
+        .setPositiveCallback("Play Again") {
+          scope.launch {
+            setupGame()
+          }
+        }
+        .show()
     }
   }
 
