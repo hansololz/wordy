@@ -198,56 +198,63 @@ class WordyFragment : BaseFragment() {
     }
 
     binding.submitButton.setOnClickListener {
-      performFeedback(getMainActivity(), it)
+      if (isGameActive()) {
+        performFeedback(getMainActivity(), it)
 
-      val settings = Settings(getMainActivity())
+        val settings = Settings(getMainActivity())
 
-      scope.launch {
-        when {
-          getCurrentGuess().length < getWordLength() -> {
-            showSnackBar(getMainActivity(), "Please enter a ${getWordLength()} letter word.")
-          }
-          getCurrentGuess() == getCurrentWord() -> {
-            viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
-            viewModel.currentGuess.value = ""
-
-            val newScore = getEarnedScore()
-
-            settings.setScore(settings.getScore() + newScore)
-            updateScore()
-
-            scope.launch {
-              addHistory(
-                getCurrentWord(),
-                System.currentTimeMillis(),
-                game.gameName,
-                GameOutcome.SUCCEEDED,
-                newScore,
-                hasAskedForHint(),
-                getPastGuesses())
+        scope.launch {
+          when {
+            getCurrentGuess().length < getWordLength() -> {
+              showSnackBar(getMainActivity(), "Please enter a ${getWordLength()} letter word.")
             }
-          }
-          hasWord(game.language, getCurrentGuess()) && getPastGuesses().size + 1 == getMaxGuessCount() -> {
-            viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
-            viewModel.currentGuess.value = ""
+            getCurrentGuess() == getCurrentWord() -> {
+              viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
+              viewModel.currentGuess.value = ""
 
-            scope.launch {
-              addHistory(
-                getCurrentWord(),
-                System.currentTimeMillis(),
-                game.gameName,
-                GameOutcome.SKIPPED,
-                0,
-                hasAskedForHint(),
-                getPastGuesses())
+              val newScore = getEarnedScore()
+
+              settings.setScore(settings.getScore() + newScore)
+              updateScore()
+
+              scope.launch {
+                addHistory(
+                  getCurrentWord(),
+                  System.currentTimeMillis(),
+                  game.gameName,
+                  GameOutcome.SUCCEEDED,
+                  newScore,
+                  hasAskedForHint(),
+                  getPastGuesses()
+                )
+              }
             }
-          }
-          hasWord(game.language, getCurrentGuess()) -> {
-            viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
-            viewModel.currentGuess.value = ""
-          }
-          else -> {
+            hasWord(
+              game.language,
+              getCurrentGuess()
+            ) && getPastGuesses().size + 1 == getMaxGuessCount() -> {
+              viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
+              viewModel.currentGuess.value = ""
 
+              scope.launch {
+                addHistory(
+                  getCurrentWord(),
+                  System.currentTimeMillis(),
+                  game.gameName,
+                  GameOutcome.SKIPPED,
+                  0,
+                  hasAskedForHint(),
+                  getPastGuesses()
+                )
+              }
+            }
+            hasWord(game.language, getCurrentGuess()) -> {
+              viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
+              viewModel.currentGuess.value = ""
+            }
+            else -> {
+
+            }
           }
         }
       }
@@ -268,74 +275,82 @@ class WordyFragment : BaseFragment() {
     binding.skipNext.setOnClickListener {
       performFeedback(getMainActivity(), it)
 
-      DialogMessage(getMainActivity(), "Are you sure you want to skip to the next word?")
-        .setPositiveCallback("Yes") {
-          val oldWord = getCurrentWord()
+      if (isGameActive()) {
+        DialogMessage(getMainActivity(), "Are you sure you want to skip to the next word?")
+          .setPositiveCallback("Yes") {
+            val oldWord = getCurrentWord()
 
-          scope.launch {
-            addHistory(
-              getCurrentWord(),
-              System.currentTimeMillis(),
-              game.gameName,
-              GameOutcome.SKIPPED,
-              0,
-              hasAskedForHint(),
-              getPastGuesses())
+            scope.launch {
+              addHistory(
+                getCurrentWord(),
+                System.currentTimeMillis(),
+                game.gameName,
+                GameOutcome.SKIPPED,
+                0,
+                hasAskedForHint(),
+                getPastGuesses())
 
-            setupGame()
-          }
-
-          DialogMessage(getMainActivity(), "The mystery word was \"$oldWord\".")
-            .setPositiveCallback("Ok") {
-
+              setupGame()
             }
-            .show()
-        }
-        .setNegativeCallback("No") {
 
+            DialogMessage(getMainActivity(), "The mystery word was \"$oldWord\".")
+              .setPositiveCallback("Ok") {
+
+              }
+              .show()
+          }
+          .setNegativeCallback("No") {
+
+          }
+          .show()
+      } else {
+        scope.launch {
+          setupGame()
         }
-        .show()
+      }
     }
 
     binding.showHint.setOnClickListener {
-      showHintPrompt(getMainActivity()) {
-        when (it) {
-          HintAction.NONE -> {
+      if (isGameActive()) {
+        showHintPrompt(getMainActivity()) {
+          when (it) {
+            HintAction.NONE -> {
 
-          }
-          HintAction.REVEAL_VALID_CHARACTER -> {
-            viewModel.hasAskedForHint.value = true
-            val currentGuess = getCurrentGuess()
-            val currentWord = getCurrentWord()
-            val revealGuess = StringBuilder()
+            }
+            HintAction.REVEAL_VALID_CHARACTER -> {
+              viewModel.hasAskedForHint.value = true
+              val currentGuess = getCurrentGuess()
+              val currentWord = getCurrentWord()
+              val revealGuess = StringBuilder()
 
-            for (i in currentGuess.indices) {
-              if (currentGuess[i] == currentWord[i]) {
-                revealGuess.append(currentWord[i])
+              for (i in currentGuess.indices) {
+                if (currentGuess[i] == currentWord[i]) {
+                  revealGuess.append(currentWord[i])
+                } else {
+                  break
+                }
+              }
+
+              if (revealGuess.length < currentWord.length) {
+                val reveal = revealGuess.toString()
+                viewModel.currentGuess.value = reveal + currentWord[reveal.length]
               } else {
-                break
+                showSnackBar(getMainActivity(), "No more hints available.")
               }
             }
-
-            if (revealGuess.length < currentWord.length) {
-              val reveal = revealGuess.toString()
-              viewModel.currentGuess.value = reveal + currentWord[reveal.length]
-            } else {
-              showSnackBar(getMainActivity(), "No more hints available.")
-            }
-          }
-          HintAction.REVEAL_INVALID_CHARACTER -> {
-            viewModel.hasAskedForHint.value = true
-            getUnusedLetters().shuffled().firstOrNull()?.let {
-              viewModel.hintedInvalidLetters.value = getHintedInvalidLetters() + it
-            } ?: run {
-              showSnackBar(getMainActivity(), "No more hints available.")
+            HintAction.REVEAL_INVALID_CHARACTER -> {
+              viewModel.hasAskedForHint.value = true
+              getUnusedLetters().shuffled().firstOrNull()?.let {
+                viewModel.hintedInvalidLetters.value = getHintedInvalidLetters() + it
+              } ?: run {
+                showSnackBar(getMainActivity(), "No more hints available.")
+              }
             }
           }
         }
-      }
 
-      performFeedback(getMainActivity(), it)
+        performFeedback(getMainActivity(), it)
+      }
     }
 
     binding.viewHistory.setOnClickListener {
@@ -360,11 +375,13 @@ class WordyFragment : BaseFragment() {
     keyView.text = key.uppercaseChar().toString()
 
     keyView.setOnClickListener {
-      if (getCurrentGuess().length < getWordLength()) {
-        viewModel.currentGuess.value = getCurrentGuess() + key
-      }
+      if (isGameActive()) {
+        if (getCurrentGuess().length < getWordLength()) {
+          viewModel.currentGuess.value = getCurrentGuess() + key
+        }
 
-      performFeedback(getMainActivity(), keyView)
+        performFeedback(getMainActivity(), keyView)
+      }
     }
   }
 
@@ -401,6 +418,9 @@ class WordyFragment : BaseFragment() {
             setupGame()
           }
         }
+        .setNegativeCallback("View My Guesses") {
+
+        }
         .setPositiveCallback("Play Again") {
           scope.launch {
             setupGame()
@@ -413,6 +433,9 @@ class WordyFragment : BaseFragment() {
           scope.launch {
             setupGame()
           }
+        }
+        .setNegativeCallback("View My Guesses") {
+
         }
         .setPositiveCallback("Play Again") {
           scope.launch {
@@ -529,6 +552,10 @@ class WordyFragment : BaseFragment() {
   private fun updateSubmitButton() {
     scope.launch {
       when {
+        !isGameActive() -> {
+          binding.submitButton.setBackgroundResource(R.drawable.button_background_disabled)
+          binding.submitButton.text = "Guess"
+        }
         getCurrentGuess().length < getWordLength() -> {
           binding.submitButton.setBackgroundResource(R.drawable.button_background_disabled)
           binding.submitButton.text = "Guess"
@@ -545,13 +572,16 @@ class WordyFragment : BaseFragment() {
     }
   }
 
+  private fun isGameActive(): Boolean {
+    return getPastGuesses().size < getMaxGuessCount()
+  }
+
   private fun updateGetHintButton() {
-//    if (getUnusedLetters().isEmpty() && hasAskedForHint()) {
-//      binding.showHint.setBackgroundResource(R.drawable.button_background_disabled)
-//    } else {
-//      binding.showHint.setBackgroundResource(R.drawable.button_background_info)
-//    }
-    binding.showHint.setBackgroundResource(R.drawable.button_background_info)
+    if (isGameActive()) {
+      binding.showHint.setBackgroundResource(R.drawable.button_background_info)
+    } else {
+      binding.showHint.setBackgroundResource(R.drawable.button_background_disabled)
+    }
   }
 
   private fun updateScore() {

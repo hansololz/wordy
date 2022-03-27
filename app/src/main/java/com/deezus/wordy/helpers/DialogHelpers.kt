@@ -68,30 +68,31 @@ class DialogMessage {
   }
 
   fun show() {
+    var thisCallback: (() -> Unit)? = onDismissCallback
     val dialogBuilder = AlertDialog.Builder(activity)
 
     this.title?.let { dialogBuilder.setTitle(it) }
 
     given(positiveMessage, positiveCallback)?.thenLet { message, callback ->
       dialogBuilder.setPositiveButton(message) { dialog, it ->
-        callback.invoke()
+        thisCallback = callback
       }
     }
 
     given(negativeMessage, negativeCallback)?.thenLet { message, callback ->
       dialogBuilder.setNegativeButton(message) { dialog, it ->
-        callback.invoke()
+        thisCallback = callback
       }
     }
 
     given(neutralMessage, neutralCallback)?.thenLet { message, callback ->
       dialogBuilder.setNeutralButton(message) { dialog, it ->
-        callback.invoke()
+        thisCallback = callback
       }
     }
 
-    onDismissCallback?.let {
-      dialogBuilder.setOnDismissListener { it() }
+    dialogBuilder.setOnDismissListener {
+      thisCallback?.invoke()
     }
 
     if (!isDismissable) {
