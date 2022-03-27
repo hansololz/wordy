@@ -2,7 +2,6 @@ package com.deezus.wordy.ui
 
 import android.graphics.Color
 import android.os.Bundle
-import android.provider.Contacts.Settings.getSetting
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.deezus.wordy.*
+import com.deezus.wordy.R
 import com.deezus.wordy.data.*
 import com.deezus.wordy.databinding.FragmentWordyBinding
 import com.deezus.wordy.helpers.DialogMessage
@@ -56,16 +55,6 @@ class WordyFragment : BaseFragment() {
   ): View {
     _binding = FragmentWordyBinding.inflate(inflater, container, false)
     viewModel = ViewModelProvider(getMainActivity())[WordyViewModel::class.java]
-
-    val settings = Settings(getMainActivity())
-
-    if (settings.getCurrentGame() != viewModel.currentGameName.value) {
-      viewModel.currentGameName.value = settings.getCurrentGame()
-    }
-
-    game = viewModel.currentGameName.value?.let { getGame(it) }!!
-    updateBoardDimension(game.gameName)
-
     return binding.root
   }
 
@@ -73,7 +62,14 @@ class WordyFragment : BaseFragment() {
     super.onViewCreated(view, savedInstanceState)
 
     scope.launch {
-      if (getCurrentWord().isEmpty()) {
+      val settings = Settings(getMainActivity())
+
+      if (settings.getCurrentGame() != viewModel.currentGameName.value) {
+        viewModel.currentGameName.value = settings.getCurrentGame()
+
+        game = viewModel.currentGameName.value?.let { getGame(it) }!!
+        updateBoardDimension(game.gameName)
+
         setupGame()
       }
 
@@ -306,7 +302,6 @@ class WordyFragment : BaseFragment() {
       findNavController().navigationWithOptions(R.id.navigation_bookmark)
     }
 
-    binding.viewSettings.visibility = View.GONE
     binding.viewSettings.setOnClickListener {
       findNavController().navigationWithOptions(R.id.navigation_settings)
     }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.deezus.wordy.data.GameName
+import com.deezus.wordy.data.Settings
 import com.deezus.wordy.databinding.FragmentSettingsBinding
 import com.deezus.wordy.helpers.popWithOptions
 
@@ -34,6 +35,8 @@ class SettingsFragment : BaseFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
+    val settings = Settings(getMainActivity())
+
     binding.backButton.setOnClickListener {
       findNavController().popWithOptions()
     }
@@ -46,19 +49,19 @@ class SettingsFragment : BaseFragment() {
     }
 
     binding.optionGuess4English.setOnClickListener {
-      getMainActivity().mainViewModel.currentGame.value = GameName.GUESS_4_ENGLISH
+      settings.setCurrentGame(GameName.GUESS_4_ENGLISH)
     }
 
     binding.optionGuess5English.setOnClickListener {
-      getMainActivity().mainViewModel.currentGame.value = GameName.GUESS_5_ENGLISH
+      settings.setCurrentGame(GameName.GUESS_5_ENGLISH)
     }
 
     binding.optionGuess6English.setOnClickListener {
-      getMainActivity().mainViewModel.currentGame.value = GameName.GUESS_6_ENGLISH
+      settings.setCurrentGame(GameName.GUESS_6_ENGLISH)
     }
 
     binding.optionGuess7English.setOnClickListener {
-      getMainActivity().mainViewModel.currentGame.value = GameName.GUESS_7_ENGLISH
+      settings.setCurrentGame(GameName.GUESS_7_ENGLISH)
     }
 
 
