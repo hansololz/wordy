@@ -34,14 +34,14 @@ fun showHintPrompt(activity: MainActivity, callback: (HintAction) -> Unit) {
 
     binding.revealValidCharacter.setOnClickListener {
       dismissAction = HintAction.REVEAL_VALID_CHARACTER
-      dialog.dismiss()
       performFeedback(activity, it)
+      dialog.dismiss()
     }
 
     binding.revealInvalidCharacter.setOnClickListener {
       dismissAction = HintAction.REVEAL_INVALID_CHARACTER
-      dialog.dismiss()
       performFeedback(activity, it)
+      dialog.dismiss()
     }
 
     dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
