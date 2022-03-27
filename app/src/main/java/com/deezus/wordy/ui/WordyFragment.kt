@@ -305,6 +305,22 @@ class WordyFragment : BaseFragment() {
           }
           HintAction.REVEAL_VALID_CHARACTER -> {
             viewModel.hasAskedForHint.value = true
+            val currentGuess = getCurrentGuess()
+            val currentWord = getCurrentWord()
+            val revealGuess = StringBuilder()
+
+            for (i in 0 until currentGuess.length) {
+              if (currentGuess[i] == currentWord[i]) {
+                revealGuess.append(currentWord[i])
+              } else {
+                break
+              }
+            }
+
+            if (revealGuess.length < currentWord.length) {
+              val reveal = revealGuess.toString()
+              viewModel.currentGuess.value = reveal + currentWord[reveal.length]
+            }
           }
           HintAction.REVEAL_INVALID_CHARACTER -> {
             viewModel.hasAskedForHint.value = true
