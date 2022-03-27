@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     binding = ActivityMainBinding.inflate(layoutInflater)
 
     val thisActivity = this
+    val settings = Settings(this)
 
     mainViewModel.currentGame.observe(this) { gameName ->
       gameName?.let {
@@ -49,7 +50,7 @@ class MainActivity : AppCompatActivity() {
       initBookmarkDatabase(thisActivity)
       initHistoryDatabase(thisActivity)
 
-      mainViewModel.currentGame.value = GameName.GUESS_5_ENGLISH
+      mainViewModel.currentGame.value = settings.getCurrentGame()
     }
   }
 }

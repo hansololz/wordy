@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -30,7 +31,7 @@ class WordyViewModel : ViewModel() {
   val pastGuesses = MutableLiveData(listOf<String>())
   val hasAskedForHint = MutableLiveData(false)
   val hintedInvalidLetters = MutableLiveData(setOf<Char>())
-  val currentGame = MutableLiveData<Game?>(null)
+  val currentGameName = MutableLiveData<GameName?>(null)
 }
 
 class WordyFragment : BaseFragment() {
@@ -56,29 +57,14 @@ class WordyFragment : BaseFragment() {
     _binding = FragmentWordyBinding.inflate(inflater, container, false)
     viewModel = ViewModelProvider(getMainActivity())[WordyViewModel::class.java]
 
-    viewModel.currentGame.value = getMainActivity().mainViewModel.currentGame.value
-      ?.let { getGame(it) }
-    game = viewModel.currentGame.value!!
-    game.let {
-      when {
-        it.gameName == GameName.GUESS_4_ENGLISH -> {
-          maxGuessCount = 6
-          wordLength = 4
-        }
-        it.gameName == GameName.GUESS_5_ENGLISH -> {
-          maxGuessCount = 6
-          wordLength = 5
-        }
-        it.gameName == GameName.GUESS_6_ENGLISH -> {
-          maxGuessCount = 6
-          wordLength = 6
-        }
-        it.gameName == GameName.GUESS_7_ENGLISH -> {
-          maxGuessCount = 6
-          wordLength = 7
-        }
-      }
+    val settings = Settings(getMainActivity())
+
+    if (settings.getCurrentGame() != viewModel.currentGameName.value) {
+      viewModel.currentGameName.value = settings.getCurrentGame()
     }
+
+    game = viewModel.currentGameName.value?.let { getGame(it) }!!
+    updateBoardDimension(game.gameName)
 
     return binding.root
   }
@@ -98,6 +84,27 @@ class WordyFragment : BaseFragment() {
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null
+  }
+
+  private fun updateBoardDimension(gameName: GameName) {
+    when {
+      gameName == GameName.GUESS_4_ENGLISH -> {
+        maxGuessCount = 6
+        wordLength = 4
+      }
+      gameName == GameName.GUESS_5_ENGLISH -> {
+        maxGuessCount = 6
+        wordLength = 5
+      }
+      gameName == GameName.GUESS_6_ENGLISH -> {
+        maxGuessCount = 6
+        wordLength = 6
+      }
+      gameName == GameName.GUESS_7_ENGLISH -> {
+        maxGuessCount = 6
+        wordLength = 7
+      }
+    }
   }
 
   private fun setupView() {
@@ -179,6 +186,11 @@ class WordyFragment : BaseFragment() {
     setupSearchButton(binding.searchButton4)
     setupSearchButton(binding.searchButton5)
 
+    val newConstraintSet = ConstraintSet()
+    newConstraintSet.clone(binding.wordyGame)
+    newConstraintSet.setDimensionRatio(R.id.letters_holder, "$wordLength:$maxGuessCount")
+    newConstraintSet.applyTo(binding.wordyGame)
+
     binding.deleteLetter.setOnClickListener {
       if (getCurrentGuess().isNotEmpty()) {
         viewModel.currentGuess.value = getCurrentGuess().substring(0, getCurrentGuess().length - 1)
@@ -237,14 +249,14 @@ class WordyFragment : BaseFragment() {
       }
     }
 
-    viewModel.currentGuess.observe(getMainActivity()) {
+    viewModel.currentGuess.observe(viewLifecycleOwner) {
       updateLetters()
       updateSubmitButton()
       updateKeys()
       updateModule()
     }
 
-    viewModel.hintedInvalidLetters.observe(getMainActivity()) {
+    viewModel.hintedInvalidLetters.observe(viewLifecycleOwner) {
       updateKeys()
       updateGetHintButton()
     }
