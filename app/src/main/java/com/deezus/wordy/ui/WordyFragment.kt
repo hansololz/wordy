@@ -25,13 +25,12 @@ import kotlin.math.min
 
 
 class WordyViewModel : ViewModel() {
-  val maxGuessCount = MutableLiveData<Int?>(null)
-  val wordLength = MutableLiveData<Int?>(null)
   val currentWord = MutableLiveData<String?>(null)
   val currentGuess = MutableLiveData("")
   val pastGuesses = MutableLiveData(listOf<String>())
   val hasAskedForHint = MutableLiveData(false)
   val hintedInvalidLetters = MutableLiveData(setOf<Char>())
+  val currentGame = MutableLiveData<Game?>(null)
 }
 
 class WordyFragment : BaseFragment() {
@@ -44,7 +43,10 @@ class WordyFragment : BaseFragment() {
   private val searchButtons = arrayListOf<ConstraintLayout>()
 
   private lateinit var viewModel: WordyViewModel
+
   private lateinit var game: Game
+  private var maxGuessCount: Int = 6
+  private var wordLength: Int = 5
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -54,17 +56,35 @@ class WordyFragment : BaseFragment() {
     _binding = FragmentWordyBinding.inflate(inflater, container, false)
     viewModel = ViewModelProvider(getMainActivity())[WordyViewModel::class.java]
 
-    game = getMainActivity().mainViewModel.currentGame.value
-      ?.let { getGame(it) }!!
+    viewModel.currentGame.value = getMainActivity().mainViewModel.currentGame.value
+      ?.let { getGame(it) }
+    game = viewModel.currentGame.value!!
+    game.let {
+      when {
+        it.gameName == GameName.GUESS_4_ENGLISH -> {
+          maxGuessCount = 6
+          wordLength = 4
+        }
+        it.gameName == GameName.GUESS_5_ENGLISH -> {
+          maxGuessCount = 6
+          wordLength = 5
+        }
+        it.gameName == GameName.GUESS_6_ENGLISH -> {
+          maxGuessCount = 6
+          wordLength = 6
+        }
+        it.gameName == GameName.GUESS_7_ENGLISH -> {
+          maxGuessCount = 6
+          wordLength = 7
+        }
+      }
+    }
 
     return binding.root
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-
-    viewModel.maxGuessCount.value = 6
-    viewModel.wordLength.value = 5
 
     scope.launch {
       if (getCurrentWord().isEmpty()) {
@@ -528,11 +548,11 @@ class WordyFragment : BaseFragment() {
   }
 
   private fun getMaxGuessCount(): Int {
-    return viewModel.maxGuessCount.value ?: 6
+    return maxGuessCount
   }
 
   private fun getWordLength(): Int {
-    return viewModel.wordLength.value ?: 5
+    return wordLength
   }
 
   private fun getUnusedLetters(): List<Char> {
