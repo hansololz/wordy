@@ -16,6 +16,7 @@
     <item name="android:textStyle">bold</item>
     <item name="android:textColor">?colorKeyTextNoGuessed</item>
     <item name="android:textSize">@dimen/keyboard_text_size</item>
+    <item name="android:elevation">@dimen/elevation</item>
   </style>
 
   <style name="search_definition">
@@ -25,6 +26,7 @@
     <item name="android:background">@drawable/button_background_round_info</item>
     <item name="android:padding">@dimen/spacing_half</item>
     <item name="android:src">@drawable/ic_round_search_24</item>
+    <item name="android:elevation">@dimen/elevation</item>
   </style>
 
   <style name="letters_slot">

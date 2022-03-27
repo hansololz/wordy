@@ -31,6 +31,7 @@
       android:background="@drawable/button_background_round_info"
       android:padding="@dimen/spacing_half"
       android:src="@drawable/ic_round_bookmark_border_24"
+      android:elevation="@dimen/elevation"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:tint="?colorButtonForeground" />
@@ -43,6 +44,7 @@
       android:background="@drawable/button_background_round_info"
       android:padding="@dimen/spacing_half"
       android:src="@drawable/ic_round_history_24"
+      android:elevation="@dimen/elevation"
       app:layout_constraintStart_toEndOf="@id/view_bookmark"
       app:layout_constraintTop_toTopOf="parent"
       app:tint="?colorButtonForeground" />
@@ -55,6 +57,7 @@
       android:background="@drawable/button_background_round_warning"
       android:padding="@dimen/spacing_half"
       android:src="@drawable/ic_round_settings_24"
+      android:elevation="@dimen/elevation"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:tint="?colorButtonForeground" />
@@ -751,6 +754,7 @@
       android:src="@drawable/ic_round_question_mark_24"
       android:text="Get Hint"
       android:textColor="?colorButtonForeground"
+      android:elevation="@dimen/elevation"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:tint="?colorButtonForeground" />
@@ -767,6 +771,7 @@
       android:textColor="?colorButtonForeground"
       android:textSize="@dimen/submit_text_size"
       android:textStyle="bold"
+      android:elevation="@dimen/elevation"
       app:layout_constraintBottom_toBottomOf="@id/show_hint"
       app:layout_constraintEnd_toStartOf="@id/skip_next"
       app:layout_constraintStart_toEndOf="@id/show_hint"
@@ -781,6 +786,7 @@
       android:padding="@dimen/spacing"
       android:src="@drawable/ic_round_skip_next_24"
       android:textColor="?colorButtonWarning"
+      android:elevation="@dimen/elevation"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:tint="?colorButtonForeground" />
