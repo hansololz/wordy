@@ -298,10 +298,21 @@ class WordyFragment : BaseFragment() {
     }
 
     binding.showHint.setOnClickListener {
-      viewModel.hasAskedForHint.value = true
+      showHintPrompt(getMainActivity()) {
+        when (it) {
+          HintAction.NONE -> {
 
-      getUnusedLetters().shuffled().firstOrNull()?.let {
-        viewModel.hintedInvalidLetters.value = getHintedInvalidLetters() + it
+          }
+          HintAction.REVEAL_VALID_CHARACTER -> {
+            viewModel.hasAskedForHint.value = true
+          }
+          HintAction.REVEAL_INVALID_CHARACTER -> {
+            viewModel.hasAskedForHint.value = true
+            getUnusedLetters().shuffled().firstOrNull()?.let {
+              viewModel.hintedInvalidLetters.value = getHintedInvalidLetters() + it
+            }
+          }
+        }
       }
 
       performFeedback(getMainActivity(), it)

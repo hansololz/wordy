@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:id="@+id/prompt_holder">
+
+  <TextView
+    android:id="@+id/filler"
+    android:text="\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/text_size"
+    android:visibility="invisible"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"/>
+
+  <TextView
+    android:id="@+id/reveal_valid_character"
+    android:text="Reveal Letter in Mystery Word"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/text_size"
+    android:padding="@dimen/spacing"
+    android:background="@drawable/button_background_info"
+    android:textColor="?colorButtonForeground"
+    android:gravity="center_horizontal"
+    app:layout_constraintTop_toBottomOf="@id/filler"
+    app:layout_constraintStart_toStartOf="parent"/>
+
+  <TextView
+    android:id="@+id/reveal_invalid_character"
+    android:text="Reveal Letter Not in Mystery Word"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/text_size"
+    android:padding="@dimen/spacing"
+    android:background="@drawable/button_background_info"
+    android:textColor="?colorButtonForeground"
+    android:layout_marginTop="@dimen/spacing"
+    android:gravity="center_horizontal"
+    app:layout_constraintTop_toBottomOf="@id/reveal_valid_character"
+    app:layout_constraintStart_toStartOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
