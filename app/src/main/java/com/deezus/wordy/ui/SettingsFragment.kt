@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import com.deezus.wordy.data.GameName
 import com.deezus.wordy.databinding.FragmentSettingsBinding
+import com.deezus.wordy.helpers.popWithOptions
 
 
 class SettingsFragment : BaseFragment() {
@@ -26,6 +29,40 @@ class SettingsFragment : BaseFragment() {
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    binding.backButton.setOnClickListener {
+      findNavController().popWithOptions()
+    }
+
+    when (getMainActivity().mainViewModel.currentGame.value) {
+      GameName.GUESS_4_ENGLISH -> binding.optionGuess4English.isChecked = true
+      GameName.GUESS_5_ENGLISH -> binding.optionGuess5English.isChecked = true
+      GameName.GUESS_6_ENGLISH -> binding.optionGuess6English.isChecked = true
+      GameName.GUESS_7_ENGLISH -> binding.optionGuess7English.isChecked = true
+    }
+
+    binding.optionGuess4English.setOnClickListener {
+      getMainActivity().mainViewModel.currentGame.value = GameName.GUESS_4_ENGLISH
+    }
+
+    binding.optionGuess5English.setOnClickListener {
+      getMainActivity().mainViewModel.currentGame.value = GameName.GUESS_5_ENGLISH
+    }
+
+    binding.optionGuess6English.setOnClickListener {
+      getMainActivity().mainViewModel.currentGame.value = GameName.GUESS_6_ENGLISH
+    }
+
+    binding.optionGuess7English.setOnClickListener {
+      getMainActivity().mainViewModel.currentGame.value = GameName.GUESS_7_ENGLISH
+    }
+
+
+
   }
 
 }

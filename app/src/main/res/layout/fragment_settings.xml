@@ -1,11 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
-  <TextView
-    android:text="TESTING"
+  <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="wrap_content">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+      android:id="@+id/back_button"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spacing"
+      android:layout_marginTop="@dimen/spacing"
+      android:background="@drawable/button_background_round_warning"
+      android:padding="@dimen/spacing_half"
+      android:src="@drawable/ic_round_arrow_back_24"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:tint="?colorButtonForeground" />
+
+    <TextView
+      android:id="@+id/title"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:paddingStart="@dimen/spacing"
+      android:paddingEnd="@dimen/spacing"
+      android:text="Settings"
+      android:textSize="@dimen/header_text_size"
+      android:textStyle="bold"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@id/back_button" />
+
+    <TextView
+      android:id="@+id/title_divider"
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_marginStart="@dimen/spacing"
+      android:layout_marginTop="@dimen/spacing"
+      android:layout_marginEnd="@dimen/spacing"
+      android:background="?colorDivider"
+      app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <TextView
+      android:id="@+id/game_options_message"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingTop="@dimen/spacing"
+      android:paddingBottom="@dimen/spacing_none"
+      android:paddingStart="@dimen/spacing"
+      android:paddingEnd="@dimen/spacing"
+      android:textSize="@dimen/text_size"
+      android:text="Game Options"
+      app:layout_constraintTop_toBottomOf="@id/title_divider"/>
+
+    <RadioGroup
+      android:id="@+id/game_options"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:paddingStart="@dimen/spacing"
+      android:paddingEnd="@dimen/spacing"
+      app:layout_constraintTop_toBottomOf="@id/game_options_message">
+
+      <RadioButton
+        android:id="@+id/option_guess_4_english"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size"
+        android:text="Guess 4 Letter Mystery Word" />
+
+      <RadioButton
+        android:id="@+id/option_guess_5_english"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size"
+        android:text="Guess 5 Letter Mystery Word" />
+
+      <RadioButton
+        android:id="@+id/option_guess_6_english"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size"
+        android:text="Guess 5 Letter Mystery Word" />
+
+      <RadioButton
+        android:id="@+id/option_guess_7_english"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size"
+        android:text="Guess 5 Letter Mystery Word" />
+
+    </RadioGroup>
+
+    <TextView
+      android:id="@+id/game_option_divider"
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_marginStart="@dimen/spacing"
+      android:layout_marginTop="@dimen/spacing"
+      android:layout_marginEnd="@dimen/spacing"
+      android:background="?colorDivider"
+      app:layout_constraintTop_toBottomOf="@id/game_options" />
+
+    <androidx.appcompat.widget.SwitchCompat
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:padding="@dimen/spacing"
+      android:textSize="@dimen/text_size"
+      android:text="Enable haptic feedback for game interface."
+      app:layout_constraintTop_toBottomOf="@id/game_option_divider"/>
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

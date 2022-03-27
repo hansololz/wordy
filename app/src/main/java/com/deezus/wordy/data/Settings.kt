@@ -11,15 +11,14 @@ class Settings(activity: MainActivity) {
   private val isLetterWordsSaved = "SETTINGS_IS_WORD_SET_SAVED_"
   private val currentGame = "SETTINGS_CURRENT_GAME"
 
-  fun getCurrentGame(): Game {
-    return GameName.valueOf(sharedPreferences.getString(currentGame, null) ?: GameName.GUESS_5_ENGLISH.toString()).let {
-      getGame(it)
-    }
+  fun getCurrentGame(): GameName {
+    return GameName.valueOf(sharedPreferences.getString(currentGame, null)
+      ?: GameName.GUESS_5_ENGLISH.toString())
   }
 
-  fun setCurrentGame(game: Game) {
+  fun setCurrentGame(gameName: GameName) {
     sharedPreferences.edit().apply {
-      putString(currentGame, game.toString())
+      putString(currentGame, gameName.toString())
       apply()
     }
   }
