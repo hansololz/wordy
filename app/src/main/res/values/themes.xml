@@ -5,6 +5,7 @@
     <item name="colorPrimary">#FF202020</item>
     <item name="colorPrimaryVariant">#FFE5B4</item>
     <item name="colorOnPrimary">#FF202020</item>
+    <item name="colorAccent">#FFFFA500</item>
 
     <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
     <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>

@@ -10,6 +10,7 @@ class Settings(activity: MainActivity) {
   private val totalScore = "SETTINGS_TOTAL_SCORE"
   private val isLetterWordsSaved = "SETTINGS_IS_WORD_SET_SAVED_"
   private val currentGame = "SETTINGS_CURRENT_GAME"
+  private val isHapticFeedbackEnabled = "SETTINGS_IS_HAPTIC_FEEDBACK_ENABLED"
 
   fun getCurrentGame(): GameName? {
     return sharedPreferences.getString(currentGame, null)?.let {
@@ -42,6 +43,17 @@ class Settings(activity: MainActivity) {
   fun setWordSetToTrue(wordSet: WordSet) {
     sharedPreferences.edit().apply {
       putBoolean(isLetterWordsSaved + wordSet.toString(), true)
+      apply()
+    }
+  }
+
+  fun isHapticFeedbackEnabled(): Boolean {
+    return sharedPreferences.getBoolean(isHapticFeedbackEnabled, false)
+  }
+
+  fun setHapticFeedback(isEnabled: Boolean) {
+    sharedPreferences.edit().apply {
+      putBoolean(isHapticFeedbackEnabled, isEnabled)
       apply()
     }
   }

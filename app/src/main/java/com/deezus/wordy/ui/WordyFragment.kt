@@ -18,6 +18,7 @@ import com.deezus.wordy.data.*
 import com.deezus.wordy.databinding.FragmentWordyBinding
 import com.deezus.wordy.helpers.DialogMessage
 import com.deezus.wordy.helpers.navigationWithOptions
+import com.deezus.wordy.helpers.performFeedback
 import com.deezus.wordy.helpers.scope
 import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.launch
@@ -72,10 +73,11 @@ class WordyFragment : BaseFragment() {
 
       scope.launch {
         setupGame()
+        setupView()
       }
+    } else {
+      setupView()
     }
-
-    setupView()
   }
 
   override fun onDestroyView() {
@@ -96,10 +98,6 @@ class WordyFragment : BaseFragment() {
       gameName == GameName.GUESS_6_ENGLISH -> {
         maxGuessCount = 6
         wordLength = 6
-      }
-      gameName == GameName.GUESS_7_ENGLISH -> {
-        maxGuessCount = 6
-        wordLength = 7
       }
     }
   }
@@ -195,12 +193,16 @@ class WordyFragment : BaseFragment() {
     newConstraintSet.applyTo(binding.wordyGame)
 
     binding.deleteLetter.setOnClickListener {
+      performFeedback(getMainActivity(), it)
+
       if (getCurrentGuess().isNotEmpty()) {
         viewModel.currentGuess.value = getCurrentGuess().substring(0, getCurrentGuess().length - 1)
       }
     }
 
     binding.submitButton.setOnClickListener {
+      performFeedback(getMainActivity(), it)
+
       val settings = Settings(getMainActivity())
 
       scope.launch {
@@ -265,6 +267,8 @@ class WordyFragment : BaseFragment() {
     }
 
     binding.skipNext.setOnClickListener {
+      performFeedback(getMainActivity(), it)
+
       DialogMessage(getMainActivity(), "Are you sure you want to skip to the next word?")
         .setPositiveCallback("Yes") {
           val oldWord = getCurrentWord()
@@ -299,18 +303,23 @@ class WordyFragment : BaseFragment() {
       getUnusedLetters().shuffled().firstOrNull()?.let {
         viewModel.hintedInvalidLetters.value = getHintedInvalidLetters() + it
       }
+
+      performFeedback(getMainActivity(), it)
     }
 
     binding.viewHistory.setOnClickListener {
       findNavController().navigationWithOptions(R.id.navigation_history)
+      performFeedback(getMainActivity(), it)
     }
 
     binding.viewBookmark.setOnClickListener {
       findNavController().navigationWithOptions(R.id.navigation_bookmark)
+      performFeedback(getMainActivity(), it)
     }
 
     binding.viewSettings.setOnClickListener {
       findNavController().navigationWithOptions(R.id.navigation_settings)
+      performFeedback(getMainActivity(), it)
     }
   }
 
@@ -323,6 +332,8 @@ class WordyFragment : BaseFragment() {
       if (getCurrentGuess().length < getWordLength()) {
         viewModel.currentGuess.value = getCurrentGuess() + key
       }
+
+      performFeedback(getMainActivity(), keyView)
     }
   }
 
@@ -387,6 +398,8 @@ class WordyFragment : BaseFragment() {
     searchButtons.add(view)
 
     view.setOnClickListener {
+      performFeedback(getMainActivity(), it)
+
       getPastGuesses().getOrNull(index)?.let {
         DefinitionFragment.currentWord = it
         findNavController().navigationWithOptions(R.id.navigation_definition)
@@ -514,11 +527,7 @@ class WordyFragment : BaseFragment() {
   }
 
   private suspend fun setupGame() {
-    Log.d("WORDYYY", game.wordSet.toString())
-
     getRandomWord(game.wordSet)?.let { randomWord ->
-      Log.d("WORDYYY", randomWord)
-
       viewModel.currentWord.value = randomWord
       deleteWord(game.wordSet, randomWord)
       addHistory(

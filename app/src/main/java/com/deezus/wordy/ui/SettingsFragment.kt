@@ -58,5 +58,11 @@ class SettingsFragment : BaseFragment() {
     binding.optionGuess6English.setOnClickListener {
       settings.setCurrentGame(GameName.GUESS_6_ENGLISH)
     }
+
+    binding.enableHapticFeedback.isChecked = settings.isHapticFeedbackEnabled()
+
+    binding.enableHapticFeedback.setOnClickListener {
+      settings.setHapticFeedback(binding.enableHapticFeedback.isChecked)
+    }
   }
 }

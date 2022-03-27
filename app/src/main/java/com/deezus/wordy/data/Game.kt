@@ -3,10 +3,10 @@ package com.deezus.wordy.data
 import com.deezus.wordy.R
 
 
-enum class GameName { GUESS_4_ENGLISH, GUESS_5_ENGLISH, GUESS_6_ENGLISH, GUESS_7_ENGLISH }
+enum class GameName { GUESS_4_ENGLISH, GUESS_5_ENGLISH, GUESS_6_ENGLISH }
 enum class Language { ENGLISH }
 enum class GameOutcome { NOT_COMPLETED, FAILED, SKIPPED, SUCCEEDED }
-enum class WordSet { ENGLISH_4, ENGLISH_5, ENGLISH_6, ENGLISH_7 }
+enum class WordSet { ENGLISH_4, ENGLISH_5, ENGLISH_6 }
 
 data class Game(
   val gameName: GameName,
@@ -36,18 +36,10 @@ val guess6English = Game(
   R.id.navigation_wordy
 )
 
-val guess7English = Game(
-  GameName.GUESS_7_ENGLISH,
-  Language.ENGLISH,
-  WordSet.ENGLISH_7,
-  R.id.navigation_wordy
-)
-
 val gameSet = hashMapOf(
   guess4English.gameName to guess4English,
   guess5English.gameName to guess5English,
-  guess6English.gameName to guess6English,
-  guess7English.gameName to guess7English
+  guess6English.gameName to guess6English
 )
 
 fun getGame(gameName: GameName): Game {
