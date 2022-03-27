@@ -1,9 +1,7 @@
 package com.deezus.wordy.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -16,7 +14,7 @@ import kotlinx.coroutines.launch
 
 
 class MainViewModel : ViewModel() {
-  val currentGame = MutableLiveData<GameName>(null)
+
 }
 
 class MainActivity : AppCompatActivity() {
@@ -36,18 +34,6 @@ class MainActivity : AppCompatActivity() {
     val thisActivity = this
     val settings = Settings(this)
 
-    mainViewModel.currentGame.observe(this) { gameName ->
-      Log.d("WORDYYY", "START $gameName")
-
-      gameName?.let {
-        val game = getGame(it)
-        findNavController(R.id.host_fragment).apply {
-          popBackStack(R.id.navigation_loading, true)
-          navigationWithOptions(game.navigationId)
-        }
-      }
-    }
-
     scope.launch {
       initWordDatabase(thisActivity)
       initBookmarkDatabase(thisActivity)
@@ -57,7 +43,13 @@ class MainActivity : AppCompatActivity() {
         settings.setCurrentGame(GameName.GUESS_5_ENGLISH)
       }
 
-      mainViewModel.currentGame.value = settings.getCurrentGame()
+      settings.getCurrentGame()?.let {
+        val game = getGame(it)
+        findNavController(R.id.host_fragment).apply {
+          popBackStack(R.id.navigation_loading, true)
+          navigationWithOptions(game.navigationId)
+        }
+      }
     }
   }
 }
