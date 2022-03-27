@@ -25,6 +25,7 @@
   <dimen name="button_padding">0dp</dimen>
 
   <dimen name="dialog_boarder_radius">8dp</dimen>
+  <dimen name="dialog_bottom_button_filler">100dp</dimen>
 
   <dimen name="prompt_boarder_radius">8dp</dimen>
 

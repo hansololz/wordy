@@ -7,9 +7,8 @@
 
   <TextView
     android:id="@+id/filler"
-    android:text="\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="3000dp"
     android:textSize="@dimen/text_size"
     android:visibility="invisible"
     app:layout_constraintTop_toTopOf="parent"
@@ -25,7 +24,8 @@
     android:background="@drawable/button_background_info"
     android:textColor="?colorButtonForeground"
     android:gravity="center_horizontal"
-    app:layout_constraintTop_toBottomOf="@id/filler"
+    android:layout_marginBottom="@dimen/spacing"
+    app:layout_constraintBottom_toTopOf="@id/reveal_invalid_character"
     app:layout_constraintStart_toStartOf="parent"/>
 
   <TextView
@@ -37,9 +37,9 @@
     android:padding="@dimen/spacing"
     android:background="@drawable/button_background_info"
     android:textColor="?colorButtonForeground"
-    android:layout_marginTop="@dimen/spacing"
+    android:layout_marginBottom="@dimen/dialog_bottom_button_filler"
     android:gravity="center_horizontal"
-    app:layout_constraintTop_toBottomOf="@id/reveal_valid_character"
+    app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

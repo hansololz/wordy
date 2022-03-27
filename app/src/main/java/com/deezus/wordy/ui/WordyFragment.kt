@@ -16,10 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.deezus.wordy.R
 import com.deezus.wordy.data.*
 import com.deezus.wordy.databinding.FragmentWordyBinding
-import com.deezus.wordy.helpers.DialogMessage
-import com.deezus.wordy.helpers.navigationWithOptions
-import com.deezus.wordy.helpers.performFeedback
-import com.deezus.wordy.helpers.scope
+import com.deezus.wordy.helpers.*
 import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.launch
 import kotlin.math.max
@@ -207,8 +204,8 @@ class WordyFragment : BaseFragment() {
 
       scope.launch {
         when {
-          getCurrentGuess().length > getWordLength() -> {
-
+          getCurrentGuess().length < getWordLength() -> {
+            showSnackBar(getMainActivity(), "Please enter a ${getWordLength()} letter word.")
           }
           getCurrentGuess() == getCurrentWord() -> {
             viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
@@ -309,7 +306,7 @@ class WordyFragment : BaseFragment() {
             val currentWord = getCurrentWord()
             val revealGuess = StringBuilder()
 
-            for (i in 0 until currentGuess.length) {
+            for (i in currentGuess.indices) {
               if (currentGuess[i] == currentWord[i]) {
                 revealGuess.append(currentWord[i])
               } else {
@@ -320,12 +317,16 @@ class WordyFragment : BaseFragment() {
             if (revealGuess.length < currentWord.length) {
               val reveal = revealGuess.toString()
               viewModel.currentGuess.value = reveal + currentWord[reveal.length]
+            } else {
+              showSnackBar(getMainActivity(), "No more hints available.")
             }
           }
           HintAction.REVEAL_INVALID_CHARACTER -> {
             viewModel.hasAskedForHint.value = true
             getUnusedLetters().shuffled().firstOrNull()?.let {
               viewModel.hintedInvalidLetters.value = getHintedInvalidLetters() + it
+            } ?: run {
+              showSnackBar(getMainActivity(), "No more hints available.")
             }
           }
         }
@@ -542,11 +543,12 @@ class WordyFragment : BaseFragment() {
   }
 
   private fun updateGetHintButton() {
-    if (getUnusedLetters().isEmpty() && hasAskedForHint()) {
-      binding.showHint.setBackgroundResource(R.drawable.button_background_disabled)
-    } else {
-      binding.showHint.setBackgroundResource(R.drawable.button_background_info)
-    }
+//    if (getUnusedLetters().isEmpty() && hasAskedForHint()) {
+//      binding.showHint.setBackgroundResource(R.drawable.button_background_disabled)
+//    } else {
+//      binding.showHint.setBackgroundResource(R.drawable.button_background_info)
+//    }
+    binding.showHint.setBackgroundResource(R.drawable.button_background_info)
   }
 
   private fun updateScore() {

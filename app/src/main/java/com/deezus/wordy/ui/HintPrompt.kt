@@ -2,8 +2,10 @@ package com.deezus.wordy.ui
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.util.TypedValue
 import android.view.LayoutInflater
 import com.deezus.wordy.R
 import com.deezus.wordy.databinding.DialogHintsBinding

@@ -11,9 +11,5 @@ fun showSnackBar(activity: MainActivity, text: String, maybePrompt: String? = nu
     snackBar.setAction(prompt) { callback() }
   }
 
-//  snackBar.setBackgroundTint(getColors(activity).snackBarBackground)
-//  snackBar.setActionTextColor(getColors(activity).accent)
-//  snackBar.setTextColor(getColors(activity).snackBarText)
-
   snackBar.show()
 }
