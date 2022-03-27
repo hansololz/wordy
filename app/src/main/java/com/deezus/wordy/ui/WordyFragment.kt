@@ -30,6 +30,7 @@ class WordyViewModel : ViewModel() {
   val hasAskedForHint = MutableLiveData(false)
   val hintedInvalidLetters = MutableLiveData(setOf<Char>())
   val currentGameName = MutableLiveData<GameName?>(null)
+  val isGameActive = MutableLiveData<Boolean>(true)
 }
 
 class WordyFragment : BaseFragment() {
@@ -229,6 +230,8 @@ class WordyFragment : BaseFragment() {
                 )
               }
 
+              viewModel.isGameActive.value = false
+
               val scoreMessage = if (newScore > 1) {
                 "$newScore points"
               } else {
@@ -266,6 +269,8 @@ class WordyFragment : BaseFragment() {
                   getPastGuesses()
                 )
               }
+
+              viewModel.isGameActive.value = false
 
               DialogMessage(getMainActivity(), "Sorry, the mystery word was \"${getCurrentWord()}\"")
                 .setOnDismissCallback {
@@ -323,13 +328,18 @@ class WordyFragment : BaseFragment() {
                 0,
                 hasAskedForHint(),
                 getPastGuesses())
-
-              setupGame()
             }
 
-            DialogMessage(getMainActivity(), "The mystery word was \"$oldWord\".")
-              .setPositiveCallback("Ok") {
+            viewModel.isGameActive.value = false
 
+            DialogMessage(getMainActivity(), "The mystery word was \"$oldWord\".")
+              .setNegativeCallback("View My Guesses") {
+
+              }
+              .setPositiveCallback("Ok") {
+                scope.launch {
+                  setupGame()
+                }
               }
               .show()
           }
@@ -607,7 +617,7 @@ class WordyFragment : BaseFragment() {
   }
 
   private fun isGameActive(): Boolean {
-    return getPastGuesses().size < getMaxGuessCount() && getPastGuesses().lastOrNull() != getCurrentWord()
+    return viewModel.isGameActive.value ?: true
   }
 
   private fun updateGetHintButton() {
@@ -636,6 +646,7 @@ class WordyFragment : BaseFragment() {
         listOf())
     }
 
+    viewModel.isGameActive.value = true
     viewModel.pastGuesses.value = listOf()
     viewModel.hasAskedForHint.value = false
     viewModel.hintedInvalidLetters.value = setOf()
