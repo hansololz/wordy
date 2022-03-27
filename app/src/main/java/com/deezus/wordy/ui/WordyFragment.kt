@@ -2,6 +2,7 @@ package com.deezus.wordy.ui
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,20 +62,20 @@ class WordyFragment : BaseFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    scope.launch {
-      val settings = Settings(getMainActivity())
+    val settings = Settings(getMainActivity())
 
-      if (settings.getCurrentGame() != viewModel.currentGameName.value) {
-        viewModel.currentGameName.value = settings.getCurrentGame()
+    if (settings.getCurrentGame() != viewModel.currentGameName.value) {
+      viewModel.currentGameName.value = settings.getCurrentGame()
 
-        game = viewModel.currentGameName.value?.let { getGame(it) }!!
-        updateBoardDimension(game.gameName)
+      game = viewModel.currentGameName.value?.let { getGame(it) }!!
+      updateBoardDimension(game.gameName)
 
+      scope.launch {
         setupGame()
       }
-
-      setupView()
     }
+
+    setupView()
   }
 
   override fun onDestroyView() {
@@ -507,8 +508,11 @@ class WordyFragment : BaseFragment() {
   }
 
   private suspend fun setupGame() {
+    Log.d("WORDYYY", game.wordSet.toString())
 
     getRandomWord(game.wordSet)?.let { randomWord ->
+      Log.d("WORDYYY", randomWord)
+
       viewModel.currentWord.value = randomWord
       deleteWord(game.wordSet, randomWord)
       addHistory(

@@ -47,8 +47,7 @@ private var wordDatabases = hashMapOf<Language, WordDatabase>()
 private var wordSetDatabases = hashMapOf(
   WordSet.ENGLISH_4 to DatabaseHolder(null, "database-english4", Language.ENGLISH),
   WordSet.ENGLISH_5 to DatabaseHolder(null, "database-english5", Language.ENGLISH),
-  WordSet.ENGLISH_6 to DatabaseHolder(null, "database-english6", Language.ENGLISH),
-  WordSet.ENGLISH_7 to DatabaseHolder(null, "database-english7", Language.ENGLISH)
+  WordSet.ENGLISH_6 to DatabaseHolder(null, "database-english6", Language.ENGLISH)
 )
 
 suspend fun initWordDatabase(activity: MainActivity) = withContext(Dispatchers.Default) {

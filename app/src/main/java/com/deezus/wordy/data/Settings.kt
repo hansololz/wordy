@@ -11,9 +11,10 @@ class Settings(activity: MainActivity) {
   private val isLetterWordsSaved = "SETTINGS_IS_WORD_SET_SAVED_"
   private val currentGame = "SETTINGS_CURRENT_GAME"
 
-  fun getCurrentGame(): GameName {
-    return GameName.valueOf(sharedPreferences.getString(currentGame, null)
-      ?: GameName.GUESS_5_ENGLISH.toString())
+  fun getCurrentGame(): GameName? {
+    return sharedPreferences.getString(currentGame, null)?.let {
+      GameName.valueOf(it)
+    }
   }
 
   fun setCurrentGame(gameName: GameName) {

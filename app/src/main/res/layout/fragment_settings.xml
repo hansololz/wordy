@@ -85,14 +85,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_size"
-        android:text="Guess 5 Letter Mystery Word" />
-
-      <RadioButton
-        android:id="@+id/option_guess_7_english"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size"
-        android:text="Guess 5 Letter Mystery Word" />
+        android:text="Guess 6 Letter Mystery Word" />
 
     </RadioGroup>
 

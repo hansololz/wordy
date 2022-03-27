@@ -41,11 +41,10 @@ class SettingsFragment : BaseFragment() {
       findNavController().popWithOptions()
     }
 
-    when (getMainActivity().mainViewModel.currentGame.value) {
+    when (settings.getCurrentGame()) {
       GameName.GUESS_4_ENGLISH -> binding.optionGuess4English.isChecked = true
       GameName.GUESS_5_ENGLISH -> binding.optionGuess5English.isChecked = true
       GameName.GUESS_6_ENGLISH -> binding.optionGuess6English.isChecked = true
-      GameName.GUESS_7_ENGLISH -> binding.optionGuess7English.isChecked = true
     }
 
     binding.optionGuess4English.setOnClickListener {
@@ -59,13 +58,5 @@ class SettingsFragment : BaseFragment() {
     binding.optionGuess6English.setOnClickListener {
       settings.setCurrentGame(GameName.GUESS_6_ENGLISH)
     }
-
-    binding.optionGuess7English.setOnClickListener {
-      settings.setCurrentGame(GameName.GUESS_7_ENGLISH)
-    }
-
-
-
   }
-
 }

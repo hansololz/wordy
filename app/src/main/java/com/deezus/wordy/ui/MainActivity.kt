@@ -1,6 +1,7 @@
 package com.deezus.wordy.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -36,6 +37,8 @@ class MainActivity : AppCompatActivity() {
     val settings = Settings(this)
 
     mainViewModel.currentGame.observe(this) { gameName ->
+      Log.d("WORDYYY", "START $gameName")
+
       gameName?.let {
         val game = getGame(it)
         findNavController(R.id.host_fragment).apply {
@@ -49,6 +52,10 @@ class MainActivity : AppCompatActivity() {
       initWordDatabase(thisActivity)
       initBookmarkDatabase(thisActivity)
       initHistoryDatabase(thisActivity)
+
+      settings.getCurrentGame() ?: run {
+        settings.setCurrentGame(GameName.GUESS_5_ENGLISH)
+      }
 
       mainViewModel.currentGame.value = settings.getCurrentGame()
     }
