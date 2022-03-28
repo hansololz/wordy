@@ -338,6 +338,11 @@ class WordyFragment : BaseFragment() {
             viewModel.isGameActive.value = false
 
             DialogMessage(getMainActivity(), "The mystery word was \"$oldWord\".")
+              .setOnDismissCallback {
+                scope.launch {
+                  setupGame()
+                }
+              }
               .setNegativeCallback("View My Guesses") {
 
               }
