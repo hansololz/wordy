@@ -217,7 +217,7 @@ class WordyFragment : BaseFragment() {
 
               val newScore = getEarnedScore()
 
-              settings.setScore(settings.getScore() + newScore)
+              settings.setScore(newScore, hasAskedForHint())
               updateScore()
 
               scope.launch {
