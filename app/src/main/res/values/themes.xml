@@ -27,6 +27,7 @@
     <item name="colorKeyMatch">#FF73A659</item>
     <item name="colorKeyPresent">#FFFADA5E</item>
     <item name="colorKeyNoMatch">#FF777777</item>
+    <item name="colorKeyDisabled">#FFA0A0A0</item>
     <item name="colorKeyTextGuessed">#FFFFFFFF</item>
     <item name="colorKeyTextNoGuessed">#FF202020</item>
 

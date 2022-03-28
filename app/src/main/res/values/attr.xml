@@ -7,6 +7,7 @@
   <attr name="colorKeyMatch" format="color" />
   <attr name="colorKeyPresent" format="color" />
   <attr name="colorKeyNoMatch" format="color" />
+  <attr name="colorKeyDisabled" format="color" />
   <attr name="colorKeyTextGuessed" format="color" />
   <attr name="colorKeyTextNoGuessed" format="color" />
 

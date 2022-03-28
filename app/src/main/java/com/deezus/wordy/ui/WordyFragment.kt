@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -30,7 +31,7 @@ class WordyViewModel : ViewModel() {
   val hasAskedForHint = MutableLiveData(false)
   val hintedInvalidLetters = MutableLiveData(setOf<Char>())
   val currentGameName = MutableLiveData<GameName?>(null)
-  val isGameActive = MutableLiveData<Boolean>(true)
+  val isGameActive = MutableLiveData(true)
 }
 
 class WordyFragment : BaseFragment() {
@@ -210,6 +211,7 @@ class WordyFragment : BaseFragment() {
               showSnackBar(getMainActivity(), "Please enter a ${getWordLength()} letter word.")
             }
             getCurrentGuess() == getCurrentWord() -> {
+              viewModel.isGameActive.value = false
               viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
               viewModel.currentGuess.value = ""
 
@@ -229,8 +231,6 @@ class WordyFragment : BaseFragment() {
                   getPastGuesses()
                 )
               }
-
-              viewModel.isGameActive.value = false
 
               val scoreMessage = if (newScore > 1) {
                 "$newScore points"
@@ -255,6 +255,7 @@ class WordyFragment : BaseFragment() {
                 .show()
             }
             hasWord(game.language, getCurrentGuess()) && getPastGuesses().size + 1 == getMaxGuessCount() -> {
+              viewModel.isGameActive.value = false
               viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
               viewModel.currentGuess.value = ""
 
@@ -269,8 +270,6 @@ class WordyFragment : BaseFragment() {
                   getPastGuesses()
                 )
               }
-
-              viewModel.isGameActive.value = false
 
               DialogMessage(getMainActivity(), "Sorry, the mystery word was \"${getCurrentWord()}\"")
                 .setOnDismissCallback {
@@ -308,6 +307,12 @@ class WordyFragment : BaseFragment() {
 
     viewModel.hintedInvalidLetters.observe(viewLifecycleOwner) {
       updateKeys()
+      updateGetHintButton()
+    }
+
+    viewModel.isGameActive.observe(viewLifecycleOwner) {
+      updateKeys()
+      updateSubmitButton()
       updateGetHintButton()
     }
 
@@ -447,49 +452,6 @@ class WordyFragment : BaseFragment() {
     return min(getMaxGuessCount(), max(getMaxGuessCount() - (getPastGuesses().size - 1), 0)).toLong()
   }
 
-//  private fun updateModule() {
-//    if (getPastGuesses().lastOrNull() == getCurrentWord()) {
-//      val newScore = getEarnedScore()
-//      val scoreMessage = if (newScore > 1) {
-//        "$newScore points"
-//      } else {
-//        "$newScore point"
-//      }
-//
-//      DialogMessage(getMainActivity(), "Congrats, you guessed the mystery word \"${getCurrentWord()}\" and earned $scoreMessage.")
-//        .setOnDismissCallback {
-//          scope.launch {
-//            setupGame()
-//          }
-//        }
-//        .setNegativeCallback("View My Guesses") {
-//
-//        }
-//        .setPositiveCallback("Play Again") {
-//          scope.launch {
-//            setupGame()
-//          }
-//        }
-//        .show()
-//    } else if (getPastGuesses().size >= getMaxGuessCount()) {
-//      DialogMessage(getMainActivity(), "Sorry, the mystery word was \"${getCurrentWord()}\"")
-//        .setOnDismissCallback {
-//          scope.launch {
-//            setupGame()
-//          }
-//        }
-//        .setNegativeCallback("View My Guesses") {
-//
-//        }
-//        .setPositiveCallback("Play Again") {
-//          scope.launch {
-//            setupGame()
-//          }
-//        }
-//        .show()
-//    }
-//  }
-
   private fun setupSearchButton(view: ConstraintLayout) {
     val index = searchButtons.size
 
@@ -552,44 +514,59 @@ class WordyFragment : BaseFragment() {
   }
 
   private fun updateKeys() {
-    val matchedLetters = hashSetOf<Char>()
-    val presentLetters = hashSetOf<Char>()
-    val noMatchLetters = hashSetOf<Char>()
+    if (isGameActive()) {
+      val matchedLetters = hashSetOf<Char>()
+      val presentLetters = hashSetOf<Char>()
+      val noMatchLetters = hashSetOf<Char>()
 
-    getPastGuesses().forEach { guess ->
-      guess.forEachIndexed { index, letter ->
+      getPastGuesses().forEach { guess ->
+        guess.forEachIndexed { index, letter ->
+          when {
+            letter == getCurrentWord()[index] -> matchedLetters.add(letter)
+            getCurrentWord().contains(letter) -> presentLetters.add(letter)
+            else -> noMatchLetters.add(letter)
+          }
+        }
+      }
+
+      noMatchLetters.addAll(getHintedInvalidLetters())
+
+      keyViews.forEach {
+        val key = it.key
+        val keyView = it.value
+
         when {
-          letter == getCurrentWord()[index] -> matchedLetters.add(letter)
-          getCurrentWord().contains(letter) -> presentLetters.add(letter)
-          else -> noMatchLetters.add(letter)
+          matchedLetters.contains(key) -> {
+            keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE))
+            keyView.setBackgroundResource(R.drawable.key_background_match)
+          }
+          presentLetters.contains(key) -> {
+            keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE))
+            keyView.setBackgroundResource(R.drawable.key_background_present)
+          }
+          noMatchLetters.contains(key) -> {
+            keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE))
+            keyView.setBackgroundResource(R.drawable.key_background_no_match)
+          }
+          else -> {
+            keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorText, Color.BLACK))
+            keyView.setBackgroundResource(R.drawable.key_background_no_guess)
+          }
         }
       }
-    }
 
-    noMatchLetters.addAll(getHintedInvalidLetters())
-
-    keyViews.forEach {
-      val key = it.key
-      val keyView = it.value
-
-      when {
-        matchedLetters.contains(key) -> {
-          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE))
-          keyView.setBackgroundResource(R.drawable.key_background_match)
-        }
-        presentLetters.contains(key) -> {
-          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE))
-          keyView.setBackgroundResource(R.drawable.key_background_present)
-        }
-        noMatchLetters.contains(key) -> {
-          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE))
-          keyView.setBackgroundResource(R.drawable.key_background_no_match)
-        }
-        else -> {
-          keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorText, Color.WHITE))
-          keyView.setBackgroundResource(R.drawable.key_background_no_guess)
-        }
+      binding.deleteLetter.setColorFilter(MaterialColors.getColor(getMainActivity(), R.attr.colorText, Color.BLACK),
+        android.graphics.PorterDuff.Mode.SRC_IN)
+      binding.deleteLetter.setBackgroundResource(R.drawable.key_background_no_guess)
+    } else {
+      keyViews.forEach {
+        it.value.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE))
+        it.value.setBackgroundResource(R.drawable.key_background_disabled)
       }
+
+      binding.deleteLetter.setColorFilter(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextGuessed, Color.WHITE),
+        android.graphics.PorterDuff.Mode.SRC_IN)
+      binding.deleteLetter.setBackgroundResource(R.drawable.key_background_disabled)
     }
   }
 

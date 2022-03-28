@@ -26,6 +26,7 @@
         <entry key="app/src/main/res/drawable/ic_round_search_36.xml" value="0.2315" />
         <entry key="app/src/main/res/drawable/ic_round_settings_24.xml" value="0.2475" />
         <entry key="app/src/main/res/drawable/ic_round_skip_next_36.xml" value="0.294" />
+        <entry key="app/src/main/res/drawable/key_background_disabled.xml" value="0.271" />
         <entry key="app/src/main/res/drawable/key_background_match.xml" value="0.237" />
         <entry key="app/src/main/res/drawable/key_background_no_guess.xml" value="0.237" />
         <entry key="app/src/main/res/drawable/key_background_no_match.xml" value="0.237" />
