@@ -16,7 +16,7 @@
 
   <TextView
     android:id="@+id/reveal_valid_character"
-    android:text="Reveal Letter in Mystery Word"
+    android:text="Reveal a Letter in Mystery Word"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textSize="@dimen/text_size"
@@ -30,7 +30,7 @@
 
   <TextView
     android:id="@+id/reveal_invalid_character"
-    android:text="Reveal Letter Not in Mystery Word"
+    android:text="Reveal a Letter Not in Mystery Word"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textSize="@dimen/text_size"
