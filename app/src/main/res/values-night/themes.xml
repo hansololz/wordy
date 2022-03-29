@@ -13,7 +13,6 @@
 
     <item name="colorBackground">#FF000000</item>
     <item name="colorText">#FF707070</item>
-<!--    <item name="colorText">#FF202020</item>-->
 
     <item name="colorLetterNoGuess">#FF000000</item>
     <item name="colorLetterMatch">#FF50743E</item>

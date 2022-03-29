@@ -12,8 +12,7 @@
     <item name="android:navigationBarColor">#FFE5B4</item>
 
     <item name="colorBackground">#FFE5B4</item>
-    <item name="colorText">#FF756954</item>
-<!--    <item name="colorText">#FF202020</item>-->
+    <item name="colorText">#FF51493A</item>
 
     <item name="colorLetterNoGuess">#FFE5B4</item>
     <item name="colorLetterMatch">#FF73A659</item>
