@@ -487,7 +487,7 @@ class WordyFragment : BaseFragment() {
           val backgroundDrawableId = when {
             currentChar == getCurrentWord()[j] -> R.drawable.letter_background_match
             getCurrentWord().contains(currentChar) -> R.drawable.letter_background_present
-            else -> R.drawable.key_background_no_match
+            else -> R.drawable.letter_background_no_match
           }
 
           letter.setBackgroundResource(backgroundDrawableId)
