@@ -192,10 +192,12 @@ class WordyFragment : BaseFragment() {
     newConstraintSet.applyTo(binding.wordyGame)
 
     binding.deleteLetter.setOnClickListener {
-      performFeedback(getMainActivity(), it)
+      if (isGameActive()) {
+        performFeedback(getMainActivity(), it)
 
-      if (getCurrentGuess().isNotEmpty()) {
-        viewModel.currentGuess.value = getCurrentGuess().substring(0, getCurrentGuess().length - 1)
+        if (getCurrentGuess().isNotEmpty()) {
+          viewModel.currentGuess.value = getCurrentGuess().substring(0, getCurrentGuess().length - 1)
+        }
       }
     }
 
