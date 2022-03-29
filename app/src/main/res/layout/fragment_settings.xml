@@ -30,6 +30,7 @@
       android:paddingStart="@dimen/spacing"
       android:paddingEnd="@dimen/spacing"
       android:text="Settings"
+      android:textColor="?colorText"
       android:textSize="@dimen/header_text_size"
       android:textStyle="bold"
       app:layout_constraintEnd_toEndOf="parent"
@@ -50,13 +51,14 @@
       android:id="@+id/game_options_message"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:paddingTop="@dimen/spacing"
-      android:paddingBottom="@dimen/spacing_none"
       android:paddingStart="@dimen/spacing"
+      android:paddingTop="@dimen/spacing"
       android:paddingEnd="@dimen/spacing"
-      android:textSize="@dimen/text_size"
+      android:paddingBottom="@dimen/spacing_none"
       android:text="Game Options"
-      app:layout_constraintTop_toBottomOf="@id/title_divider"/>
+      android:textColor="?colorText"
+      android:textSize="@dimen/text_size"
+      app:layout_constraintTop_toBottomOf="@id/title_divider" />
 
     <RadioGroup
       android:id="@+id/game_options"
@@ -71,22 +73,25 @@
         android:id="@+id/option_guess_4_english"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size"
-        android:text="Guess 4 Letter Mystery Word" />
+        android:text="Guess 4 Letter Mystery Word"
+        android:textColor="?colorText"
+        android:textSize="@dimen/text_size" />
 
       <RadioButton
         android:id="@+id/option_guess_5_english"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size"
-        android:text="Guess 5 Letter Mystery Word" />
+        android:text="Guess 5 Letter Mystery Word"
+        android:textColor="?colorText"
+        android:textSize="@dimen/text_size" />
 
       <RadioButton
         android:id="@+id/option_guess_6_english"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size"
-        android:text="Guess 6 Letter Mystery Word" />
+        android:text="Guess 6 Letter Mystery Word"
+        android:textColor="?colorText"
+        android:textSize="@dimen/text_size" />
 
     </RadioGroup>
 
@@ -105,9 +110,10 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:padding="@dimen/spacing"
-      android:textSize="@dimen/text_size"
       android:text="Enable haptic feedback for game interface."
-      app:layout_constraintTop_toBottomOf="@id/game_option_divider"/>
+      android:textColor="?colorText"
+      android:textSize="@dimen/text_size"
+      app:layout_constraintTop_toBottomOf="@id/game_option_divider" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -10,6 +10,7 @@
     android:textSize="@dimen/header_text_size"
     android:text="Settings Up\nGame"
     android:gravity="center"
+    android:textColor="?colorText"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintStart_toStartOf="parent"

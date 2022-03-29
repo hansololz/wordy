@@ -12,6 +12,7 @@
     android:layout_height="wrap_content"
     android:text=""
     android:textSize="@dimen/text_size"
+    android:textColor="?colorText"
     app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

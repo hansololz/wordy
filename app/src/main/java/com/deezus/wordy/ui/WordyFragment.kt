@@ -556,13 +556,13 @@ class WordyFragment : BaseFragment() {
             keyView.setBackgroundResource(R.drawable.key_background_no_match)
           }
           else -> {
-            keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorText, Color.BLACK))
+            keyView.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextNoGuessed, Color.BLACK))
             keyView.setBackgroundResource(R.drawable.key_background_no_guess)
           }
         }
       }
 
-      binding.deleteLetter.setColorFilter(MaterialColors.getColor(getMainActivity(), R.attr.colorText, Color.BLACK),
+      binding.deleteLetter.setColorFilter(MaterialColors.getColor(getMainActivity(), R.attr.colorKeyTextNoGuessed, Color.BLACK),
         android.graphics.PorterDuff.Mode.SRC_IN)
       binding.deleteLetter.setBackgroundResource(R.drawable.key_background_no_guess)
     } else {

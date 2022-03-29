@@ -3,6 +3,7 @@ package com.deezus.wordy.data
 import android.content.Context
 import com.deezus.wordy.ui.MainActivity
 
+enum class ScoreViewPreference { total }
 
 class Settings(activity: MainActivity) {
   private val sharedPreferences = activity.getSharedPreferences("WORDY_SCORE", Context.MODE_PRIVATE)
@@ -11,6 +12,8 @@ class Settings(activity: MainActivity) {
   private val totalGamesWon = "SETTINGS_TOTAL_GAMES_WON"
   private val totalScoreWithoutHint = "SETTINGS_TOTAL_SCORE_WITHOUT_HINT"
   private val totalGamesWonWithoutHint = "SETTINGS_TOTAL_GAMES_WON_WITHOUT_HINT"
+
+  private val score_view_preference = "SETTINGS_SCORE_VIEW_PREFERENCE"
 
   private val isWordsSetSaved = "SETTINGS_IS_WORD_SET_SAVED_"
   private val currentGame = "SETTINGS_CURRENT_GAME"
