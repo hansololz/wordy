@@ -17,7 +17,7 @@
     <item name="colorLetterNoGuess">#FF000000</item>
     <item name="colorLetterMatch">#FF50743E</item>
     <item name="colorLetterNoMatch">#FF444444</item>
-    <item name="colorLetterPresent">#FF7D6D2E</item>
+    <item name="colorLetterPresent">#FFac8500</item>
     <item name="colorLetterBoarder">#FF777777</item>
     <item name="colorLetterBoarderFocus">#FF740e04</item>
     <item name="colorLetterTextGuessed">#FFBBBBBB</item>
@@ -25,7 +25,7 @@
 
     <item name="colorKeyNoGuess">#FF888888</item>
     <item name="colorKeyMatch">#FF50743E</item>
-    <item name="colorKeyPresent">#FF7D6D2E</item>
+    <item name="colorKeyPresent">#FFac8500</item>
     <item name="colorKeyNoMatch">#FF555555</item>
     <item name="colorKeyDisabled">#FF333333</item>
     <item name="colorKeyTextGuessed">#FFBBBBBB</item>
@@ -35,7 +35,7 @@
     <item name="colorDialogButton">#FFFFFFFF</item>
     <item name="colorDialogBackground">#FF202020</item>
 
-    <item name="colorDivider">#FFD4B996</item>
+    <item name="colorDivider">#FF333333</item>
 
     <item name="colorButtonInfo">#FF357D80</item>
     <item name="colorButtonWarning">#FFB27300</item>
