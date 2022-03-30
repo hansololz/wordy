@@ -240,21 +240,21 @@ class WordyFragment : BaseFragment() {
                 "$newScore point"
               }
 
-              DialogMessage(getMainActivity(), "Congrats, you guessed the mystery word \"${getCurrentWord()}\" and earned $scoreMessage.")
-                .setOnDismissCallback {
-                  scope.launch {
-                    setupGame()
-                  }
-                }
-                .setNegativeCallback("View My Guesses") {
+              val dialogMessage = "Congrats, you guessed the mystery word \"${getCurrentWord()}\" and earned $scoreMessage."
 
-                }
-                .setPositiveCallback("Play Again") {
+              showMessagePrompt(getMainActivity(), dialogMessage,
+                Pair("Play Again") {
+                  scope.launch {
+                    setupGame()
+                  }
+                },
+                Pair("View my Guesses") {
+
+                }) {
                   scope.launch {
                     setupGame()
                   }
                 }
-                .show()
             }
             hasWord(game.language, getCurrentGuess()) && getPastGuesses().size + 1 == getMaxGuessCount() -> {
               viewModel.isGameActive.value = false
@@ -273,21 +273,21 @@ class WordyFragment : BaseFragment() {
                 )
               }
 
-              DialogMessage(getMainActivity(), "Sorry, the mystery word was \"${getCurrentWord()}\"")
-                .setOnDismissCallback {
-                  scope.launch {
-                    setupGame()
-                  }
-                }
-                .setNegativeCallback("View My Guesses") {
+              val dialogMessage = "Sorry, the mystery word was \"${getCurrentWord()}\""
 
-                }
-                .setPositiveCallback("Play Again") {
+              showMessagePrompt(getMainActivity(), dialogMessage,
+                Pair("Play Again") {
+                  scope.launch {
+                    setupGame()
+                  }
+                },
+                Pair("View my Guesses") {
+
+                }) {
                   scope.launch {
                     setupGame()
                   }
                 }
-                .show()
             }
             hasWord(game.language, getCurrentGuess()) -> {
               viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
@@ -322,8 +322,8 @@ class WordyFragment : BaseFragment() {
       performFeedback(getMainActivity(), it)
 
       if (isGameActive()) {
-        DialogMessage(getMainActivity(), "Are you sure you want to skip to the next word?")
-          .setPositiveCallback("Yes") {
+        showMessagePrompt(getMainActivity(), "Are you sure you want to skip to the next word?",
+          Pair("Yes") {
             val oldWord = getCurrentWord()
 
             scope.launch {
@@ -339,26 +339,25 @@ class WordyFragment : BaseFragment() {
 
             viewModel.isGameActive.value = false
 
-            DialogMessage(getMainActivity(), "The mystery word was \"$oldWord\".")
-              .setOnDismissCallback {
+            showMessagePrompt(getMainActivity(), "The mystery word was \"$oldWord\".",
+              Pair("Play Again") {
+                scope.launch {
+                  setupGame()
+                }
+              },
+              Pair("View my Guesses") {
+
+              }) {
                 scope.launch {
                   setupGame()
                 }
               }
-              .setNegativeCallback("View My Guesses") {
+          },
+          Pair("No") {
 
-              }
-              .setPositiveCallback("Ok") {
-                scope.launch {
-                  setupGame()
-                }
-              }
-              .show()
-          }
-          .setNegativeCallback("No") {
+          }) {
 
           }
-          .show()
       } else {
         scope.launch {
           setupGame()

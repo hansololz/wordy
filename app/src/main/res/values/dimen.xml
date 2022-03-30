@@ -4,6 +4,7 @@
   <dimen name="board_padding">36dp</dimen>
 
   <dimen name="spacing">16dp</dimen>
+  <dimen name="spacing_large">32dp</dimen>
   <dimen name="spacing_half">8dp</dimen>
   <dimen name="spacing_none">0dp</dimen>
 
