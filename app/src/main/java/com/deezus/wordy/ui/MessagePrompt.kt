@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import com.deezus.wordy.R
 import com.deezus.wordy.databinding.DialogMessageBinding
+import com.deezus.wordy.helpers.performFeedback
 
 
 fun showMessagePrompt(activity: MainActivity,
@@ -32,12 +33,14 @@ fun showMessagePrompt(activity: MainActivity,
     binding.message.text = message
     binding.positiveButton.text = positiveAction.first
     binding.positiveButton.setOnClickListener {
+      performFeedback(activity, it)
       callback = positiveAction.second
       dialog.dismiss()
     }
     negativeAction?.let {
       binding.negativeButton.text = it.first
       binding.negativeButton.setOnClickListener {
+        performFeedback(activity, it)
         callback = negativeAction.second
         dialog.dismiss()
       }
