@@ -11,8 +11,8 @@ android {
         applicationId "com.deezus.wordy"
         minSdk 21
         targetSdk 32
-        versionCode 13
-        versionName "2.8"
+        versionCode 16
+        versionName "2.10"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

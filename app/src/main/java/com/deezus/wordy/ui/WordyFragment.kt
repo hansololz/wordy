@@ -248,7 +248,7 @@ class WordyFragment : BaseFragment() {
                     setupGame()
                   }
                 },
-                Pair("View my Guesses") {
+                Pair("View My Guesses") {
 
                 }) {
                   scope.launch {
@@ -281,7 +281,7 @@ class WordyFragment : BaseFragment() {
                     setupGame()
                   }
                 },
-                Pair("View my Guesses") {
+                Pair("View My Guesses") {
 
                 }) {
                   scope.launch {
@@ -345,7 +345,7 @@ class WordyFragment : BaseFragment() {
                   setupGame()
                 }
               },
-              Pair("View my Guesses") {
+              Pair("View My Guesses") {
 
               }) {
                 scope.launch {

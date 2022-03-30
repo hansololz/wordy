@@ -139,7 +139,7 @@
         android:id="@+id/option_average_score"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Average Ratio"
+        android:text="Average Score"
         android:textColor="?colorText"
         android:textSize="@dimen/text_size" />
 
@@ -155,7 +155,7 @@
         android:id="@+id/option_average_score_with_hints"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Average Ratio Without Hints"
+        android:text="Average Score Without Hints"
         android:textColor="?colorText"
         android:textSize="@dimen/text_size" />
 
