@@ -617,8 +617,6 @@ class WordyFragment : BaseFragment() {
 
   private suspend fun setupGame() {
     getRandomWord(game.wordSet)?.let { randomWord ->
-      Log.d("WORDYYY", randomWord)
-
       viewModel.currentWord.value = randomWord
       deleteWord(game.wordSet, randomWord)
       addHistory(
