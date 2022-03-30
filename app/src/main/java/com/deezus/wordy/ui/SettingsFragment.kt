@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.deezus.wordy.data.GameName
+import com.deezus.wordy.data.ScoreViewPreference
 import com.deezus.wordy.data.Settings
 import com.deezus.wordy.databinding.FragmentSettingsBinding
 import com.deezus.wordy.helpers.performFeedback
@@ -59,6 +60,29 @@ class SettingsFragment : BaseFragment() {
 
     binding.optionGuess6English.setOnClickListener {
       settings.setCurrentGame(GameName.GUESS_6_ENGLISH)
+    }
+
+    when (settings.getScoreViewPreference()) {
+      ScoreViewPreference.TOTAL_SCORE -> binding.optionTotalScore.isChecked = true
+      ScoreViewPreference.AVERAGE_SCORE -> binding.optionAverageScore.isChecked = true
+      ScoreViewPreference.TOTAL_SCORE_WITHOUT_HINTS -> binding.optionTotalScoreWithHints.isChecked = true
+      ScoreViewPreference.AVERAGE_SCORE_WITHOUT_HINTS -> binding.optionAverageScoreWithHints.isChecked = true
+    }
+
+    binding.optionTotalScore.setOnClickListener {
+      settings.setScoreViewPreference(ScoreViewPreference.TOTAL_SCORE)
+    }
+
+    binding.optionAverageScore.setOnClickListener {
+      settings.setScoreViewPreference(ScoreViewPreference.AVERAGE_SCORE)
+    }
+
+    binding.optionTotalScoreWithHints.setOnClickListener {
+      settings.setScoreViewPreference(ScoreViewPreference.TOTAL_SCORE_WITHOUT_HINTS)
+    }
+
+    binding.optionAverageScoreWithHints.setOnClickListener {
+      settings.setScoreViewPreference(ScoreViewPreference.AVERAGE_SCORE_WITHOUT_HINTS)
     }
 
     binding.enableHapticFeedback.isChecked = settings.isHapticFeedbackEnabled()

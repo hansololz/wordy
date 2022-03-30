@@ -96,7 +96,7 @@
     </RadioGroup>
 
     <TextView
-      android:id="@+id/game_option_divider"
+      android:id="@+id/score_option_divider"
       android:layout_width="match_parent"
       android:layout_height="1dp"
       android:layout_marginStart="@dimen/spacing"
@@ -104,6 +104,72 @@
       android:layout_marginEnd="@dimen/spacing"
       android:background="?colorDivider"
       app:layout_constraintTop_toBottomOf="@id/game_options" />
+
+    <TextView
+      android:id="@+id/score_options_message"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingStart="@dimen/spacing"
+      android:paddingTop="@dimen/spacing"
+      android:paddingEnd="@dimen/spacing"
+      android:paddingBottom="@dimen/spacing_none"
+      android:text="Score Display Options"
+      android:textColor="?colorText"
+      android:textSize="@dimen/text_size"
+      app:layout_constraintTop_toBottomOf="@id/score_option_divider" />
+
+    <RadioGroup
+      android:id="@+id/score_options"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:paddingStart="@dimen/spacing"
+      android:paddingEnd="@dimen/spacing"
+      app:layout_constraintTop_toBottomOf="@id/score_options_message">
+
+      <RadioButton
+        android:id="@+id/option_total_score"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Total Score"
+        android:textColor="?colorText"
+        android:textSize="@dimen/text_size" />
+
+      <RadioButton
+        android:id="@+id/option_average_score"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Average Ratio"
+        android:textColor="?colorText"
+        android:textSize="@dimen/text_size" />
+
+      <RadioButton
+        android:id="@+id/option_total_score_with_hints"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Total Score Without Hints"
+        android:textColor="?colorText"
+        android:textSize="@dimen/text_size" />
+
+      <RadioButton
+        android:id="@+id/option_average_score_with_hints"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Average Ratio Without Hints"
+        android:textColor="?colorText"
+        android:textSize="@dimen/text_size" />
+
+    </RadioGroup>
+
+    <TextView
+      android:id="@+id/game_option_divider"
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_marginStart="@dimen/spacing"
+      android:layout_marginTop="@dimen/spacing"
+      android:layout_marginEnd="@dimen/spacing"
+      android:background="?colorDivider"
+      app:layout_constraintTop_toBottomOf="@id/score_options" />
 
     <androidx.appcompat.widget.SwitchCompat
       android:id="@+id/enable_haptic_feedback"

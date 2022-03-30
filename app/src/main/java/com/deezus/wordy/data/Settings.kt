@@ -3,7 +3,7 @@ package com.deezus.wordy.data
 import android.content.Context
 import com.deezus.wordy.ui.MainActivity
 
-enum class ScoreViewPreference { total }
+enum class ScoreViewPreference { TOTAL_SCORE, AVERAGE_SCORE, TOTAL_SCORE_WITHOUT_HINTS, AVERAGE_SCORE_WITHOUT_HINTS }
 
 class Settings(activity: MainActivity) {
   private val sharedPreferences = activity.getSharedPreferences("WORDY_SCORE", Context.MODE_PRIVATE)
@@ -13,7 +13,7 @@ class Settings(activity: MainActivity) {
   private val totalScoreWithoutHint = "SETTINGS_TOTAL_SCORE_WITHOUT_HINT"
   private val totalGamesWonWithoutHint = "SETTINGS_TOTAL_GAMES_WON_WITHOUT_HINT"
 
-  private val score_view_preference = "SETTINGS_SCORE_VIEW_PREFERENCE"
+  private val scoreViewPreference = "SETTINGS_SCORE_VIEW_PREFERENCE"
 
   private val isWordsSetSaved = "SETTINGS_IS_WORD_SET_SAVED_"
   private val currentGame = "SETTINGS_CURRENT_GAME"
@@ -32,8 +32,46 @@ class Settings(activity: MainActivity) {
     }
   }
 
-  fun getScore(): Long {
-    return sharedPreferences.getLong(totalScore, 0)
+  fun setScoreViewPreference(preference: ScoreViewPreference) {
+    sharedPreferences.edit().apply {
+      putString(scoreViewPreference, preference.toString())
+      apply()
+    }
+  }
+
+  fun getScoreViewPreference(): ScoreViewPreference {
+    return sharedPreferences.getString(scoreViewPreference, null)?.let {
+      ScoreViewPreference.valueOf(it)
+    } ?: ScoreViewPreference.TOTAL_SCORE
+  }
+
+  fun getScore(): String {
+    return when (getScoreViewPreference()) {
+      ScoreViewPreference.TOTAL_SCORE -> {
+        sharedPreferences.getLong(totalScore, 0).toString()
+      }
+      ScoreViewPreference.AVERAGE_SCORE -> {
+        val score = sharedPreferences.getLong(totalScore, 0)
+        val gameCount = sharedPreferences.getLong(totalGamesWon, 0)
+        getScore(score, gameCount)
+      }
+      ScoreViewPreference.TOTAL_SCORE_WITHOUT_HINTS -> {
+        sharedPreferences.getLong(totalScoreWithoutHint, 0).toString()
+      }
+      ScoreViewPreference.AVERAGE_SCORE_WITHOUT_HINTS -> {
+        val score = sharedPreferences.getLong(totalScoreWithoutHint, 0)
+        val gameCount = sharedPreferences.getLong(totalGamesWonWithoutHint, 0)
+        getScore(score, gameCount)
+      }
+    }
+  }
+
+  private fun getScore(score: Long, gameCount: Long): String {
+    return if (gameCount == 0L) {
+      "0"
+    } else {
+      (((score.toFloat()/(gameCount * 6f)) * 60).toInt().toFloat() / 10f).toString()
+    }
   }
 
   fun setScore(gameScore: Long, hasAskedForHint: Boolean) {
