@@ -42,6 +42,6 @@ val gameSet = hashMapOf(
   guess6English.gameName to guess6English
 )
 
-fun getGame(gameName: GameName): Game {
-  return gameSet[gameName] ?: guess5English
+fun getGame(gameName: GameName): Game? {
+  return gameSet[gameName]
 }

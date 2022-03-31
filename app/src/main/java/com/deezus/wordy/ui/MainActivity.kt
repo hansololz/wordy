@@ -44,10 +44,11 @@ class MainActivity : AppCompatActivity() {
       }
 
       settings.getCurrentGame()?.let {
-        val game = getGame(it)
-        findNavController(R.id.host_fragment).apply {
-          popBackStack(R.id.navigation_loading, true)
-          navigationWithOptions(game.navigationId)
+        getGame(it)?.let {
+          findNavController(R.id.host_fragment).apply {
+            popBackStack(R.id.navigation_loading, true)
+            navigationWithOptions(it.navigationId)
+          }
         }
       }
     }

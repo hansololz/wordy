@@ -16,8 +16,14 @@ class Settings(activity: MainActivity) {
   private val scoreViewPreference = "SETTINGS_SCORE_VIEW_PREFERENCE"
 
   private val isWordsSetSaved = "SETTINGS_IS_WORD_SET_SAVED_"
-  private val currentGame = "SETTINGS_CURRENT_GAME"
   private val isHapticFeedbackEnabled = "SETTINGS_IS_HAPTIC_FEEDBACK_ENABLED"
+
+  private val currentGame = "SETTINGS_CURRENT_GAME"
+  private val currentGuess = "SETTINGS_CURRENT_GUESS"
+  private val pastGuesses = "SETTINGS_PAST_GUESSES"
+  private val hintedChars = "SETTINGS_HINTED_CHARS"
+  private val hasAskedForHint = "SETTINGS_HAS_ASKED_FOR_HINT"
+  private val isGameActive = "SETTINGS_IS_GAME_ACTIVE"
 
   fun getCurrentGame(): GameName? {
     return sharedPreferences.getString(currentGame, null)?.let {
@@ -28,6 +34,65 @@ class Settings(activity: MainActivity) {
   fun setCurrentGame(gameName: GameName) {
     sharedPreferences.edit().apply {
       putString(currentGame, gameName.toString())
+      apply()
+    }
+  }
+
+  fun getCurrentGuess(): String?  {
+    return sharedPreferences.getString(currentGuess, null)
+  }
+
+  fun setCurrentGuess(guess: String) {
+    sharedPreferences.edit().apply {
+      putString(currentGuess, guess)
+      apply()
+    }
+  }
+
+  fun getPastGuesses(): List<String> {
+    return sharedPreferences.getString(pastGuesses, null)?.split(", ") ?: listOf()
+  }
+
+  fun setPastGuesses(guesses: List<String>) {
+    sharedPreferences.edit().apply {
+      putString(pastGuesses, guesses.joinToString())
+      apply()
+    }
+  }
+
+  fun getHintedChas(): Set<Char> {
+    return sharedPreferences.getString(hintedChars, null)
+      ?.split(", ")
+      ?.filter { it.length == 1 }
+      ?.map { it[0] }
+      ?.toSet() ?: setOf()
+  }
+
+  fun setHintedChars(hinted: Set<Char>) {
+    sharedPreferences.edit().apply {
+      putString(hintedChars, hinted.joinToString())
+      apply()
+    }
+  }
+
+  fun getHasAskedForHint(): Boolean {
+    return sharedPreferences.getBoolean(hasAskedForHint, false)
+  }
+
+  fun setHasAskedForHint(hasHinted: Boolean) {
+    sharedPreferences.edit().apply {
+      putBoolean(hasAskedForHint, hasHinted)
+      apply()
+    }
+  }
+
+  fun isGameActive(): Boolean {
+    return sharedPreferences.getBoolean(isGameActive, false)
+  }
+
+  fun setIsGameActive(isActive: Boolean) {
+    sharedPreferences.edit().apply {
+      putBoolean(isGameActive, isActive)
       apply()
     }
   }

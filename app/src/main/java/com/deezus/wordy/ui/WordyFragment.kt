@@ -45,7 +45,6 @@ class WordyFragment : BaseFragment() {
 
   private lateinit var viewModel: WordyViewModel
 
-  private lateinit var game: Game
   private var maxGuessCount: Int = 6
   private var wordLength: Int = 5
 
@@ -66,9 +65,7 @@ class WordyFragment : BaseFragment() {
 
     if (settings.getCurrentGame() != viewModel.currentGameName.value) {
       viewModel.currentGameName.value = settings.getCurrentGame()
-
-      game = viewModel.currentGameName.value?.let { getGame(it) }!!
-      updateBoardDimension(game.gameName)
+      updateBoardDimension(getGame().gameName)
 
       scope.launch {
         setupGame()
@@ -226,7 +223,7 @@ class WordyFragment : BaseFragment() {
                 addHistory(
                   getCurrentWord(),
                   System.currentTimeMillis(),
-                  game.gameName,
+                  getGame().gameName,
                   GameOutcome.SUCCEEDED,
                   newScore,
                   hasAskedForHint(),
@@ -256,7 +253,7 @@ class WordyFragment : BaseFragment() {
                   }
                 }
             }
-            hasWord(game.language, getCurrentGuess()) && getPastGuesses().size + 1 == getMaxGuessCount() -> {
+            hasWord(getGame().language, getCurrentGuess()) && getPastGuesses().size + 1 == getMaxGuessCount() -> {
               viewModel.isGameActive.value = false
               viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
               viewModel.currentGuess.value = ""
@@ -265,7 +262,7 @@ class WordyFragment : BaseFragment() {
                 addHistory(
                   getCurrentWord(),
                   System.currentTimeMillis(),
-                  game.gameName,
+                  getGame().gameName,
                   GameOutcome.SKIPPED,
                   0,
                   hasAskedForHint(),
@@ -289,7 +286,7 @@ class WordyFragment : BaseFragment() {
                   }
                 }
             }
-            hasWord(game.language, getCurrentGuess()) -> {
+            hasWord(getGame().language, getCurrentGuess()) -> {
               viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
               viewModel.currentGuess.value = ""
             }
@@ -330,7 +327,7 @@ class WordyFragment : BaseFragment() {
               addHistory(
                 getCurrentWord(),
                 System.currentTimeMillis(),
-                game.gameName,
+                getGame().gameName,
                 GameOutcome.SKIPPED,
                 0,
                 hasAskedForHint(),
@@ -587,7 +584,7 @@ class WordyFragment : BaseFragment() {
           binding.submitButton.setBackgroundResource(R.drawable.button_background_disabled)
           binding.submitButton.text = "Guess"
         }
-        hasWord(game.language, getCurrentGuess()) -> {
+        hasWord(getGame().language, getCurrentGuess()) -> {
           binding.submitButton.setBackgroundResource(R.drawable.button_background_positive)
           binding.submitButton.text = "Guess"
         }
@@ -616,13 +613,13 @@ class WordyFragment : BaseFragment() {
   }
 
   private suspend fun setupGame() {
-    getRandomWord(game.wordSet)?.let { randomWord ->
+    getRandomWord(getGame().wordSet)?.let { randomWord ->
       viewModel.currentWord.value = randomWord
-      deleteWord(game.wordSet, randomWord)
+      deleteWord(getGame().wordSet, randomWord)
       addHistory(
         getCurrentWord(),
         System.currentTimeMillis(),
-        game.gameName,
+        getGame().gameName,
         GameOutcome.NOT_COMPLETED,
         0,
         hasAskedForHint(),
@@ -670,6 +667,10 @@ class WordyFragment : BaseFragment() {
 
   private fun getWordLength(): Int {
     return wordLength
+  }
+
+  private fun getGame(): Game {
+    return viewModel.currentGameName.value?.let { gameName -> getGame(gameName) }!!
   }
 
   private fun getUnusedLetters(): List<Char> {
