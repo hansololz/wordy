@@ -65,7 +65,6 @@ class WordyFragment : BaseFragment() {
 
     if (settings.getCurrentGame() != viewModel.currentGameName.value) {
       viewModel.currentGameName.value = settings.getCurrentGame()
-      updateBoardDimension(getGame().gameName)
 
       scope.launch {
         setupGame()
@@ -100,6 +99,8 @@ class WordyFragment : BaseFragment() {
 
   private fun setupView() {
     updateScore()
+
+    updateBoardDimension(getGame().gameName)
 
     letterViews.clear()
     keyViews.clear()
@@ -626,6 +627,10 @@ class WordyFragment : BaseFragment() {
         listOf())
     }
 
+    resetGame()
+  }
+
+  private fun resetGame() {
     viewModel.isGameActive.value = true
     viewModel.pastGuesses.value = listOf()
     viewModel.hasAskedForHint.value = false
