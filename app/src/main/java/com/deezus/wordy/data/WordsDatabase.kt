@@ -78,6 +78,16 @@ suspend fun initWordDatabase(activity: MainActivity) = withContext(Dispatchers.D
   }
 }
 
+suspend fun resetWordSet(activity: MainActivity, wordSetName: WordSet) {
+  wordSetDatabases[wordSetName]?.let { databaseHolder ->
+    getWords(activity, wordSetName)
+      ?.map { WordEntry(it) }
+      ?.let {
+        databaseHolder.database?.userDao()?.insertAll(it)
+      }
+  }
+}
+
 suspend fun getRandomWord(wordSet: WordSet): String? = withContext(Dispatchers.Default) {
   wordSetDatabases[wordSet]?.database?.userDao()?.getRandom()?.firstOrNull()?.word
 }
