@@ -181,6 +181,26 @@
       android:textSize="@dimen/text_size"
       app:layout_constraintTop_toBottomOf="@id/game_option_divider" />
 
+    <TextView
+      android:id="@+id/haptic_feedback_divider"
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_marginStart="@dimen/spacing"
+      android:layout_marginTop="@dimen/spacing"
+      android:layout_marginEnd="@dimen/spacing"
+      android:background="?colorDivider"
+      app:layout_constraintTop_toBottomOf="@id/enable_haptic_feedback" />
+
+    <androidx.appcompat.widget.SwitchCompat
+      android:id="@+id/enable_auto_complete"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:padding="@dimen/spacing"
+      android:text="Enable guess auto complete."
+      android:textColor="?colorText"
+      android:textSize="@dimen/text_size"
+      app:layout_constraintTop_toBottomOf="@id/haptic_feedback_divider" />
+
   </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

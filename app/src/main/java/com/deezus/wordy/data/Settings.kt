@@ -24,6 +24,7 @@ class Settings(activity: MainActivity) {
   private val hintedChars = "SETTINGS_HINTED_CHARS"
   private val hasAskedForHint = "SETTINGS_HAS_ASKED_FOR_HINT"
   private val isGameActive = "SETTINGS_IS_GAME_ACTIVE"
+  private val isAutoCompleteEnabled = "SETTINGS_IS_AUTO_COMPLETE_ENABLED"
 
   fun getCurrentGame(): GameName? {
     return sharedPreferences.getString(currentGame, null)?.let {
@@ -187,6 +188,17 @@ class Settings(activity: MainActivity) {
   fun setHapticFeedback(isEnabled: Boolean) {
     sharedPreferences.edit().apply {
       putBoolean(isHapticFeedbackEnabled, isEnabled)
+      apply()
+    }
+  }
+
+  fun isAutoCompleteEnabled(): Boolean {
+    return sharedPreferences.getBoolean(isAutoCompleteEnabled, false)
+  }
+
+  fun setIsAutoCompleteEnabled(isEnabled: Boolean) {
+    sharedPreferences.edit().apply {
+      putBoolean(isAutoCompleteEnabled, isEnabled)
       apply()
     }
   }

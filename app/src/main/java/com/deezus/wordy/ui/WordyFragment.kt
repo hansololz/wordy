@@ -473,6 +473,10 @@ class WordyFragment : BaseFragment() {
   }
 
   private fun getAutoComplete(): String? {
+    if (!Settings(getMainActivity()).isAutoCompleteEnabled()) {
+      return null
+    }
+
     val autoCompleteString = CharArray(getCurrentWord().length) { ' ' }
 
     for (i in getCurrentWord().length - 1 downTo 0) {
@@ -492,9 +496,6 @@ class WordyFragment : BaseFragment() {
     }
 
     val maybeAutoComplete = autoCompleteString.joinToString("")
-
-    Log.d("WORDYYY", getCurrentWord())
-    Log.d("WORDYYY", "AUTO: $maybeAutoComplete")
 
     return if (maybeAutoComplete.contains(' ')) {
       null

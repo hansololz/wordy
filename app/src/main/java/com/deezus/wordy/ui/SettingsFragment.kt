@@ -98,5 +98,12 @@ class SettingsFragment : BaseFragment() {
       settings.setHapticFeedback(binding.enableHapticFeedback.isChecked)
       performFeedback(getMainActivity(), it)
     }
+
+    binding.enableAutoComplete.isChecked = settings.isAutoCompleteEnabled()
+
+    binding.enableAutoComplete.setOnClickListener {
+      settings.setIsAutoCompleteEnabled(binding.enableAutoComplete.isChecked)
+      performFeedback(getMainActivity(), it)
+    }
   }
 }
