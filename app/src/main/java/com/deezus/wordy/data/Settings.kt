@@ -193,7 +193,7 @@ class Settings(activity: MainActivity) {
   }
 
   fun isAutoCompleteEnabled(): Boolean {
-    return sharedPreferences.getBoolean(isAutoCompleteEnabled, false)
+    return sharedPreferences.getBoolean(isAutoCompleteEnabled, true)
   }
 
   fun setIsAutoCompleteEnabled(isEnabled: Boolean) {
