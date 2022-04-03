@@ -52,14 +52,17 @@ class SettingsFragment : BaseFragment() {
 
     binding.optionGuess4English.setOnClickListener {
       settings.setCurrentGame(GameName.GUESS_4_ENGLISH)
+      performFeedback(getMainActivity(), it)
     }
 
     binding.optionGuess5English.setOnClickListener {
       settings.setCurrentGame(GameName.GUESS_5_ENGLISH)
+      performFeedback(getMainActivity(), it)
     }
 
     binding.optionGuess6English.setOnClickListener {
       settings.setCurrentGame(GameName.GUESS_6_ENGLISH)
+      performFeedback(getMainActivity(), it)
     }
 
     when (settings.getScoreViewPreference()) {
@@ -71,24 +74,29 @@ class SettingsFragment : BaseFragment() {
 
     binding.optionTotalScore.setOnClickListener {
       settings.setScoreViewPreference(ScoreViewPreference.TOTAL_SCORE)
+      performFeedback(getMainActivity(), it)
     }
 
     binding.optionAverageScore.setOnClickListener {
       settings.setScoreViewPreference(ScoreViewPreference.AVERAGE_SCORE)
+      performFeedback(getMainActivity(), it)
     }
 
     binding.optionTotalScoreWithHints.setOnClickListener {
       settings.setScoreViewPreference(ScoreViewPreference.TOTAL_SCORE_WITHOUT_HINTS)
+      performFeedback(getMainActivity(), it)
     }
 
     binding.optionAverageScoreWithHints.setOnClickListener {
       settings.setScoreViewPreference(ScoreViewPreference.AVERAGE_SCORE_WITHOUT_HINTS)
+      performFeedback(getMainActivity(), it)
     }
 
     binding.enableHapticFeedback.isChecked = settings.isHapticFeedbackEnabled()
 
     binding.enableHapticFeedback.setOnClickListener {
       settings.setHapticFeedback(binding.enableHapticFeedback.isChecked)
+      performFeedback(getMainActivity(), it)
     }
   }
 }
