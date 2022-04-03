@@ -22,6 +22,8 @@
     <item name="colorLetterBoarderFocus">#FFC21807</item>
     <item name="colorLetterTextGuessed">#FFFFFFFF</item>
     <item name="colorLetterText">#FF202020</item>
+    <item name="colorLetterAutoCompleteText">#80FFFFFF</item>
+    <item name="colorLetterAutoComplete">#8073A659</item>
 
     <item name="colorKeyNoGuess">#FFFFFFFF</item>
     <item name="colorKeyMatch">#FF73A659</item>

@@ -31,6 +31,8 @@
         <entry key="app/src/main/res/drawable/key_background_no_guess.xml" value="0.237" />
         <entry key="app/src/main/res/drawable/key_background_no_match.xml" value="0.237" />
         <entry key="app/src/main/res/drawable/key_background_present.xml" value="0.237" />
+        <entry key="app/src/main/res/drawable/letter_background_auto_complete.xml" value="0.223" />
+        <entry key="app/src/main/res/drawable/letter_background_auto_complete_and_focus.xml" value="0.223" />
         <entry key="app/src/main/res/drawable/letter_background_match.xml" value="0.225" />
         <entry key="app/src/main/res/drawable/letter_background_no_guess.xml" value="0.225" />
         <entry key="app/src/main/res/drawable/letter_background_no_guess_and_focus.xml" value="0.237" />

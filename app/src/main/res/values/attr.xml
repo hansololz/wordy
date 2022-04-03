@@ -21,6 +21,8 @@
   <attr name="colorLetterBoarderFocus" format="color" />
   <attr name="colorLetterTextGuessed" format="color" />
   <attr name="colorLetterText" format="color" />
+  <attr name="colorLetterAutoCompleteText" format="color" />
+  <attr name="colorLetterAutoComplete" format="color" />
 
   <attr name="colorButtonForeground" format="color" />
 

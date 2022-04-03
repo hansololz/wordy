@@ -204,15 +204,16 @@ class WordyFragment : BaseFragment() {
         performFeedback(getMainActivity(), it)
 
         val settings = Settings(getMainActivity())
+        val word = getAutoComplete() ?: getCurrentGuess()
 
         scope.launch {
           when {
-            getCurrentGuess().length < getWordLength() -> {
+            word.length < getWordLength() -> {
               showSnackBar(getMainActivity(), "Please enter a ${getWordLength()} letter word.")
             }
-            getCurrentGuess() == getCurrentWord() -> {
+            word == getCurrentWord() -> {
               viewModel.isGameActive.value = false
-              viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
+              viewModel.pastGuesses.value = getPastGuesses() + word
               viewModel.currentGuess.value = ""
 
               val newScore = getEarnedScore()
@@ -254,9 +255,9 @@ class WordyFragment : BaseFragment() {
                   }
                 }
             }
-            hasWord(getGame().language, getCurrentGuess()) && getPastGuesses().size + 1 == getMaxGuessCount() -> {
+            hasWord(getGame().language, word) && getPastGuesses().size + 1 == getMaxGuessCount() -> {
               viewModel.isGameActive.value = false
-              viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
+              viewModel.pastGuesses.value = getPastGuesses() + word
               viewModel.currentGuess.value = ""
 
               scope.launch {
@@ -287,8 +288,8 @@ class WordyFragment : BaseFragment() {
                   }
                 }
             }
-            hasWord(getGame().language, getCurrentGuess()) -> {
-              viewModel.pastGuesses.value = getPastGuesses() + getCurrentGuess()
+            hasWord(getGame().language, word) -> {
+              viewModel.pastGuesses.value = getPastGuesses() + word
               viewModel.currentGuess.value = ""
             }
             else -> {
@@ -471,7 +472,40 @@ class WordyFragment : BaseFragment() {
     }
   }
 
+  private fun getAutoComplete(): String? {
+    val autoCompleteString = CharArray(getCurrentWord().length) { ' ' }
+
+    for (i in getCurrentWord().length - 1 downTo 0) {
+      getPastGuesses().forEach { pastGuess ->
+        if (getCurrentWord()[i] == pastGuess[i]) {
+          autoCompleteString[i] = getCurrentWord()[i]
+        }
+      }
+
+      if (getCurrentWord()[i] == ' ') {
+        break
+      }
+    }
+
+    getCurrentGuess().mapIndexed { index, c ->
+      autoCompleteString[index] = c
+    }
+
+    val maybeAutoComplete = autoCompleteString.joinToString("")
+
+    Log.d("WORDYYY", getCurrentWord())
+    Log.d("WORDYYY", "AUTO: $maybeAutoComplete")
+
+    return if (maybeAutoComplete.contains(' ')) {
+      null
+    } else {
+      maybeAutoComplete
+    }
+  }
+
   private fun updateLetters() {
+    val autoComplete = getAutoComplete()
+
     for (i in 0 until getMaxGuessCount()) {
       if (i < getCurrentX()) {
         for (j in 0 until getWordLength()) {
@@ -495,21 +529,47 @@ class WordyFragment : BaseFragment() {
         for (j in 0 until getWordLength()) {
           val letter = letterViews[i][j]
 
-          letter.setTextColor(MaterialColors.getColor(getMainActivity(), R.attr.colorLetterText, Color.BLACK))
-
-          val backgroundDrawableId = if (i == getCurrentX() && j == getCurrentY()) {
-            R.drawable.letter_background_no_guess_and_focus
-          } else {
-            R.drawable.letter_background_no_guess
+          val backgroundDrawableId = when {
+            i == getCurrentX() && j == getCurrentY() && autoComplete != null -> {
+              R.drawable.letter_background_auto_complete_and_focus
+            }
+            i == getCurrentX() && j == getCurrentY() -> {
+              R.drawable.letter_background_no_guess_and_focus
+            }
+            i == getCurrentX() && j > getCurrentY() && autoComplete != null -> {
+              R.drawable.letter_background_auto_complete
+            }
+            else -> {
+              R.drawable.letter_background_no_guess
+            }
           }
 
           letter.setBackgroundResource(backgroundDrawableId)
 
-          if (i == getCurrentX() && j < getCurrentGuess().length) {
-            letter.text = getCurrentGuess()[j].uppercase()
-          } else {
-            letter.text = ""
+          val text = when {
+            i == getCurrentX() && j < getCurrentGuess().length -> {
+              getCurrentGuess()[j].toString()
+            }
+            i == getCurrentX() && autoComplete != null -> {
+              autoComplete[j].toString()
+            }
+            else -> {
+              ""
+            }
           }
+
+          letter.text = text.uppercase()
+
+          val textColor = when {
+            i == getCurrentX() && j >= getCurrentGuess().length && autoComplete != null -> {
+              MaterialColors.getColor(getMainActivity(), R.attr.colorLetterAutoCompleteText, Color.BLACK)
+            }
+            else -> {
+              MaterialColors.getColor(getMainActivity(), R.attr.colorLetterText, Color.BLACK)
+            }
+          }
+
+          letter.setTextColor(textColor)
         }
 
         searchButtons[i].visibility = View.INVISIBLE
@@ -575,23 +635,42 @@ class WordyFragment : BaseFragment() {
   }
 
   private fun updateSubmitButton() {
+    val autoComplete = getAutoComplete()
+
     scope.launch {
-      when {
-        !isGameActive() -> {
-          binding.submitButton.setBackgroundResource(R.drawable.button_background_disabled)
-          binding.submitButton.text = "Guess"
+      if (autoComplete != null) {
+        when {
+          !isGameActive() -> {
+            binding.submitButton.setBackgroundResource(R.drawable.button_background_disabled)
+            binding.submitButton.text = "Guess"
+          }
+          hasWord(getGame().language, autoComplete) -> {
+            binding.submitButton.setBackgroundResource(R.drawable.button_background_positive)
+            binding.submitButton.text = "Guess"
+          }
+          else -> {
+            binding.submitButton.setBackgroundResource(R.drawable.button_background_disabled)
+            binding.submitButton.text = "Not a Word"
+          }
         }
-        getCurrentGuess().length < getWordLength() -> {
-          binding.submitButton.setBackgroundResource(R.drawable.button_background_disabled)
-          binding.submitButton.text = "Guess"
-        }
-        hasWord(getGame().language, getCurrentGuess()) -> {
-          binding.submitButton.setBackgroundResource(R.drawable.button_background_positive)
-          binding.submitButton.text = "Guess"
-        }
-        else -> {
-          binding.submitButton.setBackgroundResource(R.drawable.button_background_disabled)
-          binding.submitButton.text = "Not a Word"
+      } else {
+        when {
+          !isGameActive() -> {
+            binding.submitButton.setBackgroundResource(R.drawable.button_background_disabled)
+            binding.submitButton.text = "Guess"
+          }
+          getCurrentGuess().length < getWordLength() -> {
+            binding.submitButton.setBackgroundResource(R.drawable.button_background_disabled)
+            binding.submitButton.text = "Guess"
+          }
+          hasWord(getGame().language, getCurrentGuess()) -> {
+            binding.submitButton.setBackgroundResource(R.drawable.button_background_positive)
+            binding.submitButton.text = "Guess"
+          }
+          else -> {
+            binding.submitButton.setBackgroundResource(R.drawable.button_background_disabled)
+            binding.submitButton.text = "Not a Word"
+          }
         }
       }
     }

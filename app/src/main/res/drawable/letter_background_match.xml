@@ -7,8 +7,6 @@
     android:bottom="@dimen/letter_padding">
     <shape>
       <solid android:color="?colorLetterMatch"/>
-      <stroke android:width="@dimen/letter_boarder_size"
-        android:color="?colorLetterMatch" />
       <corners android:radius="@dimen/letter_boarder_radius" />
     </shape>
   </item>
