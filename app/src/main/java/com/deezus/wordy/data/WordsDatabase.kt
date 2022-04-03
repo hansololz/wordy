@@ -78,7 +78,7 @@ suspend fun initWordDatabase(activity: MainActivity) = withContext(Dispatchers.D
   }
 }
 
-suspend fun resetWordSet(activity: MainActivity, wordSetName: WordSet) {
+suspend fun resetWordSet(activity: MainActivity, wordSetName: WordSet) = withContext(Dispatchers.Default) {
   wordSetDatabases[wordSetName]?.let { databaseHolder ->
     getWords(activity, wordSetName)
       ?.map { WordEntry(it) }

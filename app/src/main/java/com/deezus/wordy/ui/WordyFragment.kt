@@ -629,6 +629,7 @@ class WordyFragment : BaseFragment() {
       resetGame()
     } ?: run {
       Log.d("WORDYYY", "RESET ${getGame().wordSet}")
+
       resetWordSet(getMainActivity(), getGame().wordSet)
       setupGame()
     }
