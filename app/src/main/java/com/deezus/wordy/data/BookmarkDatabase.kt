@@ -23,7 +23,7 @@ private interface BookmarkEntryDao {
   @Query("DELETE FROM BookmarkEntry WHERE word = :word")
   fun delete(word: String)
 
-  @Query("SELECT * FROM BookmarkEntry ORDER BY time DESC")
+  @Query("SELECT * FROM BookmarkEntry ORDER BY time DESC LIMIT 1000")
   fun getAll(): List<BookmarkEntry>
 
   @Query("SELECT * FROM BookmarkEntry WHERE word = :word LIMIT 1")

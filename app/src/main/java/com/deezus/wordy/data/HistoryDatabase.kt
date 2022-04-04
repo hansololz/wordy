@@ -20,8 +20,11 @@ data class HistoryEntry(
 @Dao
 private interface HistoryEntryDao {
 
-  @Query("SELECT * FROM HistoryEntry WHERE outcome = 'FAILED' OR outcome = 'SKIPPED' OR outcome = 'SUCCEEDED' ORDER BY time DESC")
+  @Query("SELECT * FROM HistoryEntry WHERE outcome = 'FAILED' OR outcome = 'SKIPPED' OR outcome = 'SUCCEEDED' ORDER BY time DESC LIMIT 1000")
   fun getAll(): List<HistoryEntry>
+
+  @Query("SELECT * FROM HistoryEntry WHERE word = :word")
+  fun get(word: String): List<HistoryEntry>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insert(entry: HistoryEntry)
@@ -48,4 +51,8 @@ suspend fun addHistory(word: String, time: Long, game: GameName, outcome: GameOu
 
 suspend fun getAllHistory(): List<HistoryEntry> = withContext(Dispatchers.Default) {
   historyDatabase?.userDao()?.getAll() ?: listOf()
+}
+
+suspend fun getHistory(word: String): HistoryEntry? = withContext(Dispatchers.Default) {
+  historyDatabase?.userDao()?.get(word)?.firstOrNull()
 }

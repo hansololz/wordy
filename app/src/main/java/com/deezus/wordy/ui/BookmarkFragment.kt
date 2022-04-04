@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deezus.wordy.R
 import com.deezus.wordy.data.BookmarkEntry
 import com.deezus.wordy.data.getAllBookmark
+import com.deezus.wordy.data.getHistory
 import com.deezus.wordy.data.setupBookmarkButton
 import com.deezus.wordy.databinding.FragmentBookmarkBinding
 import com.deezus.wordy.databinding.ItemBookmarkBinding
@@ -102,6 +103,14 @@ private class BookmarkAdapter(
       performFeedback(activity, it)
     }
     setupBookmarkButton(activity, holder.bookmarkButton, entry.word)
+
+    scope.launch {
+      getHistory(entry.word)?.let {
+        if (it.scoreEarned > 0) {
+          holder.title.text = "${entry.word} (+${it.scoreEarned})"
+        }
+      }
+    }
   }
 }
 
