@@ -44,6 +44,7 @@
         <entry key="app/src/main/res/layout/dialog.xml" value="0.22239583333333332" />
         <entry key="app/src/main/res/layout/dialog_end_game.xml" value="0.2942708333333333" />
         <entry key="app/src/main/res/layout/dialog_hints.xml" value="0.26614583333333336" />
+        <entry key="app/src/main/res/layout/dialog_message.xml" value="0.30885416666666665" />
         <entry key="app/src/main/res/layout/fragment_bookmark.xml" value="0.2838541666666667" />
         <entry key="app/src/main/res/layout/fragment_definition.xml" value="0.2838541666666667" />
         <entry key="app/src/main/res/layout/fragment_history.xml" value="0.29375" />

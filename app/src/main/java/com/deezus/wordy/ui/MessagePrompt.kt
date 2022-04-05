@@ -10,11 +10,13 @@ import com.deezus.wordy.databinding.DialogMessageBinding
 import com.deezus.wordy.helpers.performFeedback
 
 
-fun showMessagePrompt(activity: MainActivity,
-    message: String,
-    positiveAction: Pair<String, () -> Unit>,
-    negativeAction: Pair<String, () -> Unit>? = null,
-    dismissAction: (() -> Unit)? = null) {
+fun showMessagePrompt(
+  activity: MainActivity,
+  message: String,
+  positiveAction: Pair<String, () -> Unit>,
+  negativeAction: Pair<String, () -> Unit>? = null,
+  dismissAction: (() -> Unit)? = null
+) {
 
   try {
     val inflater = activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater

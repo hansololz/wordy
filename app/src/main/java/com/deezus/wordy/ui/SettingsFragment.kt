@@ -39,7 +39,7 @@ class SettingsFragment : BaseFragment() {
 
     val settings = Settings(getMainActivity())
 
-    binding.backButton.setOnClickListener {
+    binding.backButtonHolder.setOnClickListener {
       findNavController().popWithOptions()
       performFeedback(getMainActivity(), it)
     }

@@ -9,7 +9,6 @@
     android:id="@+id/head_holder"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/spacing"
     app:layout_constraintTop_toTopOf="parent">
 
     <TextView
@@ -17,51 +16,81 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:gravity="center_horizontal"
+      android:paddingTop="@dimen/spacing"
+      android:paddingBottom="@dimen/spacing"
       android:text="Score\n0"
+      android:textColor="?colorText"
       android:textSize="@dimen/header_text_size"
       android:textStyle="bold"
-      android:textColor="?colorText"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <androidx.constraintlayout.widget.ConstraintLayout
       android:id="@+id/view_bookmark"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:background="@drawable/button_background_round_info"
-      android:padding="@dimen/spacing_half"
-      android:src="@drawable/ic_round_bookmark_border_24"
-      android:elevation="@dimen/elevation"
+      android:paddingStart="@dimen/spacing"
+      android:paddingTop="@dimen/spacing"
+      android:paddingEnd="@dimen/spacing_half"
+      android:paddingBottom="@dimen/spacing"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:tint="?colorButtonForeground" />
+      app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
+      <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/button_background_round_info"
+        android:elevation="@dimen/elevation"
+        android:padding="@dimen/spacing_half"
+        android:src="@drawable/ic_round_bookmark_border_24"
+        app:tint="?colorButtonForeground" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
       android:id="@+id/view_history"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginLeft="@dimen/spacing"
-      android:background="@drawable/button_background_round_info"
-      android:padding="@dimen/spacing_half"
-      android:src="@drawable/ic_round_history_24"
-      android:elevation="@dimen/elevation"
+      android:paddingStart="@dimen/spacing_half"
+      android:paddingTop="@dimen/spacing"
+      android:paddingEnd="@dimen/spacing"
+      android:paddingBottom="@dimen/spacing"
       app:layout_constraintStart_toEndOf="@id/view_bookmark"
-      app:layout_constraintTop_toTopOf="parent"
-      app:tint="?colorButtonForeground" />
+      app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
+      <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/button_background_round_info"
+        android:elevation="@dimen/elevation"
+        android:padding="@dimen/spacing_half"
+        android:src="@drawable/ic_round_history_24"
+        app:tint="?colorButtonForeground" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
       android:id="@+id/view_settings"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginLeft="@dimen/spacing_half"
-      android:background="@drawable/button_background_round_warning"
-      android:padding="@dimen/spacing_half"
-      android:src="@drawable/ic_round_settings_24"
-      android:elevation="@dimen/elevation"
+      android:paddingStart="@dimen/spacing"
+      android:paddingTop="@dimen/spacing"
+      android:paddingEnd="@dimen/spacing"
+      android:paddingBottom="@dimen/spacing"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:tint="?colorButtonForeground" />
+      app:layout_constraintTop_toTopOf="parent">
+
+      <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/button_background_round_warning"
+        android:elevation="@dimen/elevation"
+        android:padding="@dimen/spacing_half"
+        android:src="@drawable/ic_round_settings_24"
+        app:tint="?colorButtonForeground" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -751,11 +780,11 @@
       android:layout_width="wrap_content"
       android:layout_height="0dp"
       android:background="@drawable/button_background_info"
+      android:elevation="@dimen/elevation"
       android:padding="@dimen/spacing"
       android:src="@drawable/ic_round_question_mark_24"
       android:text="Get Hint"
       android:textColor="?colorButtonForeground"
-      android:elevation="@dimen/elevation"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:tint="?colorButtonForeground" />
@@ -767,12 +796,12 @@
       android:layout_marginStart="@dimen/spacing"
       android:layout_marginEnd="@dimen/spacing"
       android:background="@drawable/button_background_disabled"
+      android:elevation="@dimen/elevation"
       android:gravity="center"
       android:text="Submit"
       android:textColor="?colorButtonForeground"
       android:textSize="@dimen/submit_text_size"
       android:textStyle="bold"
-      android:elevation="@dimen/elevation"
       app:layout_constraintBottom_toBottomOf="@id/show_hint"
       app:layout_constraintEnd_toStartOf="@id/skip_next"
       app:layout_constraintStart_toEndOf="@id/show_hint"
@@ -783,11 +812,11 @@
       android:layout_width="wrap_content"
       android:layout_height="0dp"
       android:background="@drawable/button_background_warning"
+      android:elevation="@dimen/elevation"
       android:gravity="center"
       android:padding="@dimen/spacing"
       android:src="@drawable/ic_round_skip_next_24"
       android:textColor="?colorButtonWarning"
-      android:elevation="@dimen/elevation"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:tint="?colorButtonForeground" />

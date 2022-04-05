@@ -70,12 +70,12 @@ class DefinitionFragment : BaseFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    binding.backButton.setOnClickListener {
+    binding.backButtonHolder.setOnClickListener {
       findNavController().popWithOptions()
       performFeedback(getMainActivity(), it)
     }
     binding.title.text = currentWord
-    setupBookmarkButton(getMainActivity(), binding.bookmarkButton, currentWord)
+    setupBookmarkButton(getMainActivity(), binding.bookmarkButtonHolder, binding.bookmarkButton, currentWord)
 
     viewModel.content.observe(getMainActivity()) { maybeContent ->
       if (_binding != null) {

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,25 +27,27 @@ import kotlinx.coroutines.launch
 
 
 class BookmarkHeaderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-  val backButton: ImageView
+  val backButtonHolder: ConstraintLayout
 
   init {
     val binding = ItemBookmarkHeaderBinding.bind(view)
-    backButton = binding.backButton
+    backButtonHolder = binding.backButtonHolder
   }
 }
 
 class BookmarkViewHolder(view: View) : RecyclerView.ViewHolder(view) {
   val title: TextView
   val bookmarkButton: ImageView
-  val searchButton: ImageView
+  val bookmarkButtonHolder: ConstraintLayout
+  val searchButtonHolder: ConstraintLayout
 
   init {
     val binding = ItemBookmarkBinding.bind(view)
 
     title = binding.title
     bookmarkButton = binding.bookmarkButton
-    searchButton = binding.searchButton
+    bookmarkButtonHolder = binding.bookmarkButtonHolder
+    searchButtonHolder = binding.searchButtonHolder
   }
 }
 
@@ -89,7 +92,7 @@ private class BookmarkAdapter(
   }
 
   private fun formatHeader(holder: BookmarkHeaderViewHolder) {
-    holder.backButton.setOnClickListener {
+    holder.backButtonHolder.setOnClickListener {
       navController.popWithOptions()
       performFeedback(activity, it)
     }
@@ -97,12 +100,12 @@ private class BookmarkAdapter(
 
   private fun formatItem(holder: BookmarkViewHolder, entry: BookmarkEntry) {
     holder.title.text = entry.word
-    holder.searchButton.setOnClickListener {
+    holder.searchButtonHolder.setOnClickListener {
       DefinitionFragment.currentWord = entry.word
       navController.navigationWithOptions(R.id.navigation_definition)
       performFeedback(activity, it)
     }
-    setupBookmarkButton(activity, holder.bookmarkButton, entry.word)
+    setupBookmarkButton(activity, holder.bookmarkButtonHolder, holder.bookmarkButton, entry.word)
 
     scope.launch {
       getHistory(entry.word)?.let {

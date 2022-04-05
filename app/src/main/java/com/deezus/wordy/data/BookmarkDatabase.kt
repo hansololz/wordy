@@ -1,6 +1,7 @@
 package com.deezus.wordy.data
 
 import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.room.*
 import com.deezus.wordy.R
 import com.deezus.wordy.helpers.performFeedback
@@ -63,8 +64,8 @@ suspend fun deleteBookmark(word: String) = withContext(Dispatchers.Default) {
   bookmarkDatabase?.userDao()?.delete(word)
 }
 
-fun setupBookmarkButton(activity: MainActivity, bookmarkButton: ImageView, word: String) {
-  bookmarkButton.setOnClickListener {
+fun setupBookmarkButton(activity: MainActivity, bookmarkButtonHolder: ConstraintLayout, bookmarkButton: ImageView, word: String) {
+  bookmarkButtonHolder.setOnClickListener {
     scope.launch {
       if (getBookmark(word) != null) {
         deleteBookmark(word)

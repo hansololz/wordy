@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/prompt_holder"
   android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  android:id="@+id/prompt_holder">
+  android:layout_height="wrap_content">
 
   <TextView
     android:id="@+id/filler"
@@ -11,35 +11,35 @@
     android:layout_height="3000dp"
     android:textSize="@dimen/text_size"
     android:visibility="invisible"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintStart_toStartOf="parent"/>
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
 
   <TextView
     android:id="@+id/reveal_valid_character"
-    android:text="Reveal a Letter in Mystery Word"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textSize="@dimen/text_size"
-    android:padding="@dimen/spacing"
-    android:background="@drawable/button_background_info"
-    android:textColor="?colorButtonForeground"
-    android:gravity="center_horizontal"
     android:layout_marginBottom="@dimen/spacing"
+    android:background="@drawable/button_background_info"
+    android:gravity="center_horizontal"
+    android:padding="@dimen/spacing"
+    android:text="Reveal a Letter in Mystery Word"
+    android:textColor="?colorButtonForeground"
+    android:textSize="@dimen/text_size"
     app:layout_constraintBottom_toTopOf="@id/reveal_invalid_character"
-    app:layout_constraintStart_toStartOf="parent"/>
+    app:layout_constraintStart_toStartOf="parent" />
 
   <TextView
     android:id="@+id/reveal_invalid_character"
-    android:text="Reveal a Letter Not in Mystery Word"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textSize="@dimen/text_size"
-    android:padding="@dimen/spacing"
-    android:background="@drawable/button_background_info"
-    android:textColor="?colorButtonForeground"
     android:layout_marginBottom="@dimen/dialog_bottom_button_filler"
+    android:background="@drawable/button_background_info"
     android:gravity="center_horizontal"
+    android:padding="@dimen/spacing"
+    android:text="Reveal a Letter Not in Mystery Word"
+    android:textColor="?colorButtonForeground"
+    android:textSize="@dimen/text_size"
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintStart_toStartOf="parent"/>
+    app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

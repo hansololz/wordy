@@ -9,46 +9,62 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-      android:id="@+id/back_button"
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/back_button_holder"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/spacing"
-      android:layout_marginTop="@dimen/spacing"
-      android:background="@drawable/button_background_round_warning"
-      android:padding="@dimen/spacing_half"
-      android:src="@drawable/ic_round_arrow_back_24"
+      android:paddingStart="@dimen/spacing"
+      android:paddingTop="@dimen/spacing"
+      android:paddingEnd="@dimen/spacing_half"
+      android:paddingBottom="@dimen/spacing"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:tint="?colorButtonForeground" />
+      app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-      android:id="@+id/bookmark_button"
+      <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/button_background_round_warning"
+        android:padding="@dimen/spacing_half"
+        android:src="@drawable/ic_round_arrow_back_24"
+        app:tint="?colorButtonForeground" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/bookmark_button_holder"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/spacing"
-      android:layout_marginTop="@dimen/spacing"
-      android:background="@drawable/button_background_round_info"
-      android:padding="@dimen/spacing_half"
-      android:src="@drawable/ic_round_bookmark_border_24"
-      app:layout_constraintStart_toEndOf="@id/back_button"
-      app:layout_constraintTop_toTopOf="parent"
-      app:tint="?colorButtonForeground" />
+      android:paddingStart="@dimen/spacing_half"
+      android:paddingTop="@dimen/spacing"
+      android:paddingEnd="@dimen/spacing"
+      android:paddingBottom="@dimen/spacing"
+      app:layout_constraintStart_toEndOf="@id/back_button_holder"
+      app:layout_constraintTop_toTopOf="parent">
+
+      <ImageView
+        android:id="@+id/bookmark_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/button_background_round_info"
+        android:padding="@dimen/spacing_half"
+        android:src="@drawable/ic_round_bookmark_border_24"
+        app:tint="?colorButtonForeground" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
       android:id="@+id/title"
-      android:layout_width="0dp"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:gravity="center"
-      android:paddingStart="@dimen/spacing"
-      android:paddingEnd="@dimen/spacing"
       android:text="Title"
       android:textColor="?colorText"
       android:textSize="@dimen/header_text_size"
       android:textStyle="bold"
+      app:layout_constraintBottom_toBottomOf="@id/back_button_holder"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="@id/back_button" />
+      app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
       android:id="@+id/divider"
@@ -66,8 +82,8 @@
       android:layout_height="wrap_content"
       android:gravity="center"
       android:padding="@dimen/spacing"
-      android:textSize="@dimen/text_size"
       android:textColor="?colorText"
+      android:textSize="@dimen/text_size"
       app:layout_constraintTop_toBottomOf="@id/divider" />
 
     <TextView
@@ -76,8 +92,8 @@
       android:layout_height="wrap_content"
       android:gravity="center"
       android:padding="@dimen/spacing"
-      android:textSize="@dimen/text_size"
       android:textColor="?colorText"
+      android:textSize="@dimen/text_size"
       app:layout_constraintTop_toBottomOf="@id/divider" />
 
     <TextView
@@ -86,9 +102,9 @@
       android:layout_height="wrap_content"
       android:padding="@dimen/spacing"
       android:text=""
+      android:textColor="?colorText"
       android:textIsSelectable="true"
       android:textSize="@dimen/text_size"
-      android:textColor="?colorText"
       app:layout_constraintTop_toBottomOf="@id/divider" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>

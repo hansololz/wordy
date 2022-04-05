@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,33 +26,35 @@ import kotlinx.coroutines.launch
 
 
 class HistoryHeaderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-  val backButton: ImageView
+  val backButtonHolder: ConstraintLayout
 
   init {
     val binding = ItemHistoryHeaderBinding.bind(view)
-    backButton = binding.backButton
+    backButtonHolder = binding.backButtonHolder
   }
 }
 
 class HistoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
   val title: TextView
   val bookmarkButton: ImageView
-  val searchButton: ImageView
+  val bookmarkButtonHolder: ConstraintLayout
+  val searchButtonHolder: ConstraintLayout
 
   init {
     val binding = ItemHistoryBinding.bind(view)
 
     title = binding.title
     bookmarkButton = binding.bookmarkButton
-    searchButton = binding.searchButton
+    bookmarkButtonHolder = binding.bookmarkButtonHolder
+    searchButtonHolder = binding.searchButtonHolder
   }
 }
 
 private class HistoryAdapter(
   private val activity: MainActivity,
   private val navController: NavController,
-  private val words: List<HistoryEntry>)
-  : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+  private val words: List<HistoryEntry>
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   override fun getItemCount(): Int {
     return words.size + 1
@@ -88,7 +91,7 @@ private class HistoryAdapter(
   }
 
   private fun formatHeader(holder: HistoryHeaderViewHolder) {
-    holder.backButton.setOnClickListener {
+    holder.backButtonHolder.setOnClickListener {
       navController.popWithOptions()
       performFeedback(activity, it)
     }
@@ -102,12 +105,12 @@ private class HistoryAdapter(
     }
 
     holder.title.text = title
-    holder.searchButton.setOnClickListener {
+    holder.searchButtonHolder.setOnClickListener {
       DefinitionFragment.currentWord = entry.word
       navController.navigationWithOptions(R.id.navigation_definition)
       performFeedback(activity, it)
     }
-    setupBookmarkButton(activity, holder.bookmarkButton, entry.word)
+    setupBookmarkButton(activity, holder.bookmarkButtonHolder, holder.bookmarkButton, entry.word)
   }
 }
 
