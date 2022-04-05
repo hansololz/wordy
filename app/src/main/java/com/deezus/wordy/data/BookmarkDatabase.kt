@@ -64,7 +64,12 @@ suspend fun deleteBookmark(word: String) = withContext(Dispatchers.Default) {
   bookmarkDatabase?.userDao()?.delete(word)
 }
 
-fun setupBookmarkButton(activity: MainActivity, bookmarkButtonHolder: ConstraintLayout, bookmarkButton: ImageView, word: String) {
+fun setupBookmarkButton(
+  activity: MainActivity,
+  bookmarkButtonHolder: ConstraintLayout,
+  bookmarkButton: ImageView,
+  word: String
+) {
   bookmarkButtonHolder.setOnClickListener {
     scope.launch {
       if (getBookmark(word) != null) {

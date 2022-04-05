@@ -3,6 +3,7 @@ package com.deezus.wordy.data
 import android.content.Context
 import com.deezus.wordy.ui.MainActivity
 
+
 enum class ScoreViewPreference { TOTAL_SCORE, AVERAGE_SCORE, TOTAL_SCORE_WITHOUT_HINTS, AVERAGE_SCORE_WITHOUT_HINTS }
 
 class Settings(activity: MainActivity) {
