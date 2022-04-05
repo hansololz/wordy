@@ -7,7 +7,6 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +27,6 @@ import okhttp3.Request
 import okhttp3.Response
 import org.json.JSONArray
 import org.json.JSONException
-import java.lang.Thread.sleep
 import java.net.UnknownHostException
 
 
@@ -75,26 +73,31 @@ class DefinitionFragment : BaseFragment() {
       performFeedback(getMainActivity(), it)
     }
     binding.title.text = currentWord
-    setupBookmarkButton(getMainActivity(), binding.bookmarkButtonHolder, binding.bookmarkButton, currentWord)
+    setupBookmarkButton(
+      getMainActivity(),
+      binding.bookmarkButtonHolder,
+      binding.bookmarkButton,
+      currentWord
+    )
 
     viewModel.content.observe(getMainActivity()) { maybeContent ->
       if (_binding != null) {
         maybeContent?.let { content ->
-          if (content.definition != null ) {
+          if (content.definition != null) {
             binding.definition.text = content.definition
             binding.definition.visibility = View.VISIBLE
           } else {
             binding.definition.visibility = View.GONE
           }
 
-          if (content.loadingMessage != null ) {
+          if (content.loadingMessage != null) {
             binding.loadingMessage.text = content.loadingMessage
             binding.loadingMessage.visibility = View.VISIBLE
           } else {
             binding.loadingMessage.visibility = View.GONE
           }
 
-          if (content.errorMessage != null ) {
+          if (content.errorMessage != null) {
             binding.errorMessage.text = content.errorMessage
             binding.errorMessage.visibility = View.VISIBLE
           } else {
@@ -200,7 +203,8 @@ class DefinitionFragment : BaseFragment() {
       } catch (exception: Resources.NotFoundException) {
         viewModel.content.value = Content(errorMessage = "Could not find word definition.")
       } catch (exception: UnknownHostException) {
-        viewModel.content.value = Content(errorMessage = "Could not establish connection with word definition service.")
+        viewModel.content.value =
+          Content(errorMessage = "Could not establish connection with word definition service.")
       } catch (exception: JSONException) {
         viewModel.content.value = Content(errorMessage = "Could not parse response from server.")
       } catch (exception: Exception) {

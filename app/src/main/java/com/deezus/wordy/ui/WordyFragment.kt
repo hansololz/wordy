@@ -2,14 +2,12 @@ package com.deezus.wordy.ui
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -17,7 +15,10 @@ import androidx.navigation.fragment.findNavController
 import com.deezus.wordy.R
 import com.deezus.wordy.data.*
 import com.deezus.wordy.databinding.FragmentWordyBinding
-import com.deezus.wordy.helpers.*
+import com.deezus.wordy.helpers.navigationWithOptions
+import com.deezus.wordy.helpers.performFeedback
+import com.deezus.wordy.helpers.scope
+import com.deezus.wordy.helpers.showSnackBar
 import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.launch
 import kotlin.math.max
