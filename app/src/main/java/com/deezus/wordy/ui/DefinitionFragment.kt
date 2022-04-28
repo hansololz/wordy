@@ -72,7 +72,7 @@ class DefinitionFragment : BaseFragment() {
       findNavController().popWithOptions()
       performFeedback(getMainActivity(), it)
     }
-    binding.title.text = currentWord
+    binding.title.text = currentWord.replaceFirstChar { it.uppercase() }
     setupBookmarkButton(
       getMainActivity(),
       binding.bookmarkButtonHolder,
