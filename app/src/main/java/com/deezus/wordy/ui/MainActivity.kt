@@ -1,5 +1,8 @@
 package com.deezus.wordy.ui
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
@@ -10,6 +13,7 @@ import com.deezus.wordy.data.*
 import com.deezus.wordy.databinding.ActivityMainBinding
 import com.deezus.wordy.helpers.navigationWithOptions
 import com.deezus.wordy.helpers.scope
+import com.deezus.wordy.helpers.showSnackBar
 import kotlinx.coroutines.launch
 
 
@@ -52,5 +56,46 @@ class MainActivity : AppCompatActivity() {
         }
       }
     }
+  }
+
+  override fun onResume() {
+    super.onResume()
+
+    if (Settings(this).shouldAskForReview()) {
+      showMessagePrompt(
+        this,
+        "Would you like to take a moment to rate this app on the Google play store?",
+          Pair("Rate App", this::rateApp),
+          Pair("Never", this::neverRateApp),
+          this::rateAppLater
+        )
+    }
+  }
+
+  private fun rateApp() {
+    Settings(this).disableShouldAskForReviewTime()
+
+    val flags = Intent.FLAG_ACTIVITY_NO_HISTORY or
+        Intent.FLAG_ACTIVITY_MULTIPLE_TASK or
+        Intent.FLAG_ACTIVITY_NEW_DOCUMENT
+    val uri = Uri.parse("market://details?id=$packageName")
+    val goToMarket = Intent(Intent.ACTION_VIEW, uri)
+
+    goToMarket.addFlags(flags)
+
+    try {
+      startActivity(goToMarket)
+      Settings(this).disableShouldAskForReviewTime()
+    } catch (e: ActivityNotFoundException) {
+      showSnackBar(this, "Something went wrong, can't open Google Play Store.")
+    }
+  }
+
+  private fun neverRateApp() {
+    Settings(this).disableShouldAskForReviewTime()
+  }
+
+  private fun rateAppLater() {
+    Settings(this).setShouldAskForReviewTime()
   }
 }

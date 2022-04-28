@@ -26,6 +26,7 @@ class Settings(activity: MainActivity) {
   private val hasAskedForHint = "SETTINGS_HAS_ASKED_FOR_HINT"
   private val isGameActive = "SETTINGS_IS_GAME_ACTIVE"
   private val isAutoCompleteEnabled = "SETTINGS_IS_AUTO_COMPLETE_ENABLED"
+  private val askReviewTime = "SETTINGS_ASK_REVIEW_TIME"
 
   fun getCurrentGame(): GameName? {
     return sharedPreferences.getString(currentGame, null)?.let {
@@ -200,6 +201,31 @@ class Settings(activity: MainActivity) {
   fun setIsAutoCompleteEnabled(isEnabled: Boolean) {
     sharedPreferences.edit().apply {
       putBoolean(isAutoCompleteEnabled, isEnabled)
+      apply()
+    }
+  }
+
+  fun shouldAskForReview(): Boolean {
+    val time = sharedPreferences.getLong(askReviewTime, 0)
+
+    return if (time == 0L) {
+      setShouldAskForReviewTime()
+      false
+    } else {
+      System.currentTimeMillis() > time
+    }
+  }
+
+  fun setShouldAskForReviewTime() {
+    sharedPreferences.edit().apply {
+      putLong(askReviewTime, System.currentTimeMillis() + (4 * 86400 * 1000).toLong())
+      apply()
+    }
+  }
+
+  fun disableShouldAskForReviewTime() {
+    sharedPreferences.edit().apply {
+      putLong(askReviewTime, Long.MAX_VALUE)
       apply()
     }
   }
