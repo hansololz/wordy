@@ -483,7 +483,7 @@ class WordyFragment : BaseFragment() {
   }
 
   private fun getAutoComplete(): String? {
-    if (!Settings(getMainActivity()).isAutoCompleteEnabled()) {
+    if (!Settings(getMainActivity()).isAutoCompleteEnabled() || getPastGuesses().getOrNull(getPastGuesses().size - 1) == getCurrentWord()) {
       return null
     }
 
