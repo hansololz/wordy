@@ -2,6 +2,7 @@ package com.deezus.wordy.ui
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -527,11 +528,20 @@ class WordyFragment : BaseFragment() {
 
     for (i in 0 until getMaxGuessCount()) {
       if (i < getCurrentX()) {
+        val currentGuess = getPastGuesses()[i]
+        var freeLetters = getCurrentWord()
+
+        for (j in currentGuess.indices) {
+          if (currentGuess[j] == freeLetters[j]) {
+            freeLetters = freeLetters.replaceRange(j, j + 1, ".")
+          }
+        }
+
         for (j in 0 until getWordLength()) {
           val letter = letterViews[i][j]
-          val currentChar = getPastGuesses()[i][j]
+          val currentChar = currentGuess[j]
 
-          letter.text = getPastGuesses()[i][j].uppercase()
+          letter.text = currentGuess[j].uppercase()
           letter.setTextColor(
             MaterialColors.getColor(
               getMainActivity(),
@@ -542,7 +552,7 @@ class WordyFragment : BaseFragment() {
 
           val backgroundDrawableId = when {
             currentChar == getCurrentWord()[j] -> R.drawable.letter_background_match
-            getCurrentWord().contains(currentChar) -> R.drawable.letter_background_present
+            getCurrentWord().contains(currentChar) && freeLetters.contains(currentChar) -> R.drawable.letter_background_present
             else -> R.drawable.letter_background_no_match
           }
 
@@ -769,6 +779,8 @@ class WordyFragment : BaseFragment() {
         listOf()
       )
 
+      Log.d("MMMMM", getCurrentWord())
+
       resetGame()
     } ?: run {
       resetWordSet(getMainActivity(), getGame().wordSet)
@@ -777,6 +789,7 @@ class WordyFragment : BaseFragment() {
   }
 
   private fun resetGame() {
+
     viewModel.isGameActive.value = true
     viewModel.pastGuesses.value = listOf()
     viewModel.hasAskedForHint.value = false
