@@ -12,7 +12,7 @@ import com.deezus.wordy.databinding.DialogHintsBinding
 import com.deezus.wordy.helpers.performFeedback
 
 
-enum class HintAction { NONE, REVEAL_INVALID_CHARACTER, REVEAL_VALID_CHARACTER }
+enum class HintAction { NONE, REVEAL_INVALID_CHARACTER, REVEAL_ALL_INVALID_CHARACTER, REVEAL_VALID_CHARACTER }
 
 fun showHintPrompt(activity: MainActivity, callback: (HintAction) -> Unit) {
   try {
@@ -40,6 +40,12 @@ fun showHintPrompt(activity: MainActivity, callback: (HintAction) -> Unit) {
 
     binding.revealInvalidCharacter.setOnClickListener {
       dismissAction = HintAction.REVEAL_INVALID_CHARACTER
+      performFeedback(activity, it)
+      dialog.dismiss()
+    }
+
+    binding.revealAllInvalidCharacter.setOnClickListener {
+      dismissAction = HintAction.REVEAL_ALL_INVALID_CHARACTER
       performFeedback(activity, it)
       dialog.dismiss()
     }

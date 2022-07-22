@@ -32,14 +32,28 @@
     android:id="@+id/reveal_invalid_character"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/dialog_bottom_button_filler"
+      android:layout_marginBottom="@dimen/spacing"
     android:background="@drawable/button_background_info"
     android:gravity="center_horizontal"
     android:padding="@dimen/spacing"
     android:text="Reveal a Letter Not in Mystery Word"
     android:textColor="?colorButtonForeground"
     android:textSize="@dimen/text_size"
-    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintBottom_toTopOf="@id/reveal_all_invalid_character"
     app:layout_constraintStart_toStartOf="parent" />
+
+  <TextView
+      android:id="@+id/reveal_all_invalid_character"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/dialog_bottom_button_filler"
+      android:background="@drawable/button_background_info"
+      android:gravity="center_horizontal"
+      android:padding="@dimen/spacing"
+      android:text="Reveal All Letters Not in Mystery Word"
+      android:textColor="?colorButtonForeground"
+      android:textSize="@dimen/text_size"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

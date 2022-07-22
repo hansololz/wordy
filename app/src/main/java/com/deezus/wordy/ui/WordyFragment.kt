@@ -407,6 +407,14 @@ class WordyFragment : BaseFragment() {
                 showSnackBar(getMainActivity(), "No more hints available.")
               }
             }
+            HintAction.REVEAL_ALL_INVALID_CHARACTER -> {
+              viewModel.hasAskedForHint.value = true
+              getUnusedLetters().shuffled().firstOrNull()?.let {
+                viewModel.hintedInvalidLetters.value = getHintedInvalidLetters() + getUnusedLetters()
+              } ?: run {
+                showSnackBar(getMainActivity(), "No more hints available.")
+              }
+            }
           }
         }
 
