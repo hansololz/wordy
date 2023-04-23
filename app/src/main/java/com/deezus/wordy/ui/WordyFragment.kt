@@ -505,7 +505,7 @@ class WordyFragment : BaseFragment() {
         }
       }
 
-      if (getCurrentWord()[i] == ' ') {
+      if (autoCompleteString[i] == ' ') {
         break
       }
     }
@@ -514,13 +514,17 @@ class WordyFragment : BaseFragment() {
       autoCompleteString[index] = c
     }
 
+    if (autoCompleteString.contains(' ')) {
+      return null
+    }
+
     val maybeAutoComplete = autoCompleteString.joinToString("")
 
-    return if (maybeAutoComplete.contains(' ')) {
-      null
-    } else {
-      maybeAutoComplete
+    if (maybeAutoComplete.length != getWordLength()) {
+      return null
     }
+
+    return maybeAutoComplete
   }
 
   private fun updateLetters() {
