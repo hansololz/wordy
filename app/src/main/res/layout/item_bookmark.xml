@@ -5,13 +5,15 @@
   android:layout_height="wrap_content"
   android:paddingStart="@dimen/spacing_none"
   android:paddingTop="@dimen/spacing_none"
-  android:paddingEnd="@dimen/spacing"
+  android:paddingEnd="@dimen/spacing_none"
   android:paddingBottom="@dimen/spacing_none">
 
   <TextView
     android:id="@+id/divider"
     android:layout_width="match_parent"
     android:layout_height="1dp"
+    android:layout_marginStart="@dimen/spacing"
+    android:layout_marginEnd="@dimen/spacing"
     android:background="?colorDivider"
     app:layout_constraintTop_toTopOf="parent" />
 
