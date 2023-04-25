@@ -67,6 +67,28 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/open_button_holder"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingStart="@dimen/spacing"
+      android:paddingTop="@dimen/spacing"
+      android:paddingEnd="@dimen/spacing"
+      android:paddingBottom="@dimen/spacing"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent">
+
+      <ImageView
+        android:id="@+id/open_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/button_background_round_warning"
+        android:padding="@dimen/spacing_half"
+        android:src="@drawable/ic_round_open_in_new_24"
+        app:tint="?colorButtonForeground" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <TextView
       android:id="@+id/divider"
       android:layout_width="match_parent"

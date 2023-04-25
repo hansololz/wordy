@@ -1,7 +1,9 @@
 package com.deezus.wordy.ui
 
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -79,6 +81,12 @@ class DefinitionFragment : BaseFragment() {
       binding.bookmarkButton,
       currentWord
     )
+
+    binding.openButtonHolder.setOnClickListener {
+      val searchUrl = "https://www.google.com/search?q=definition: $currentWord"
+      val intent = Intent(Intent.ACTION_VIEW, Uri.parse(searchUrl))
+      startActivity(intent)
+    }
 
     viewModel.content.observe(getMainActivity()) { maybeContent ->
       if (_binding != null) {
