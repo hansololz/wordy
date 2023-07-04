@@ -85,6 +85,7 @@ class DefinitionFragment : BaseFragment() {
     binding.openButtonHolder.setOnClickListener {
       val searchUrl = "https://www.google.com/search?q=definition: $currentWord"
       val intent = Intent(Intent.ACTION_VIEW, Uri.parse(searchUrl))
+      performFeedback(getMainActivity(), it)
       startActivity(intent)
     }
 
