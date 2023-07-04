@@ -21,12 +21,15 @@ import com.deezus.wordy.helpers.performFeedback
 import com.deezus.wordy.helpers.scope
 import com.deezus.wordy.helpers.showSnackBar
 import com.google.android.material.color.MaterialColors
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.max
 import kotlin.math.min
 
 
 class WordyViewModel : ViewModel() {
+  val currentGameId = MutableLiveData<Int>(0)
   val currentWord = MutableLiveData<String?>(null)
   val currentGuess = MutableLiveData("")
   val pastGuesses = MutableLiveData(listOf<String>())
@@ -207,64 +210,34 @@ class WordyFragment : BaseFragment() {
         performFeedback(getMainActivity(), it)
 
         val settings = Settings(getMainActivity())
-        val word = getAutoComplete() ?: getCurrentGuess()
+        val guess = getAutoCompleteGuess() ?: getCurrentGuess()
+
+        Log.d("CLOSEY", "HERE 1 $guess")
 
         scope.launch {
           when {
-            word.length < getWordLength() -> {
+            guess.length < getWordLength() -> {
               showSnackBar(getMainActivity(), "Please enter a ${getWordLength()} letter word.")
             }
-            word == getCurrentWord() -> {
-              viewModel.isGameActive.value = false
-              viewModel.pastGuesses.value = getPastGuesses() + word
-              viewModel.currentGuess.value = ""
-
-              val newScore = getEarnedScore()
-
-              settings.setScore(newScore, hasAskedForHint())
-              updateScore()
-
+            isCloseEnough(guess, getCurrentWord()) -> {
               scope.launch {
-                addHistory(
-                  getCurrentWord(),
-                  System.currentTimeMillis(),
-                  getGame().gameName,
-                  GameOutcome.SUCCEEDED,
-                  newScore,
-                  hasAskedForHint(),
-                  getPastGuesses()
-                )
-              }
+                insertWord(getGame().wordSet, getCurrentWord())
+                deleteWord(getGame().wordSet, guess)
 
-              val scoreMessage = if (newScore > 1) {
-                "$newScore points"
-              } else {
-                "$newScore point"
-              }
+                viewModel.currentWord.value = guess
 
-              val dialogMessage =
-                "Congrats, you guessed the mystery word \"${getCurrentWord()}\" and earned $scoreMessage."
-
-              showMessagePrompt(getMainActivity(), dialogMessage,
-                Pair("Play Again") {
-                  scope.launch {
-                    setupGame()
-                  }
-                },
-                Pair("View My Guesses") {
-
-                }) {
-                scope.launch {
-                  setupGame()
+                withContext(Dispatchers.Main) {
+                  successfullyGuessed(guess, settings)
                 }
               }
             }
+            guess == getCurrentWord() -> successfullyGuessed(guess, settings)
             hasWord(
               getGame().language,
-              word
+              guess
             ) && getPastGuesses().size + 1 == getMaxGuessCount() -> {
               viewModel.isGameActive.value = false
-              viewModel.pastGuesses.value = getPastGuesses() + word
+              viewModel.pastGuesses.value = getPastGuesses() + guess
               viewModel.currentGuess.value = ""
 
               scope.launch {
@@ -295,8 +268,8 @@ class WordyFragment : BaseFragment() {
                 }
               }
             }
-            hasWord(getGame().language, word) -> {
-              viewModel.pastGuesses.value = getPastGuesses() + word
+            hasWord(getGame().language, guess) -> {
+              viewModel.pastGuesses.value = getPastGuesses() + guess
               viewModel.currentGuess.value = ""
             }
             else -> {
@@ -439,6 +412,94 @@ class WordyFragment : BaseFragment() {
     }
   }
 
+  private fun successfullyGuessed(guess: String, settings: Settings) {
+    viewModel.isGameActive.value = false
+    viewModel.pastGuesses.value = getPastGuesses() + guess
+    viewModel.currentGuess.value = ""
+
+    val newScore = getEarnedScore()
+
+    settings.setScore(newScore, hasAskedForHint())
+    updateScore()
+
+    scope.launch {
+      addHistory(
+        guess,
+        System.currentTimeMillis(),
+        getGame().gameName,
+        GameOutcome.SUCCEEDED,
+        newScore,
+        hasAskedForHint(),
+        getPastGuesses()
+      )
+    }
+
+    val scoreMessage = if (newScore > 1) {
+      "$newScore points"
+    } else {
+      "$newScore point"
+    }
+
+    val dialogMessage =
+      "Congrats, you guessed the mystery word \"${getCurrentWord()}\" and earned $scoreMessage."
+
+    showMessagePrompt(getMainActivity(), dialogMessage,
+      Pair("Play Again") {
+        scope.launch {
+          setupGame()
+        }
+      },
+      Pair("View My Guesses") {
+
+      }) {
+      scope.launch {
+        setupGame()
+      }
+    }
+  }
+
+//  private fun getDiffChar(guess: String, word: String): Char? {
+//    var diffChar: Char? = null
+//
+//    guess.forEachIndexed { index, guessChar ->
+//      word?.getOrNull(index)?.let { wordChar ->
+//        if (guessChar != wordChar) {
+//          return diffChar
+//        }
+//      }
+//    }
+//
+//    return null
+//  }
+
+  private fun isCloseEnough(guess: String, word: String): Boolean {
+    var diffCount = 0
+    var diffChar: Char? = null
+
+    guess.forEachIndexed { index, guessChar ->
+      word.getOrNull(index)?.let { wordChar ->
+        if (guessChar != wordChar) {
+          diffCount++
+          diffChar = guessChar
+        }
+      }
+    }
+
+    diffChar?.let { char ->
+      if (getHintedInvalidLetters().contains(char)) {
+        return false
+      }
+
+      getPastGuesses().forEach {  pastGuess ->
+        if (pastGuess.contains(char)) {
+          return false
+        }
+      }
+    }
+
+    return diffCount == 1
+  }
+
   private fun setupKey(keyView: TextView, key: Char) {
     keyViews[key.lowercaseChar()] = keyView
 
@@ -491,7 +552,7 @@ class WordyFragment : BaseFragment() {
     }
   }
 
-  private fun getAutoComplete(): String? {
+  private fun getAutoCompleteGuess(): String? {
     if (!Settings(getMainActivity()).isAutoCompleteEnabled() || getPastGuesses().getOrNull(getPastGuesses().size - 1) == getCurrentWord()) {
       return null
     }
@@ -528,7 +589,7 @@ class WordyFragment : BaseFragment() {
   }
 
   private fun updateLetters() {
-    val autoComplete = getAutoComplete()
+    val autoComplete = getAutoCompleteGuess()
 
     for (i in 0 until getMaxGuessCount()) {
       if (i < getCurrentX()) {
@@ -712,7 +773,7 @@ class WordyFragment : BaseFragment() {
   }
 
   private fun updateSubmitButton() {
-    val autoComplete = getAutoComplete()
+    val autoComplete = getAutoCompleteGuess()
 
     scope.launch {
       if (autoComplete != null) {

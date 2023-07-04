@@ -92,6 +92,10 @@ suspend fun getRandomWord(wordSet: WordSet): String? = withContext(Dispatchers.D
   wordSetDatabases[wordSet]?.database?.userDao()?.getRandom()?.firstOrNull()?.word
 }
 
+suspend fun insertWord(wordSet: WordSet, word: String) = withContext(Dispatchers.Default) {
+  wordSetDatabases[wordSet]?.database?.userDao()?.insertAll(listOf(WordEntry(word)))
+}
+
 suspend fun deleteWord(wordSet: WordSet, word: String) = withContext(Dispatchers.Default) {
   wordSetDatabases[wordSet]?.database?.userDao()?.delete(word)
 }
