@@ -202,6 +202,27 @@
       android:textSize="@dimen/text_size"
       app:layout_constraintTop_toBottomOf="@id/haptic_feedback_divider" />
 
+    <TextView
+      android:id="@+id/auto_complete_divider"
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_marginStart="@dimen/spacing"
+      android:layout_marginEnd="@dimen/spacing"
+      android:background="?colorDivider"
+      app:layout_constraintTop_toBottomOf="@id/enable_auto_complete" />
+
+    <TextView
+      android:id="@+id/feedback_message"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:autoLink="email"
+      android:padding="@dimen/spacing"
+      android:text="If you have an feedback or notice any issue with the app, please let me know at readchan@deezus.com"
+      android:textColor="?colorText"
+      android:textSize="@dimen/text_size"
+      app:layout_constraintTop_toBottomOf="@id/auto_complete_divider" />
+
+
   </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
