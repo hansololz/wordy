@@ -29,7 +29,6 @@ import kotlin.math.min
 
 
 class WordyViewModel : ViewModel() {
-  val currentGameId = MutableLiveData<Int>(0)
   val currentWord = MutableLiveData<String?>(null)
   val currentGuess = MutableLiveData("")
   val pastGuesses = MutableLiveData(listOf<String>())
@@ -211,8 +210,6 @@ class WordyFragment : BaseFragment() {
 
         val settings = Settings(getMainActivity())
         val guess = getAutoCompleteGuess() ?: getCurrentGuess()
-
-        Log.d("CLOSEY", "HERE 1 $guess")
 
         scope.launch {
           when {
@@ -457,20 +454,6 @@ class WordyFragment : BaseFragment() {
       }
     }
   }
-
-//  private fun getDiffChar(guess: String, word: String): Char? {
-//    var diffChar: Char? = null
-//
-//    guess.forEachIndexed { index, guessChar ->
-//      word?.getOrNull(index)?.let { wordChar ->
-//        if (guessChar != wordChar) {
-//          return diffChar
-//        }
-//      }
-//    }
-//
-//    return null
-//  }
 
   private fun isCloseEnough(guess: String, word: String): Boolean {
     var diffCount = 0
@@ -844,7 +827,7 @@ class WordyFragment : BaseFragment() {
         listOf()
       )
 
-      Log.d("MMMMM", getCurrentWord())
+      Log.d("WORDY_GAME", "Current word: ${getCurrentWord()}")
 
       resetGame()
     } ?: run {
