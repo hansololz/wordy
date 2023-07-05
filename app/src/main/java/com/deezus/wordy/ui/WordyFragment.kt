@@ -34,6 +34,7 @@ class WordyViewModel : ViewModel() {
   val pastGuesses = MutableLiveData(listOf<String>())
   val hasAskedForHint = MutableLiveData(false)
   val hintedInvalidLetters = MutableLiveData(setOf<Char>())
+  val hintedValidLettersCount = MutableLiveData(0)
   val currentGameName = MutableLiveData<GameName?>(null)
   val isGameActive = MutableLiveData(true)
 }
@@ -212,11 +213,14 @@ class WordyFragment : BaseFragment() {
         val guess = getAutoCompleteGuess() ?: getCurrentGuess()
 
         scope.launch {
+          val isValidWord = hasWord(getGame().language, guess)
+
           when {
             guess.length < getWordLength() -> {
               showSnackBar(getMainActivity(), "Please enter a ${getWordLength()} letter word.")
             }
-            isCloseEnough(guess, getCurrentWord()) -> {
+            guess == getCurrentWord() -> successfullyGuessed(guess, settings)
+            isValidWord && isCloseEnough(guess, getCurrentWord()) -> {
               scope.launch {
                 insertWord(getGame().wordSet, getCurrentWord())
                 deleteWord(getGame().wordSet, guess)
@@ -228,11 +232,7 @@ class WordyFragment : BaseFragment() {
                 }
               }
             }
-            guess == getCurrentWord() -> successfullyGuessed(guess, settings)
-            hasWord(
-              getGame().language,
-              guess
-            ) && getPastGuesses().size + 1 == getMaxGuessCount() -> {
+            isValidWord && getPastGuesses().size + 1 == getMaxGuessCount() -> {
               viewModel.isGameActive.value = false
               viewModel.pastGuesses.value = getPastGuesses() + guess
               viewModel.currentGuess.value = ""
@@ -366,6 +366,7 @@ class WordyFragment : BaseFragment() {
               if (revealGuess.length < currentWord.length) {
                 val reveal = revealGuess.toString()
                 viewModel.currentGuess.value = reveal + currentWord[reveal.length]
+                viewModel.hintedValidLettersCount.value = (reveal.length + 1)
               } else {
                 showSnackBar(getMainActivity(), "No more hints available.")
               }
@@ -458,17 +459,25 @@ class WordyFragment : BaseFragment() {
   private fun isCloseEnough(guess: String, word: String): Boolean {
     var diffCount = 0
     var diffChar: Char? = null
+    var diffIndex: Int? = null
 
     guess.forEachIndexed { index, guessChar ->
       word.getOrNull(index)?.let { wordChar ->
         if (guessChar != wordChar) {
           diffCount++
           diffChar = guessChar
+          diffIndex = index
         }
       }
     }
 
+    Log.d("CLOSEYYY", "HERE 4 ${getHintedValidLettersCount()}")
+
     diffChar?.let { char ->
+      if ((diffIndex ?: 0) + 1 <= getHintedValidLettersCount()) {
+        return false
+      }
+
       if (getHintedInvalidLetters().contains(char)) {
         return false
       }
@@ -837,10 +846,10 @@ class WordyFragment : BaseFragment() {
   }
 
   private fun resetGame() {
-
     viewModel.isGameActive.value = true
     viewModel.pastGuesses.value = listOf()
     viewModel.hasAskedForHint.value = false
+    viewModel.hintedValidLettersCount.value = 0
     viewModel.hintedInvalidLetters.value = setOf()
     viewModel.currentGuess.value = ""
   }
@@ -867,6 +876,10 @@ class WordyFragment : BaseFragment() {
 
   private fun hasAskedForHint(): Boolean {
     return viewModel.hasAskedForHint.value ?: false
+  }
+
+  private fun getHintedValidLettersCount(): Int {
+    return viewModel.hintedValidLettersCount.value ?: 0
   }
 
   private fun getHintedInvalidLetters(): Set<Char> {

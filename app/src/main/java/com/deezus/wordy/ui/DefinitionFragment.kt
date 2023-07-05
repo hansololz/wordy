@@ -137,9 +137,6 @@ class DefinitionFragment : BaseFragment() {
 
         val builder = SpannableStringBuilder()
 
-        val headerSize = 24
-        val textSize = 16
-
         for (i in 0 until meanings.length()) {
           val meaning = meanings.getJSONObject(i)
 
