@@ -73,7 +73,10 @@ class WordyFragment : BaseFragment() {
 
       scope.launch {
         setupGame()
-        setupView()
+
+        withContext(Dispatchers.Main) {
+          setupView()
+        }
       }
     } else {
       setupView()
