@@ -217,7 +217,7 @@
       android:layout_height="wrap_content"
       android:autoLink="email"
       android:padding="@dimen/spacing"
-      android:text="If you have an feedback or notice any issue with the app, please let me know at readchan@deezus.com"
+      android:text="If you have a feedback or notice any issue with the app, please email me at readchan@deezus.com."
       android:textColor="?colorText"
       android:textSize="@dimen/text_size"
       app:layout_constraintTop_toBottomOf="@id/auto_complete_divider" />
