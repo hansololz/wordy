@@ -46,6 +46,7 @@ class SettingsFragment : BaseFragment() {
       GameName.GUESS_4_ENGLISH -> binding.optionGuess4English.isChecked = true
       GameName.GUESS_5_ENGLISH -> binding.optionGuess5English.isChecked = true
       GameName.GUESS_6_ENGLISH -> binding.optionGuess6English.isChecked = true
+      null -> binding.optionGuess5English.isChecked = true // Default to 5-letter game
     }
 
     binding.optionGuess4English.setOnClickListener {
