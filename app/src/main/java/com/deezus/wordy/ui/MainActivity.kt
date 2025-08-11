@@ -6,6 +6,9 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -30,12 +33,23 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
+    // Enable edge-to-edge display
+    WindowCompat.setDecorFitsSystemWindows(window, false)
+    
     setContentView(R.layout.activity_main)
 
     supportActionBar?.hide()
 
     mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
     binding = ActivityMainBinding.inflate(layoutInflater)
+    
+    // Apply window insets to the root view
+    val rootView = findViewById<android.view.View>(R.id.host_fragment)
+    ViewCompat.setOnApplyWindowInsetsListener(rootView) { view, insets ->
+      val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+      view.setPadding(0, systemBars.top, 0, systemBars.bottom)
+      insets
+    }
 
     val thisActivity = this
     val settings = Settings(this)
