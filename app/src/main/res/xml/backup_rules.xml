@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Used on Android 11 and lower; keep in sync with data_extraction_rules.xml. -->
+<full-backup-content>
+  <include domain="file" path="datastore/" />
+  <include domain="database" path="wordy.db" />
+</full-backup-content>

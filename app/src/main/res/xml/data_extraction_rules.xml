@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Scores, settings, saved games, history and bookmarks all follow the player to a new device. -->
+<data-extraction-rules>
+  <cloud-backup>
+    <include domain="file" path="datastore/" />
+    <include domain="database" path="wordy.db" />
+  </cloud-backup>
+  <device-transfer>
+    <include domain="file" path="datastore/" />
+    <include domain="database" path="wordy.db" />
+  </device-transfer>
+</data-extraction-rules>

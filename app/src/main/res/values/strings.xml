@@ -1,3 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="app_name">Guess the Word</string>
+
+  <!-- Common actions -->
+  <string name="action_back">Back</string>
+  <string name="action_retry">Try again</string>
+  <string name="action_undo">Undo</string>
+  <string name="action_look_up">Look up definition</string>
+  <string name="action_search_web">Search the web</string>
+
+  <!-- Game -->
+  <string name="score_total">Score</string>
+  <string name="score_average">Average score</string>
+  <string name="score_total_without_hints">Score without hints</string>
+  <string name="score_average_without_hints">Average without hints</string>
+
+  <string name="action_hint">Hint</string>
+  <string name="action_guess">Guess</string>
+  <string name="action_not_a_word">Not a Word</string>
+  <string name="action_skip">Skip</string>
+  <string name="action_next">Next</string>
+  <string name="action_keep_playing">Keep playing</string>
+  <string name="action_play_again">Play Again</string>
+  <string name="action_view_guesses">View My Guesses</string>
+
+  <string name="cd_delete_letter">Delete letter</string>
+  <string name="cd_look_up">Look up %1$s</string>
+  <string name="cd_bookmark_word">Bookmark %1$s</string>
+
+  <string name="tile_empty">Empty</string>
+  <string name="tile_correct">%1$s, correct position</string>
+  <string name="tile_present">%1$s, in the word but in the wrong position</string>
+  <string name="tile_absent">%1$s, not in the word</string>
+  <string name="tile_auto_completed">%1$s, filled in automatically</string>
+  <string name="mark_correct">Correct position</string>
+  <string name="mark_present">In the word</string>
+  <string name="mark_absent">Not in the word</string>
+
+  <string name="message_word_too_short">Please enter a %1$d letter word.</string>
+  <string name="message_no_hint">No more hints available.</string>
+
+  <string name="dialog_skip_title">Skip this word?</string>
+  <string name="dialog_skip_message">Are you sure you want to skip to the next word?</string>
+  <string name="dialog_won_title">Congratulations!</string>
+  <plurals name="dialog_won_message">
+    <item quantity="one">You found the mystery word and earned %1$d point.</item>
+    <item quantity="other">You found the mystery word and earned %1$d points.</item>
+  </plurals>
+  <string name="dialog_lost_title">Game over</string>
+  <string name="dialog_lost_message">You ran out of guesses. The mystery word was:</string>
+  <string name="dialog_skipped_title">Skipped</string>
+  <string name="dialog_skipped_message">The mystery word was:</string>
+
+  <string name="hint_title">Choose a hint</string>
+  <string name="hint_next_letter_title">Reveal the next letter</string>
+  <string name="hint_next_letter_description">Shows the next correct letter of the mystery word.</string>
+  <string name="hint_absent_letter_title">Rule out a letter</string>
+  <string name="hint_absent_letter_description">Shows one letter that is not in the mystery word.</string>
+  <string name="hint_all_absent_letters_title">Rule out every letter</string>
+  <string name="hint_all_absent_letters_description">Shows all the letters that are not in the mystery word.</string>
+
+  <!-- History -->
+  <string name="history_title">History</string>
+  <string name="history_empty_title">No games yet</string>
+  <string name="history_empty_detail">Words you finish, skip or miss will show up here.</string>
+  <string name="history_lost">Not guessed</string>
+  <string name="history_skipped">Skipped</string>
+  <string name="history_hint_used">Hint used</string>
+  <plurals name="points_earned">
+    <item quantity="one">+%1$d point</item>
+    <item quantity="other">+%1$d points</item>
+  </plurals>
+
+  <!-- Bookmarks -->
+  <string name="bookmarks_title">Bookmarks</string>
+  <string name="bookmarks_empty_title">No bookmarks yet</string>
+  <string name="bookmarks_empty_detail">Bookmark a word to save it for later.</string>
+  <string name="bookmark_removed">Removed %1$s from bookmarks</string>
+
+  <!-- Definition -->
+  <string name="definition_not_found">Could not find a definition for this word.</string>
+  <string name="definition_network_error">Could not reach the dictionary. Check your connection and try again.</string>
+  <string name="definition_server_error">The dictionary is not responding right now.</string>
+  <string name="definition_no_browser">No browser is available to search the web.</string>
+  <string name="definition_number">%1$d.</string>
+  <string name="definition_example">“%1$s”</string>
+  <string name="definition_synonyms">Synonyms: %1$s</string>
+
+  <!-- Settings -->
+  <string name="settings_title">Settings</string>
+  <string name="settings_word_length">Word length</string>
+  <string name="settings_word_length_option">%1$d letters</string>
+  <string name="settings_score_display">Score shown in game</string>
+  <string name="settings_preferences">Preferences</string>
+  <string name="settings_haptics">Haptic feedback</string>
+  <string name="settings_auto_complete">Auto-complete guesses</string>
+  <string name="settings_auto_complete_description">Fills in the ending of a guess once you have already found those letters.</string>
+  <string name="settings_statistics">Statistics</string>
+  <string name="settings_feedback">Feedback</string>
+  <string name="settings_feedback_action">Send feedback</string>
+  <string name="settings_feedback_description">Found an issue or have an idea? Email %1$s.</string>
+  <string name="settings_feedback_subject">Guess the Word feedback</string>
+  <string name="settings_no_email_app">No email app found. You can write to %1$s.</string>
+  <string name="settings_version">Version %1$s</string>
+
+  <string name="stat_total_score">Total score</string>
+  <string name="stat_average_score">Average score</string>
+  <string name="stat_total_score_without_hints">Total score without hints</string>
+  <string name="stat_average_score_without_hints">Average score without hints</string>
+  <string name="stat_all_games">All games</string>
+  <string name="stat_without_hints">Without hints</string>
+  <string name="stat_score">Score</string>
+  <string name="stat_wins">Wins</string>
+  <string name="stat_average">Average</string>
 </resources>
