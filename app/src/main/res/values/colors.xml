@@ -2,5 +2,4 @@
 <resources>
   <!-- Keep in sync with WordyColors.Background. -->
   <color name="window_background">#313338</color>
-  <color name="launcher_background">#202020</color>
 </resources>
