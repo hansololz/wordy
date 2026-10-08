@@ -1,4 +1,4 @@
-# Guess the Word (Android)
+# Wordy (Android)
 
 A word-guessing game: find the mystery word in six tries, with hints, definitions, history and
 bookmarks. The iOS version lives at [hansololz/word-guesser](https://github.com/hansololz/word-guesser).

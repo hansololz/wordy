@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">Guess the Word</string>
+  <string name="app_name">Wordy</string>
 
   <!-- Common actions -->
   <string name="action_back">Back</string>
@@ -100,7 +100,7 @@
   <string name="settings_feedback">Feedback</string>
   <string name="settings_feedback_action">Send feedback</string>
   <string name="settings_feedback_description">Found an issue or have an idea? Email %1$s.</string>
-  <string name="settings_feedback_subject">Guess the Word feedback</string>
+  <string name="settings_feedback_subject">Wordy feedback</string>
   <string name="settings_no_email_app">No email app found. You can write to %1$s.</string>
   <string name="settings_about">About</string>
   <string name="settings_source_code">Source code</string>
