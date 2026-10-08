@@ -5,12 +5,21 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+  <!-- Tangerine to deep orange, lit from the top-left. -->
   <path android:pathData="M0,0h108v108h-108z">
     <aapt:attr name="android:fillColor">
       <gradient android:type="linear" android:startX="0" android:startY="0"
           android:endX="108" android:endY="108">
-        <item android:offset="0" android:color="#6E79FF"/>
-        <item android:offset="1" android:color="#4149D8"/>
+        <item android:offset="0" android:color="#FFB03B"/>
+        <item android:offset="1" android:color="#F25A0C"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+  <path android:pathData="M0,0h108v108h-108z">
+    <aapt:attr name="android:fillColor">
+      <gradient android:type="radial" android:centerX="30" android:centerY="24" android:gradientRadius="81">
+        <item android:offset="0" android:color="#38FFFFFF"/>
+        <item android:offset="1" android:color="#00FFFFFF"/>
       </gradient>
     </aapt:attr>
   </path>
