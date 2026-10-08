@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import com.deezus.wordy.R
+import com.deezus.wordy.ui.components.rememberHaptic
 import com.deezus.wordy.ui.theme.WordyColors
 
 private val TileSpacing = 6.dp
@@ -56,6 +57,8 @@ fun Board(
   onLookUp: (String) -> Unit,
   modifier: Modifier = Modifier,
 ) {
+  val performHaptic = rememberHaptic()
+
   BoxWithConstraints(modifier = modifier, contentAlignment = Alignment.Center) {
     val columns = rows.firstOrNull()?.tiles?.size ?: return@BoxWithConstraints
 
@@ -80,7 +83,7 @@ fun Board(
           Box(Modifier.width(LookUpColumnWidth), contentAlignment = Alignment.Center) {
             if (row.submittedWord != null) {
               IconButton(
-                onClick = { onLookUp(row.submittedWord) },
+                onClick = { performHaptic(); onLookUp(row.submittedWord) },
                 modifier = Modifier.size(LookUpColumnWidth),
               ) {
                 Icon(

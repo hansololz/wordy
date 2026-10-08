@@ -55,7 +55,8 @@ import com.deezus.wordy.ui.game.formatAverage
 import com.deezus.wordy.ui.theme.WordyColors
 import kotlinx.coroutines.launch
 
-private const val FEEDBACK_EMAIL = "readchan@deezus.com"
+private const val FEEDBACK_EMAIL = "david@zhang.email"
+private const val SOURCE_URL = "https://github.com/hansololz/wordy"
 
 @Composable
 fun SettingsScreen(
@@ -67,6 +68,7 @@ fun SettingsScreen(
   val snackbarHostState = remember { SnackbarHostState() }
   val coroutineScope = rememberCoroutineScope()
   val noEmailAppMessage = stringResource(R.string.settings_no_email_app, FEEDBACK_EMAIL)
+  val noBrowserMessage = stringResource(R.string.settings_no_browser, SOURCE_URL)
 
   SubScreenScaffold(
     title = stringResource(R.string.settings_title),
@@ -133,24 +135,27 @@ fun SettingsScreen(
         }
 
         Section(stringResource(R.string.settings_feedback)) {
-          Column(
-            modifier = Modifier
-              .fillMaxWidth()
-              .clickable(role = Role.Button) {
-                if (!openFeedbackEmail(context)) {
-                  coroutineScope.launch { snackbarHostState.showSnackbar(noEmailAppMessage) }
-                }
+          LinkRow(
+            title = stringResource(R.string.settings_feedback_action),
+            description = stringResource(R.string.settings_feedback_description, FEEDBACK_EMAIL),
+            onClick = {
+              if (!openFeedbackEmail(context)) {
+                coroutineScope.launch { snackbarHostState.showSnackbar(noEmailAppMessage) }
               }
-              .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(2.dp),
-          ) {
-            Text(stringResource(R.string.settings_feedback_action))
-            Text(
-              text = stringResource(R.string.settings_feedback_description, FEEDBACK_EMAIL),
-              style = MaterialTheme.typography.bodyMedium,
-              color = WordyColors.TextMuted,
-            )
-          }
+            },
+          )
+        }
+
+        Section(stringResource(R.string.settings_about)) {
+          LinkRow(
+            title = stringResource(R.string.settings_source_code),
+            description = stringResource(R.string.settings_source_code_description, SOURCE_URL),
+            onClick = {
+              if (!openUrl(context, SOURCE_URL)) {
+                coroutineScope.launch { snackbarHostState.showSnackbar(noBrowserMessage) }
+              }
+            },
+          )
         }
 
         Text(
@@ -162,6 +167,25 @@ fun SettingsScreen(
         )
       }
     }
+  }
+}
+
+/** A tappable row that leads somewhere outside the app: a title with the destination underneath. */
+@Composable
+private fun LinkRow(title: String, description: String, onClick: () -> Unit) {
+  Column(
+    modifier = Modifier
+      .fillMaxWidth()
+      .clickable(role = Role.Button, onClick = onClick)
+      .padding(16.dp),
+    verticalArrangement = Arrangement.spacedBy(2.dp),
+  ) {
+    Text(title)
+    Text(
+      text = description,
+      style = MaterialTheme.typography.bodyMedium,
+      color = WordyColors.TextMuted,
+    )
   }
 }
 
@@ -307,6 +331,15 @@ private fun openFeedbackEmail(context: Context): Boolean {
     .putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.settings_feedback_subject))
   return try {
     context.startActivity(intent)
+    true
+  } catch (error: ActivityNotFoundException) {
+    false
+  }
+}
+
+private fun openUrl(context: Context, url: String): Boolean {
+  return try {
+    context.startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
     true
   } catch (error: ActivityNotFoundException) {
     false

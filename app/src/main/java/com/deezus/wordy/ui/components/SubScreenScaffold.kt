@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,6 +39,8 @@ fun SubScreenScaffold(
   modifier: Modifier = Modifier,
   snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
   actions: @Composable RowScope.() -> Unit = {},
+  /** Whether a long press on the title lets the player select and copy it. */
+  selectableTitle: Boolean = false,
   content: @Composable (PaddingValues) -> Unit,
 ) {
   val performHaptic = rememberHaptic()
@@ -46,7 +49,10 @@ fun SubScreenScaffold(
     modifier = modifier,
     topBar = {
       TopAppBar(
-        title = { Text(title, fontWeight = FontWeight.SemiBold) },
+        title = {
+          val text = @Composable { Text(title, fontWeight = FontWeight.SemiBold) }
+          if (selectableTitle) SelectionContainer(content = text) else text()
+        },
         navigationIcon = {
           IconButton(onClick = { performHaptic(); onBack() }) {
             Icon(

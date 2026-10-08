@@ -102,6 +102,10 @@
   <string name="settings_feedback_description">Found an issue or have an idea? Email %1$s.</string>
   <string name="settings_feedback_subject">Guess the Word feedback</string>
   <string name="settings_no_email_app">No email app found. You can write to %1$s.</string>
+  <string name="settings_about">About</string>
+  <string name="settings_source_code">Source code</string>
+  <string name="settings_source_code_description">This app is open source. See %1$s.</string>
+  <string name="settings_no_browser">No browser found. The code is at %1$s.</string>
   <string name="settings_version">Version %1$s</string>
 
   <string name="stat_total_score">Total score</string>

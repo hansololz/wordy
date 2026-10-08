@@ -17,7 +17,13 @@ fun BookmarkButton(
   onToggle: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  IconToggleButton(checked = isBookmarked, onCheckedChange = { onToggle() }, modifier = modifier) {
+  val performHaptic = rememberHaptic()
+
+  IconToggleButton(
+    checked = isBookmarked,
+    onCheckedChange = { performHaptic(); onToggle() },
+    modifier = modifier,
+  ) {
     Icon(
       painter = painterResource(
         if (isBookmarked) R.drawable.ic_round_bookmark_24 else R.drawable.ic_round_bookmark_border_24

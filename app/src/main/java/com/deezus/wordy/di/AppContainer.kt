@@ -5,6 +5,7 @@ import com.deezus.wordy.data.bookmarks.BookmarkRepository
 import com.deezus.wordy.data.db.WordyDatabase
 import com.deezus.wordy.data.dictionary.DictionaryApi
 import com.deezus.wordy.data.dictionary.DictionaryRepository
+import com.deezus.wordy.data.dictionary.WiktionaryApi
 import com.deezus.wordy.data.game.SavedGameStore
 import com.deezus.wordy.data.history.HistoryRepository
 import com.deezus.wordy.data.legacy.LegacyDataMigrator
@@ -44,7 +45,7 @@ class AppContainer(context: Context) {
 
   val bookmarkRepository by lazy { BookmarkRepository(database.bookmarkDao(), clock) }
 
-  val dictionaryRepository by lazy { DictionaryRepository(DictionaryApi.create()) }
+  val dictionaryRepository by lazy { DictionaryRepository(DictionaryApi.create(), WiktionaryApi.create()) }
 
   private val startup: Deferred<Unit> = applicationScope.async {
     val wordLists = WordListLoader(context.assets, ioDispatcher).load()

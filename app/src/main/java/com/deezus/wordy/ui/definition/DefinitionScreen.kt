@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.plus
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.selection.DisableSelection
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -45,6 +47,7 @@ import com.deezus.wordy.ui.components.Badge
 import com.deezus.wordy.ui.components.BookmarkButton
 import com.deezus.wordy.ui.components.MessageState
 import com.deezus.wordy.ui.components.SubScreenScaffold
+import com.deezus.wordy.ui.components.rememberHaptic
 import com.deezus.wordy.ui.theme.WordyColors
 import kotlinx.coroutines.launch
 
@@ -60,7 +63,9 @@ fun DefinitionScreen(
   val coroutineScope = rememberCoroutineScope()
   val noBrowserMessage = stringResource(R.string.definition_no_browser)
 
+  val performHaptic = rememberHaptic()
   val onSearchWeb: () -> Unit = {
+    performHaptic()
     if (!openWebSearch(context, uiState.word)) {
       coroutineScope.launch { snackbarHostState.showSnackbar(noBrowserMessage) }
     }
@@ -70,6 +75,7 @@ fun DefinitionScreen(
     title = uiState.word.replaceFirstChar { it.uppercase() },
     onBack = onBack,
     snackbarHostState = snackbarHostState,
+    selectableTitle = true,
     actions = {
       BookmarkButton(uiState.word, uiState.isBookmarked, viewModel::onToggleBookmark)
       IconButton(onClick = onSearchWeb) {
@@ -128,42 +134,49 @@ private fun MeaningCard(meaning: Meaning) {
     shape = MaterialTheme.shapes.large,
     color = WordyColors.Surface,
   ) {
-    Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
-      if (meaning.partOfSpeech.isNotBlank()) {
-        Badge(
-          text = meaning.partOfSpeech,
-          containerColor = WordyColors.AccentContainer,
-          contentColor = WordyColors.OnAccentContainer,
-        )
-      }
+    // A long press selects text so it can be copied; the labels around it stay out of the selection.
+    SelectionContainer {
+      Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+        if (meaning.partOfSpeech.isNotBlank()) {
+          DisableSelection {
+            Badge(
+              text = meaning.partOfSpeech,
+              containerColor = WordyColors.AccentContainer,
+              contentColor = WordyColors.OnAccentContainer,
+            )
+          }
+        }
 
-      meaning.senses.forEachIndexed { index, sense ->
-        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-          Text(
-            text = stringResource(R.string.definition_number, index + 1),
-            style = MaterialTheme.typography.bodyLarge,
-            color = WordyColors.TextMuted,
-          )
-          Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(text = sense.definition, style = MaterialTheme.typography.bodyLarge)
-            if (sense.example != null) {
+        meaning.senses.forEachIndexed { index, sense ->
+          Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            DisableSelection {
               Text(
-                text = stringResource(R.string.definition_example, sense.example),
-                style = MaterialTheme.typography.bodyMedium,
-                fontStyle = FontStyle.Italic,
+                text = stringResource(R.string.definition_number, index + 1),
+                style = MaterialTheme.typography.bodyLarge,
                 color = WordyColors.TextMuted,
               )
             }
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+              Text(text = sense.definition, style = MaterialTheme.typography.bodyLarge)
+              if (sense.example != null) {
+                Text(
+                  text = stringResource(R.string.definition_example, sense.example),
+                  style = MaterialTheme.typography.bodyMedium,
+                  fontStyle = FontStyle.Italic,
+                  color = WordyColors.TextMuted,
+                )
+              }
+            }
           }
         }
-      }
 
-      if (meaning.synonyms.isNotEmpty()) {
-        Text(
-          text = stringResource(R.string.definition_synonyms, meaning.synonyms.joinToString(", ")),
-          style = MaterialTheme.typography.bodyMedium,
-          color = WordyColors.TextMuted,
-        )
+        if (meaning.synonyms.isNotEmpty()) {
+          Text(
+            text = stringResource(R.string.definition_synonyms, meaning.synonyms.joinToString(", ")),
+            style = MaterialTheme.typography.bodyMedium,
+            color = WordyColors.TextMuted,
+          )
+        }
       }
     }
   }
