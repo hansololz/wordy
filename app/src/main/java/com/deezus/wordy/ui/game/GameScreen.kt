@@ -60,6 +60,7 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -276,48 +277,61 @@ private fun GameHeader(
   onOpenHistory: () -> Unit,
   onOpenSettings: () -> Unit,
 ) {
-  Row(
-    modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
-    verticalAlignment = Alignment.CenterVertically,
-    horizontalArrangement = Arrangement.spacedBy(10.dp),
-  ) {
-    Column(Modifier.weight(1f).semantics(mergeDescendants = true) {}) {
+  Box(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)) {
+    Row(
+      modifier = Modifier.align(Alignment.CenterStart),
+      horizontalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+      HeaderButton(
+        iconRes = R.drawable.ic_round_history_24,
+        descriptionRes = R.string.history_title,
+        onClick = onOpenHistory,
+      )
+      HeaderButton(
+        iconRes = R.drawable.ic_round_bookmark_border_24,
+        descriptionRes = R.string.bookmarks_title,
+        onClick = onOpenBookmarks,
+      )
+    }
+
+    Column(
+      modifier = Modifier.align(Alignment.Center).semantics(mergeDescendants = true) {},
+      horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
       Text(
         text = stringResource(scoreDisplay.labelRes()).uppercase(),
         style = MaterialTheme.typography.labelMedium,
         letterSpacing = 1.2.sp,
         color = WordyColors.TextMuted,
+        textAlign = TextAlign.Center,
       )
       Text(
         text = formatScore(scoreDisplay, stats),
         style = MaterialTheme.typography.headlineLarge,
         fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Center,
       )
     }
 
     HeaderButton(
-      iconRes = R.drawable.ic_round_bookmark_border_24,
-      descriptionRes = R.string.bookmarks_title,
-      onClick = onOpenBookmarks,
-    )
-    HeaderButton(
-      iconRes = R.drawable.ic_round_history_24,
-      descriptionRes = R.string.history_title,
-      onClick = onOpenHistory,
-    )
-    HeaderButton(
       iconRes = R.drawable.ic_round_settings_24,
       descriptionRes = R.string.settings_title,
       onClick = onOpenSettings,
+      modifier = Modifier.align(Alignment.CenterEnd),
     )
   }
 }
 
 @Composable
-private fun HeaderButton(iconRes: Int, descriptionRes: Int, onClick: () -> Unit) {
+private fun HeaderButton(
+  iconRes: Int,
+  descriptionRes: Int,
+  onClick: () -> Unit,
+  modifier: Modifier = Modifier,
+) {
   FilledIconButton(
     onClick = onClick,
-    modifier = Modifier.size(46.dp),
+    modifier = modifier.size(46.dp),
     colors = IconButtonDefaults.filledIconButtonColors(
       containerColor = WordyColors.SurfaceBright,
       contentColor = WordyColors.Text,
