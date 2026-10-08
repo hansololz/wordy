@@ -10,7 +10,8 @@ import androidx.compose.ui.unit.dp
 
 /**
  * The app's palette. The app is always dark, so these are plain constants rather than values that
- * switch with the system theme. They match the iOS app.
+ * switch with the system theme. They match the iOS app, except the accent, which is orange here to
+ * match the launcher icon.
  */
 object WordyColors {
   val Background = Color(0xFF313338)
@@ -24,10 +25,12 @@ object WordyColors {
   val TextMuted = Color(0xFFA3A9B2)
   val TextDisabled = Color(0xFF6D6F78)
 
-  val Accent = Color(0xFF5865F2)
+  val Accent = Color(0xFFD48540)
   val OnAccent = Color(0xFFFFFFFF)
-  val AccentContainer = Color(0xFF3B3F73)
-  val OnAccentContainer = Color(0xFFD9DCFF)
+  val AccentContainer = Color(0xFF55321A)
+  val OnAccentContainer = Color(0xFFFFD6B8)
+  val HintContainer = Color(0xFF27497A)
+  val OnHintContainer = Color(0xFFCFE4FF)
 
   val Correct = Color(0xFF3BA55C)
   val Present = Color(0xFFC98209)
@@ -47,14 +50,14 @@ object WordyColors {
 }
 
 private val ColorScheme = darkColorScheme(
-  primary = Color(0xFFA5ADFF),
-  onPrimary = Color(0xFF14164A),
+  primary = WordyColors.Accent,
+  onPrimary = WordyColors.OnAccent,
   primaryContainer = WordyColors.Accent,
   onPrimaryContainer = WordyColors.OnAccent,
   secondary = Color(0xFFC4C7D0),
   onSecondary = Color(0xFF2B2D31),
-  secondaryContainer = WordyColors.AccentContainer,
-  onSecondaryContainer = WordyColors.OnAccentContainer,
+  secondaryContainer = WordyColors.Accent,
+  onSecondaryContainer = WordyColors.OnAccent,
   tertiary = WordyColors.OnCorrectContainer,
   onTertiary = Color(0xFF0C3018),
   tertiaryContainer = WordyColors.CorrectContainer,

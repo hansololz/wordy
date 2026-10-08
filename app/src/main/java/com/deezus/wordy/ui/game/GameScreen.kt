@@ -356,8 +356,8 @@ private fun GameControls(
   ) {
     ControlButton(
       text = stringResource(R.string.action_hint),
-      containerColor = WordyColors.AccentContainer,
-      contentColor = WordyColors.OnAccentContainer,
+      containerColor = WordyColors.HintContainer,
+      contentColor = WordyColors.OnHintContainer,
       enabled = isActive,
       height = height,
       onClick = onHint,
