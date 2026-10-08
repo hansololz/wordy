@@ -15,7 +15,7 @@ class GameEngineTest {
 
   private val dictionary = setOf(
     "crane", "crank", "slate", "plate", "llama", "table", "abbey", "kebab", "geese", "eerie",
-    "trace", "brain", "moist", "pound", "fizzy", "jumpy",
+    "trace", "brain", "moist", "pound", "fizzy", "jumpy", "stone", "shone", "plane",
   )
   private val isValidWord: (String) -> Boolean = { it in dictionary }
 
@@ -232,6 +232,158 @@ class GameEngineTest {
   @Test
   fun `two letters off is not close enough`() {
     assertFalse(GameEngine.isCloseEnough(game("crane"), "trace"))
+  }
+
+  @Test
+  fun `the exact answer wins outright rather than as a near miss`() {
+    assertFalse(GameEngine.isCloseEnough(game("crane"), "crane"))
+
+    val result = game("crane").typing("crane").submit() as SubmitResult.Accepted
+    assertNull(result.replacedAnswer)
+    assertEquals("crane", result.state.answer)
+  }
+
+  @Test
+  fun `a near miss must be a real word`() {
+    // "crang" is one letter off but not in the dictionary, so it is rejected before the rule runs.
+    assertEquals(SubmitResult.NotAWord, game("crane").typing("crang").submit())
+  }
+
+  @Test
+  fun `a near miss must be the same length as the answer`() {
+    assertFalse(GameEngine.isCloseEnough(game("crane"), "cran"))
+    assertFalse(GameEngine.isCloseEnough(game("crane"), "cranes"))
+  }
+
+  @Test
+  fun `a near miss can differ in any position`() {
+    assertTrue(GameEngine.isCloseEnough(game("plate"), "slate"))
+    assertTrue(GameEngine.isCloseEnough(game("crane"), "crone"))
+    assertTrue(GameEngine.isCloseEnough(game("crane"), "crank"))
+  }
+
+  @Test
+  fun `a near miss works for every word length`() {
+    assertTrue(GameEngine.isCloseEnough(GameEngine.newGame(GameMode.FourLetters, "word"), "ward"))
+    assertTrue(GameEngine.isCloseEnough(GameEngine.newGame(GameMode.SixLetters, "planet"), "planes"))
+  }
+
+  @Test
+  fun `a near miss puts the guess on the board as a fully correct row`() {
+    val result = game("crane", "moist").typing("crank").submit() as SubmitResult.Accepted
+
+    assertEquals(listOf("moist", "crank"), result.state.guesses)
+    assertEquals("", result.state.currentGuess)
+    assertEquals(List(5) { Correct }, GameEngine.evaluateGuess("crank", result.state.answer))
+  }
+
+  @Test
+  fun `a near miss scores like any other win`() {
+    val first = game("crane").typing("crank").submit() as SubmitResult.Accepted
+    assertEquals(6, GameEngine.score(first.state))
+
+    val third = game("crane", "moist", "pound").typing("crank").submit() as SubmitResult.Accepted
+    assertEquals(4, GameEngine.score(third.state))
+  }
+
+  @Test
+  fun `a near miss on the last guess wins instead of losing`() {
+    val state = game("crane", "moist", "pound", "fizzy", "jumpy", "brain").typing("crank")
+    val result = state.submit() as SubmitResult.Accepted
+
+    assertEquals(GameStatus.Won, result.state.status)
+    assertEquals("crank", result.state.answer)
+    assertEquals(1, GameEngine.score(result.state))
+  }
+
+  @Test
+  fun `a near miss is rejected once the game is over`() {
+    val won = game("crane", "crane").copy(status = GameStatus.Won)
+    val lost = game("crane", "moist", "pound", "fizzy", "jumpy", "brain", "slate").copy(status = GameStatus.Lost)
+
+    assertEquals(SubmitResult.GameOver, won.typing("crank").submit())
+    assertEquals(SubmitResult.GameOver, lost.typing("crank").submit())
+  }
+
+  @Test
+  fun `earlier guesses that reveal nothing about the differing position do not block a near miss`() {
+    assertTrue(GameEngine.isCloseEnough(game("crane", "moist", "pound", "fizzy"), "crank"))
+  }
+
+  @Test
+  fun `the guessed letter blocks a near miss wherever it appeared in an earlier guess`() {
+    // "jumpy" has no K; "kebab" has one, but at the start rather than where "crank" puts it.
+    assertTrue(GameEngine.isCloseEnough(game("crane", "jumpy"), "crank"))
+    assertFalse(GameEngine.isCloseEnough(game("crane", "kebab"), "crank"))
+  }
+
+  @Test
+  fun `the replaced letter blocks a near miss wherever it appeared in an earlier guess`() {
+    // "ember" has Es at the start and in the middle, never where "crane" has its E.
+    assertFalse(GameEngine.isCloseEnough(game("crane", "ember"), "crank"))
+    // "trace" has its E exactly where "crane" does.
+    assertFalse(GameEngine.isCloseEnough(game("crane", "trace"), "crank"))
+  }
+
+  @Test
+  fun `repeated letters in the answer still block a near miss`() {
+    // "geese" has three Es; one E anywhere in an earlier guess is enough to reject "geesy".
+    assertTrue(GameEngine.isCloseEnough(game("geese", "moist"), "geesy"))
+    assertFalse(GameEngine.isCloseEnough(game("geese", "crane"), "geesy"))
+  }
+
+  @Test
+  fun `hints about other letters do not block a near miss`() {
+    val state = game("crane").copy(hintedAbsentLetters = setOf('z', 'q'), revealedPrefixLength = 2)
+
+    assertTrue(GameEngine.isCloseEnough(state, "crank"))
+  }
+
+  @Test
+  fun `a near miss is allowed right after the revealed prefix but not inside it`() {
+    assertTrue(GameEngine.isCloseEnough(game("crane").copy(revealedPrefixLength = 4), "crank"))
+    assertFalse(GameEngine.isCloseEnough(game("crane").copy(revealedPrefixLength = 5), "crank"))
+  }
+
+  @Test
+  fun `revealing a letter with a hint only blocks near misses in that position`() {
+    val hinted = GameEngine.revealNextLetter(game("plate"))!!
+
+    assertFalse(GameEngine.isCloseEnough(hinted, "slate"))
+    assertTrue(GameEngine.isCloseEnough(hinted, "plane"))
+  }
+
+  @Test
+  fun `ruling out every letter with a hint blocks a near miss that uses one of them`() {
+    val hinted = GameEngine.revealAllAbsentLetters(game("crane"))!!
+
+    assertTrue('k' in hinted.hintedAbsentLetters)
+    assertFalse(GameEngine.isCloseEnough(hinted, "crank"))
+  }
+
+  @Test
+  fun `auto-complete can finish a near miss`() {
+    // "plane" confirms the N and E of "stone", so typing "sho" fills in "shone", one letter off.
+    val state = game("stone", "plane").typing("sho")
+    assertEquals("shone", GameEngine.pendingGuess(state, autoCompleteEnabled = true))
+
+    val result = state.submit(autoComplete = true) as SubmitResult.Accepted
+    assertEquals(GameStatus.Won, result.state.status)
+    assertEquals("shone", result.state.answer)
+    assertEquals("stone", result.replacedAnswer)
+
+    assertEquals(SubmitResult.TooShort, state.submit(autoComplete = false))
+  }
+
+  @Test
+  fun `key marks after a near miss show the guessed word as correct and nothing else`() {
+    val result = game("crane", "moist").typing("crank").submit() as SubmitResult.Accepted
+    val marks = GameEngine.keyMarks(result.state)
+
+    "crank".forEach { assertEquals(Correct, marks[it]) }
+    "moist".forEach { assertEquals(Absent, marks[it]) }
+    // The dropped E was never guessed, so the keyboard gives no sign of it.
+    assertNull(marks['e'])
   }
 
   // Scoring

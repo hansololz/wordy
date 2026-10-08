@@ -54,7 +54,7 @@ class GameViewModelTest {
 
   private val wordLists = mapOf(
     GameMode.FourLetters to setOf("word", "game"),
-    GameMode.FiveLetters to setOf("crane", "slate", "moist", "pound", "fizzy", "jumpy", "brain"),
+    GameMode.FiveLetters to setOf("crane", "crank", "slate", "moist", "pound", "fizzy", "jumpy", "brain"),
     GameMode.SixLetters to setOf("planet", "garden"),
   )
 
@@ -146,6 +146,50 @@ class GameViewModelTest {
     assertEquals(1_000L, entry.finishedAt)
 
     awaitUsedWords(setOf("crane"))
+  }
+
+  @Test
+  fun `a near miss looks and is recorded exactly like a win for the guessed word`() = runBlocking {
+    savedGameStore.save(SavedGames().with(savedGame("crane", "moist")))
+    val viewModel = createViewModel()
+    viewModel.awaitState()
+
+    viewModel.type("crank")
+    viewModel.onSubmit()
+
+    // The dialog, board and saved game all treat "crank" as the mystery word; "crane" is gone.
+    val state = viewModel.awaitState { it.dialog != null }
+    assertEquals(GameDialog.Finished(GameStatus.Won, "crank", 5), state.dialog)
+    assertTrue(state.rows[1].tiles.all { it.style == TileStyle.Correct })
+    assertEquals("crank", savedGameStore.load()[GameMode.FiveLetters]!!.answer)
+
+    val stats = withTimeout(5_000) { settingsRepository.stats.first { it.gamesWon == 1L } }
+    assertEquals(ScoreStats(5, 1, 5, 1), stats)
+
+    val entry = withTimeout(5_000) { historyRepository.history.first { it.isNotEmpty() } }.single()
+    assertEquals("crank", entry.word)
+    assertEquals(GameOutcome.Won, entry.outcome)
+    assertEquals(listOf("moist", "crank"), entry.guesses)
+
+    awaitUsedWords(setOf("crank"))
+  }
+
+  @Test
+  fun `a near miss the player had information about is just a wrong guess`() = runBlocking {
+    // "slate" already showed that the last letter is E, so "crank" cannot replace "crane".
+    savedGameStore.save(SavedGames().with(savedGame("crane", "slate")))
+    val viewModel = createViewModel()
+    viewModel.awaitState()
+
+    viewModel.type("crank")
+    viewModel.onSubmit()
+
+    val state = viewModel.awaitState { it.rows[1].submittedWord != null }
+    assertTrue(state.isActive)
+    assertNull(state.dialog)
+    assertEquals("crank", state.rows[1].submittedWord)
+    assertEquals(TileStyle.Absent, state.rows[1].tiles[4].style)
+    assertEquals("crane", savedGameStore.load()[GameMode.FiveLetters]!!.answer)
   }
 
   @Test
