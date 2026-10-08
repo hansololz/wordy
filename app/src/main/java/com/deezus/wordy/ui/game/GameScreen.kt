@@ -1,6 +1,5 @@
 package com.deezus.wordy.ui.game
 
-import android.view.HapticFeedbackConstants
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
@@ -54,7 +53,6 @@ import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.key.utf16CodePoint
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -73,6 +71,7 @@ import com.deezus.wordy.core.GameStatus
 import com.deezus.wordy.data.settings.ScoreDisplay
 import com.deezus.wordy.data.settings.ScoreStats
 import com.deezus.wordy.review.ReviewPrompter
+import com.deezus.wordy.ui.components.rememberHaptic
 import com.deezus.wordy.ui.theme.WordyColors
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -505,14 +504,6 @@ private fun AnswerTiles(word: String, highlighted: Boolean) {
 private fun GameMessage.text(): String = when (this) {
   is GameMessage.WordTooShort -> stringResource(R.string.message_word_too_short, wordLength)
   is GameMessage.NoHintAvailable -> stringResource(R.string.message_no_hint)
-}
-
-@Composable
-private fun rememberHaptic(enabled: Boolean): () -> Unit {
-  val view = LocalView.current
-  return remember(view, enabled) {
-    { if (enabled) view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY) }
-  }
 }
 
 private fun ScoreDisplay.labelRes(): Int = when (this) {

@@ -14,13 +14,17 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.deezus.wordy.core.GameMode
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.retryWhen
+import kotlinx.coroutines.flow.shareIn
 import java.io.IOException
 import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.seconds
 
 /** Which number the game screen shows as the score. [id] is persisted and must never change. */
 enum class ScoreDisplay(val id: String) {
@@ -37,7 +41,7 @@ enum class ScoreDisplay(val id: String) {
 data class UserSettings(
   val mode: GameMode = GameMode.Default,
   val scoreDisplay: ScoreDisplay = ScoreDisplay.Total,
-  val hapticsEnabled: Boolean = false,
+  val hapticsEnabled: Boolean = true,
   val autoCompleteEnabled: Boolean = true,
 )
 
@@ -61,18 +65,38 @@ data class ScoreStats(
 /**
  * User preferences and lifetime score totals. Key names match the SharedPreferences file used
  * before 3.0, so [SharedPreferencesMigration] carries existing values over unchanged.
+ *
+ * [scope] must outlive every reader; the application scope is the right one.
  */
-class SettingsRepository(private val dataStore: DataStore<Preferences>) {
+class SettingsRepository(
+  private val dataStore: DataStore<Preferences>,
+  scope: CoroutineScope,
+) {
 
-  private val preferences: Flow<Preferences> = dataStore.data.catch { error ->
-    if (error is IOException) emit(emptyPreferences()) else throw error
-  }
+  /**
+   * Read from the store once and shared by every flow below.
+   *
+   * Each new collector of [DataStore.data] takes a snapshot without the write lock. A snapshot
+   * taken while a write is in flight can pair the old contents with the new version number, and
+   * that collector then ignores the write until the next one. Screens subscribe at arbitrary
+   * moments (for example right after a win is recorded), so instead a single collector starts here,
+   * before anything has been written, and stays for the life of the app.
+   */
+  private val preferences: Flow<Preferences> = dataStore.data
+    .retryWhen { error, _ ->
+      // Show the defaults while the file cannot be read, and keep trying.
+      if (error !is IOException) return@retryWhen false
+      emit(emptyPreferences())
+      delay(ReadRetryDelay)
+      true
+    }
+    .shareIn(scope, SharingStarted.Eagerly, replay = 1)
 
   val settings: Flow<UserSettings> = preferences.map { prefs ->
     UserSettings(
       mode = GameMode.fromId(prefs[Keys.CurrentGame]) ?: GameMode.Default,
       scoreDisplay = ScoreDisplay.fromId(prefs[Keys.ScoreDisplay]) ?: ScoreDisplay.Total,
-      hapticsEnabled = prefs[Keys.HapticsEnabled] ?: false,
+      hapticsEnabled = prefs[Keys.HapticsEnabled] ?: true,
       autoCompleteEnabled = prefs[Keys.AutoCompleteEnabled] ?: true,
     )
   }.distinctUntilChanged()
@@ -159,6 +183,7 @@ class SettingsRepository(private val dataStore: DataStore<Preferences>) {
     private const val LEGACY_SHARED_PREFERENCES = "WORDY_SCORE"
     private val FirstReviewDelay = 4.days
     private val ReviewInterval = 60.days
+    private val ReadRetryDelay = 2.seconds
 
     fun createDataStore(context: Context, scope: CoroutineScope): DataStore<Preferences> =
       PreferenceDataStoreFactory.create(

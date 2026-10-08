@@ -1,6 +1,7 @@
 package com.deezus.wordy.data.game
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
+import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 
@@ -60,7 +62,12 @@ class SavedGameStore(
   init {
     applicationScope.launch {
       for (games in pendingSaves) {
-        dataStore.updateData { games }
+        try {
+          dataStore.updateData { games }
+        } catch (error: IOException) {
+          // The in-memory copy is still current, and the next save tries the disk again.
+          Log.w(TAG, "Could not save games", error)
+        }
       }
     }
   }
@@ -73,6 +80,8 @@ class SavedGameStore(
   }
 
   companion object {
+    private const val TAG = "SavedGameStore"
+
     fun createDataStore(context: Context, scope: CoroutineScope): DataStore<SavedGames> =
       DataStoreFactory.create(
         serializer = SavedGamesSerializer,

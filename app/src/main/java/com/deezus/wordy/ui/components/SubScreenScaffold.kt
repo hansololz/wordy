@@ -40,13 +40,15 @@ fun SubScreenScaffold(
   actions: @Composable RowScope.() -> Unit = {},
   content: @Composable (PaddingValues) -> Unit,
 ) {
+  val performHaptic = rememberHaptic()
+
   Scaffold(
     modifier = modifier,
     topBar = {
       TopAppBar(
         title = { Text(title, fontWeight = FontWeight.SemiBold) },
         navigationIcon = {
-          IconButton(onClick = onBack) {
+          IconButton(onClick = { performHaptic(); onBack() }) {
             Icon(
               painter = painterResource(R.drawable.ic_round_arrow_back_24),
               contentDescription = stringResource(R.string.action_back),

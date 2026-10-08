@@ -31,7 +31,7 @@ class AppContainer(context: Context) {
   private val database by lazy { WordyDatabase.create(context) }
 
   val settingsRepository by lazy {
-    SettingsRepository(SettingsRepository.createDataStore(context, ioScope))
+    SettingsRepository(SettingsRepository.createDataStore(context, ioScope), ioScope)
   }
 
   val savedGameStore by lazy {

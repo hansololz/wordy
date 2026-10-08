@@ -129,7 +129,8 @@ object GameEngine {
   /**
    * A valid word that is one letter away from the answer is accepted as a win, as long as the
    * player had no information about the differing letter: it must not sit in a position revealed by
-   * a hint, be a letter a hint ruled out, or have appeared in an earlier guess.
+   * a hint or already marked correct in an earlier guess, be a letter a hint ruled out, or have
+   * appeared in an earlier guess.
    */
   fun isCloseEnough(state: GameState, guess: String): Boolean {
     if (guess.length != state.answer.length) return false
@@ -140,7 +141,7 @@ object GameEngine {
 
     return index >= state.revealedPrefixLength &&
       letter !in state.hintedAbsentLetters &&
-      state.guesses.none { letter in it }
+      state.guesses.none { letter in it || it[index] == state.answer[index] }
   }
 
   fun skip(state: GameState): GameState {

@@ -6,9 +6,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.deezus.wordy.WordyApplication
+import com.deezus.wordy.ui.components.LocalHapticsEnabled
 import com.deezus.wordy.ui.theme.WordyTheme
+import kotlinx.coroutines.flow.map
 
 // Lives in the `ui` package because launcher shortcuts created by earlier versions point here.
 class MainActivity : ComponentActivity() {
@@ -26,8 +32,13 @@ class MainActivity : ComponentActivity() {
     splashScreen.setKeepOnScreenCondition { !container.isStartupComplete }
 
     setContent {
+      val hapticsSetting = remember { container.settingsRepository.settings.map { it.hapticsEnabled } }
+      val hapticsEnabled by hapticsSetting.collectAsStateWithLifecycle(initialValue = true)
+
       WordyTheme {
-        WordyApp()
+        CompositionLocalProvider(LocalHapticsEnabled provides hapticsEnabled) {
+          WordyApp()
+        }
       }
     }
   }

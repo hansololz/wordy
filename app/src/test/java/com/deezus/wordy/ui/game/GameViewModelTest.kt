@@ -22,6 +22,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.job
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -63,7 +64,7 @@ class GameViewModelTest {
 
     database = Room.inMemoryDatabaseBuilder(context, WordyDatabase::class.java).build()
     settingsRepository =
-      SettingsRepository(SettingsRepository.createDataStore(context, backgroundScope))
+      SettingsRepository(SettingsRepository.createDataStore(context, backgroundScope), backgroundScope)
     savedGameStore =
       SavedGameStore(SavedGameStore.createDataStore(context, backgroundScope), backgroundScope)
     wordRepository = WordRepository(database.usedWordDao(), backgroundScope)
@@ -72,8 +73,10 @@ class GameViewModelTest {
   }
 
   @After
-  fun tearDown() {
+  fun tearDown() = runBlocking {
+    // Lets background writes stop before the database they target is closed.
     backgroundScope.cancel()
+    backgroundScope.coroutineContext.job.join()
     database.close()
     Dispatchers.resetMain()
   }

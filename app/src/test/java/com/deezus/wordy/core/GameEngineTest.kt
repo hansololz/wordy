@@ -191,6 +191,16 @@ class GameEngineTest {
   }
 
   @Test
+  fun `a near miss does not count in a position an earlier guess marked correct`() {
+    // "slate" showed the player that the third letter is A, so "crone" ignores a green tile.
+    val state = game("crane", "slate")
+
+    assertFalse(GameEngine.isCloseEnough(state, "crone"))
+    // "fizzy" revealed no position, so the same guess is still a near miss after it.
+    assertTrue(GameEngine.isCloseEnough(game("crane", "fizzy"), "crone"))
+  }
+
+  @Test
   fun `a near miss does not count inside the prefix revealed by a hint`() {
     val revealed = game("plate").copy(revealedPrefixLength = 1)
     assertFalse(GameEngine.isCloseEnough(revealed, "slate"))

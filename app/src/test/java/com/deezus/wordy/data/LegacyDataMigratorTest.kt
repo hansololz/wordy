@@ -59,7 +59,7 @@ class LegacyDataMigratorTest {
   /** Created after the legacy SharedPreferences are written, as it would be on a real upgrade. */
   private fun createMigrator() {
     settingsRepository =
-      SettingsRepository(SettingsRepository.createDataStore(context, dataStoreScope))
+      SettingsRepository(SettingsRepository.createDataStore(context, dataStoreScope), dataStoreScope)
     migrator = LegacyDataMigrator(context, database, settingsRepository, Dispatchers.IO)
   }
 

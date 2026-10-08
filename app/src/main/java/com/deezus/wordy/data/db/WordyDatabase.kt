@@ -22,7 +22,11 @@ abstract class WordyDatabase : RoomDatabase() {
     const val NAME = "wordy.db"
 
     fun create(context: Context): WordyDatabase =
-      Room.databaseBuilder(context, WordyDatabase::class.java, NAME).build()
+      Room.databaseBuilder(context, WordyDatabase::class.java, NAME)
+        // Auto Backup copies only wordy.db, not the write-ahead log. With WAL the main file can
+        // lag behind by months for a database this small, so a restore would miss recent games.
+        .setJournalMode(RoomDatabase.JournalMode.TRUNCATE)
+        .build()
   }
 }
 
