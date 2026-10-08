@@ -19,6 +19,7 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.SegmentedButton
@@ -35,6 +36,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.heading
@@ -173,18 +175,26 @@ fun SettingsScreen(
 /** A tappable row that leads somewhere outside the app: a title with the destination underneath. */
 @Composable
 private fun LinkRow(title: String, description: String, onClick: () -> Unit) {
-  Column(
+  Row(
     modifier = Modifier
       .fillMaxWidth()
       .clickable(role = Role.Button, onClick = onClick)
       .padding(16.dp),
-    verticalArrangement = Arrangement.spacedBy(2.dp),
+    horizontalArrangement = Arrangement.spacedBy(16.dp),
+    verticalAlignment = Alignment.CenterVertically,
   ) {
-    Text(title)
-    Text(
-      text = description,
-      style = MaterialTheme.typography.bodyMedium,
-      color = WordyColors.TextMuted,
+    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+      Text(title)
+      Text(
+        text = description,
+        style = MaterialTheme.typography.bodyMedium,
+        color = WordyColors.TextMuted,
+      )
+    }
+    Icon(
+      painter = painterResource(R.drawable.ic_round_open_in_new_24),
+      contentDescription = null,
+      tint = WordyColors.TextMuted,
     )
   }
 }
