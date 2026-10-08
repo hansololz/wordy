@@ -128,20 +128,24 @@ object GameEngine {
 
   /**
    * A valid word that is one letter away from the answer is accepted as a win, as long as the
-   * player had no information about the differing letter: it must not sit in a position revealed by
-   * a hint or already marked correct in an earlier guess, be a letter a hint ruled out, or have
-   * appeared in an earlier guess.
+   * player had no information about the differing position: it must not sit inside the prefix
+   * revealed by a hint, the guessed letter must not have been ruled out by a hint, and neither the
+   * guessed letter nor the answer's letter may have appeared in an earlier guess.
+   *
+   * Keeping both letters out of earlier guesses also means those guesses mark identically against
+   * the new answer, so swapping the answer never recolours the board.
    */
   fun isCloseEnough(state: GameState, guess: String): Boolean {
     if (guess.length != state.answer.length) return false
 
     val differing = guess.indices.filter { guess[it] != state.answer[it] }
     val index = differing.singleOrNull() ?: return false
-    val letter = guess[index]
+    val guessed = guess[index]
+    val expected = state.answer[index]
 
     return index >= state.revealedPrefixLength &&
-      letter !in state.hintedAbsentLetters &&
-      state.guesses.none { letter in it || it[index] == state.answer[index] }
+      guessed !in state.hintedAbsentLetters &&
+      state.guesses.none { guessed in it || expected in it }
   }
 
   fun skip(state: GameState): GameState {

@@ -184,6 +184,26 @@ class GameEngineTest {
   }
 
   @Test
+  fun `a near miss does not count when the replaced letter was already seen in a guess`() {
+    // "ember" showed the player that E is in the word, so "crank" must not quietly replace "crane".
+    val state = game("crane", "ember")
+
+    assertFalse(GameEngine.isCloseEnough(state, "crank"))
+    assertEquals(GameStatus.InProgress, (state.typing("crank").submit() as SubmitResult.Accepted).state.status)
+  }
+
+  @Test
+  fun `a near miss never changes how earlier guesses are marked`() {
+    val before = game("crane", "fizzy", "moist").typing("crank")
+    val after = (before.submit() as SubmitResult.Accepted).state
+
+    assertEquals("crank", after.answer)
+    for (guess in before.guesses) {
+      assertEquals(GameEngine.evaluateGuess(guess, before.answer), GameEngine.evaluateGuess(guess, after.answer))
+    }
+  }
+
+  @Test
   fun `a near miss does not count when a hint ruled the letter out`() {
     val state = game("crane").copy(hintedAbsentLetters = setOf('k')).typing("crank")
 
