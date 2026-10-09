@@ -2,6 +2,7 @@ package com.deezus.wordy.ui.game
 
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -56,6 +57,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -263,6 +265,7 @@ private fun GameContent(
     is GameDialog.Finished -> FinishedDialog(
       dialog = dialog,
       onPlayAgain = viewModel::onPlayAgain,
+      onLookUp = { performHaptic(); onLookUp(dialog.answer) },
       onDismiss = viewModel::onDialogDismissed,
     )
     null -> Unit
@@ -447,6 +450,7 @@ private fun SkipDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
 private fun FinishedDialog(
   dialog: GameDialog.Finished,
   onPlayAgain: () -> Unit,
+  onLookUp: () -> Unit,
   onDismiss: () -> Unit,
 ) {
   val won = dialog.status == GameStatus.Won
@@ -465,7 +469,7 @@ private fun FinishedDialog(
     text = {
       Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text(message)
-        AnswerTiles(word = dialog.answer, highlighted = won)
+        AnswerTiles(word = dialog.answer, highlighted = won, onClick = onLookUp)
       }
     },
     confirmButton = {
@@ -485,15 +489,23 @@ private fun FinishedDialog(
   )
 }
 
-/** The answer spelled out as a row of small tiles. */
+/**
+ * The answer spelled out as a row of small tiles, followed by a search icon. Tapping anywhere on
+ * the row runs [onClick], which opens the word's definition.
+ */
 @Composable
-private fun AnswerTiles(word: String, highlighted: Boolean) {
+private fun AnswerTiles(word: String, highlighted: Boolean, onClick: () -> Unit) {
   val tileSize = 34.dp
   val fontSize = with(LocalDensity.current) { (tileSize * 0.5f).toSp() }
+  val lookUpDescription = stringResource(R.string.cd_look_up, word.uppercase())
 
   Row(
-    modifier = Modifier.clearAndSetSemantics { contentDescription = word },
+    modifier = Modifier
+      .clip(RoundedCornerShape(7.dp))
+      .clickable(role = Role.Button, onClick = onClick)
+      .clearAndSetSemantics { contentDescription = lookUpDescription },
     horizontalArrangement = Arrangement.spacedBy(4.dp),
+    verticalAlignment = Alignment.CenterVertically,
   ) {
     for (letter in word.uppercase()) {
       Box(
@@ -511,6 +523,12 @@ private fun AnswerTiles(word: String, highlighted: Boolean) {
         )
       }
     }
+    Icon(
+      painter = painterResource(R.drawable.ic_round_search_24),
+      contentDescription = null,
+      tint = WordyColors.TextMuted,
+      modifier = Modifier.padding(start = 4.dp).size(24.dp),
+    )
   }
 }
 
